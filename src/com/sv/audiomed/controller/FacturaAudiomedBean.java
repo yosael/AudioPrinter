@@ -3,8 +3,9 @@ package com.sv.audiomed.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 
 import com.sv.audiomed.dao.DetalleFacturaAudiomedDAO;
 import com.sv.audiomed.dao.FacturaAudiomedDAO;
@@ -12,27 +13,55 @@ import com.sv.audiomed.model.DetalleFacturaAudiomed;
 import com.sv.audiomed.model.FacturaAudiomed;
 
 @ManagedBean(name = "facturaAudiomedBean")
-@SessionScoped
+@ViewScoped
 public class FacturaAudiomedBean {
 	
 	private FacturaAudiomed facturaAudiomed= new FacturaAudiomed();
-	private FacturaAudiomedDAO facturaAudiomedDAO = new FacturaAudiomedDAO();
-	private DetalleFacturaAudiomedDAO detalleFacturaAudiomedDAO = new DetalleFacturaAudiomedDAO();
+	private FacturaAudiomedDAO facturaAudiomedDAO;
+	//private DetalleFacturaAudiomedDAO detalleFacturaAudiomedDAO;
 	private List<DetalleFacturaAudiomed> detalles = new ArrayList<DetalleFacturaAudiomed>();
 	private DetalleFacturaAudiomed detalle = new DetalleFacturaAudiomed();
+	private int idFactura=0;
 	
-	public void agregarFactura()
+	
+	@PostConstruct
+	public void init()
 	{
-		facturaAudiomedDAO.agregar(facturaAudiomed);
-		agregarDetalleFactura();
+		facturaAudiomedDAO = new FacturaAudiomedDAO();
+		//detalleFacturaAudiomedDAO = new DetalleFacturaAudiomedDAO();
 	}
 	
-	public void agregarDetalleFactura()
+	public String agregarFactura()
+	{
+		//facturaAudiomedDAO.agregar(facturaAudiomed);
+		//agregarDetalleFactura();
+		System.out.println("Factura Nombre cliente"+facturaAudiomed.getNombreCliente());
+		System.out.println("Suma no sujetas "+facturaAudiomed.getSumaNoSujetas());
+		try {
+			
+			idFactura= facturaAudiomedDAO.agregarFacturaDetalle(facturaAudiomed, detalles);
+			System.out.println("ID FACTURA "+idFactura);
+			
+			return "vistaFacturaAudiomed.xhtml";
+			
+		} catch (Exception e) {
+				
+			e.printStackTrace();
+		}
+		
+		return "";
+		
+	}
+	
+	public String agregarDetalleFactura()
 	{
 		for(DetalleFacturaAudiomed detalle: detalles)
 		{
-			detalleFacturaAudiomedDAO.agregar(detalle);
+			//detalleFacturaAudiomedDAO.agregar(detalle);
+			detalle.setIdFactura(facturaAudiomed.getIdFactura());
 		}
+		
+		return "vistaFacturaAudiomed";
 	}
 	
 	
@@ -42,6 +71,10 @@ public class FacturaAudiomedBean {
 		detalle = new DetalleFacturaAudiomed();
 		System.out.println("Tamanio de lista detalle "+ detalles.size() );
 	}
+	
+	
+	
+	
 
 	
 	
@@ -71,6 +104,14 @@ public class FacturaAudiomedBean {
 
 	public void setDetalle(DetalleFacturaAudiomed detalle) {
 		this.detalle = detalle;
+	}
+
+	public int getIdFactura() {
+		return idFactura;
+	}
+
+	public void setIdFactura(int idFactura) {
+		this.idFactura = idFactura;
 	}
 	
 	

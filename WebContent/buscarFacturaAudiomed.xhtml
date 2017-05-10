@@ -1,0 +1,43 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"> 
+
+<h:head></h:head> 
+<body> 
+
+	
+	<h:form id="form1" >
+		<h:panelGrid columns="1" style="margin:0 auto">
+			
+				
+			
+			<p:dataTable id="tbFacturas" value="#{buscarFacturaAudiomedBean.facturas}" var="fac" >
+				<p:column  headerText="# FACTURA"  >
+						<p:outputLabel value="#{fac.codigoFactura}" />
+				</p:column>
+				<p:column  headerText="PACIENTE"  >
+						<p:outputLabel value="#{fac.nombreCliente}" />
+				</p:column>
+				<p:column  headerText="FECHA"  >
+						<p:outputLabel value="#{fac.fecha}" />
+				</p:column>
+				<p:column  headerText="SUBTOTAL"  >
+						<p:outputLabel value="#{fac.subtotal}" />
+				</p:column>
+				<p:column  headerText="TOTAL"  >
+						<p:outputLabel value="#{fac.ventaTotal}" />
+				</p:column>
+				<p:column  headerText="ACCION"   >
+					<h:commandButton action="#{buscarFacturaAudiomedBean.seleccionarFactura(fac.idFactura)}"  value="VER" >
+					
+					</h:commandButton>
+				</p:column>
+			</p:dataTable>
+			
+		</h:panelGrid>
+	</h:form>
+</body> 
+</html>

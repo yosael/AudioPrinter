@@ -19,6 +19,7 @@ public class FacturacionBean {
 	
 	public String seleccionarFormato()
 	{
+		formatoSelected+="?faces-redirect=true";
 		return formatoSelected;
 	}
 	

@@ -8,14 +8,10 @@ import java.util.Properties;
 
 public class Conexion {
 	
-	protected Connection cx; 	
+	protected static Connection cx; 	
 	
-	public Conexion()
-	{
-		
-	}
 
-	public Connection conectar(){
+	public static Connection conectar(){
 		if(cx != null){
 			return cx;
 		}
@@ -30,7 +26,12 @@ public class Conexion {
 			String user = properties.getProperty("user");
 			String password = properties.getProperty("password");
 			System.out.println(driver);
+			System.out.println(url);
+			System.out.println(user);
+			System.out.println(password);
+			
 			Class.forName(driver);
+			
 			cx = DriverManager.getConnection(url, user, password);
 		}catch(Exception e){
 			e.printStackTrace();
@@ -38,7 +39,7 @@ public class Conexion {
 		return cx;
 	}
 	
-	public void desconectar(){
+	public static void desconectar(){
 		if(cx == null){
 			return;
 		}

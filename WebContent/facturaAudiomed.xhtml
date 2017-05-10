@@ -126,8 +126,11 @@
 			</p:panelGrid>
 			
 			<h:panelGroup style="margin:0 auto;"  >
+				<p:commandButton value="Buscar facturas" action="buscarFacturaAudiomed?faces-redirect=true" ></p:commandButton>
 				<p:commandButton value="Vista Previa" ></p:commandButton>
-				<p:commandButton value="Imprimir" action="seleccionarFormato.xhtml" actionListener="#{facturaAudiomedBean.agregarFactura()}" ajax="false" ></p:commandButton>
+				<p:commandButton value="Guardar" action="#{facturaAudiomedBean.agregarFactura()}"  ajax="false" >
+					<f:param name="idFactura" value="#{facturaAudiomedBean.idFactura}" ></f:param>
+				</p:commandButton>
 			</h:panelGroup>
 			
 		</p:panelGrid>

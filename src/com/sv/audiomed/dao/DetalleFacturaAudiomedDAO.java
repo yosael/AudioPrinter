@@ -2,6 +2,8 @@ package com.sv.audiomed.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.List;
 
 import com.sv.audiomed.model.DetalleFacturaAudiomed;
 
@@ -39,6 +41,41 @@ public class DetalleFacturaAudiomedDAO {
 			e.printStackTrace();
 
 		}
+	}
+	
+	public void agregarDetalles(List<DetalleFacturaAudiomed> lista,int idFactura) throws SQLException
+	{
+		
+		
+		try {
+			
+			cx.setAutoCommit(false);
+			
+			for(DetalleFacturaAudiomed detalle:lista)
+			{
+				
+				String sql ="Insert into detalle_factura_audiomed values(?,?,?,?,?,?,?)";
+				PreparedStatement preparedStatement = cx.prepareStatement(sql);
+				preparedStatement.setInt(1, idFactura);
+				preparedStatement.setInt(2,detalle.getCantidad());
+				preparedStatement.setString(3, detalle.getDescripciones());
+				preparedStatement.setFloat(4, detalle.getPrecioUnitario());
+				preparedStatement.setFloat(5,detalle.getVentasNoSujetas());
+				preparedStatement.setFloat(6, detalle.getVentasExentas());
+				preparedStatement.setFloat(7, detalle.getVentasGravadas());
+				
+				preparedStatement.executeUpdate();
+				
+			}
+			
+			cx.commit();
+			
+			
+		} catch (Exception e) {
+
+			cx.rollback();
+		}
+		
 	}
 
 }
