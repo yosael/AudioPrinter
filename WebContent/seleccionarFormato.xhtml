@@ -13,18 +13,19 @@
 
 <h:body>
 	<h:form>
-		<p:panelGrid columns="3" style="margin:0 auto;margin-top:200px;" >
+		<h:panelGrid columns="1" style="margin:0 auto;margin-top:200px;" >
 			
 			<p:outputLabel>Seleccionar formato factura</p:outputLabel>
 		
+			<p:separator></p:separator>
+			
 			<p:selectOneMenu value="#{facturacionBean.formatoSelected}" >
 				<f:selectItem itemLabel="Factura Audiomed"  itemValue="facturaAudiomed"  ></f:selectItem>
 				<f:selectItem itemLabel="Credito Fiscal Audiomed" itemValue="creditoFiscalAudiomed" ></f:selectItem>
 			</p:selectOneMenu>
 			
 			<p:commandButton ajax="false" action="#{facturacionBean.seleccionarFormato()}" value="Aceptar" />
-		</p:panelGrid>
-		
+		</h:panelGrid>
 	</h:form>
 	
 </h:body>

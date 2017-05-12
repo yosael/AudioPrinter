@@ -10,18 +10,25 @@
 
 	
 	<h:form id="form1" >
-		<h:panelGrid columns="1" style="margin:0 auto">
+		<h:panelGrid columns="1" style="margin:0 auto;margin-top:100px;">
 			
-				
+			<p:outputLabel value="BUSCAR FACTURAS" ></p:outputLabel>	
 			
-			<p:dataTable id="tbFacturas" value="#{buscarFacturaAudiomedBean.facturas}" var="fac" >
-				<p:column  headerText="# FACTURA"  >
+			<p:separator></p:separator>
+			
+			<p:spacer height="80" ></p:spacer>
+			
+			<p:dataTable id="tbFacturas" value="#{buscarFacturaAudiomedBean.facturas}" var="fac" style="max-width:1200px;margin:0 auto"  >
+				<f:facet name="header">
+		            Listado de facturas
+		        </f:facet>
+				<p:column  headerText="# FACTURA"  filterBy="#{fac.codigoFactura}" >
 						<p:outputLabel value="#{fac.codigoFactura}" />
 				</p:column>
-				<p:column  headerText="PACIENTE"  >
+				<p:column  headerText="PACIENTE" filterBy="#{fac.nombreCliente}" filterMatchMode="contains" >
 						<p:outputLabel value="#{fac.nombreCliente}" />
 				</p:column>
-				<p:column  headerText="FECHA"  >
+				<p:column  headerText="FECHA" sortBy="#{fac.fecha}" >
 						<p:outputLabel value="#{fac.fecha}" />
 				</p:column>
 				<p:column  headerText="SUBTOTAL"  >

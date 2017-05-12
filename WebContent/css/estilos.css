@@ -1,0 +1,10 @@
+@CHARSET "ISO-8859-1";
+
+.borderRd
+{
+	border-radius: 10px 10px 10px 10px;
+	-moz-border-radius: 10px 10px 10px 10px;
+	-webkit-border-radius: 10px 10px 10px 10px;
+	border: 0px solid #000000;
+	
+}

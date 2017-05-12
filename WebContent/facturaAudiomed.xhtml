@@ -45,15 +45,17 @@
 				<p:inputText value="#{facturaAudiomedBean.facturaAudiomed.vtaActa}" />
 				
 			</h:panelGrid>
-			
-			<h:panelGrid columns="7" id="itmCampos" >
+			<!--  -->
+			<h:panelGrid columns="5" id="itmCampos" >
 				<p:inputText value="#{facturaAudiomedBean.detalle.cantidad}" placeholder="CANTIDAD" style="width:75px" />
 				<p:inputText value="#{facturaAudiomedBean.detalle.descripciones}" placeholder="DESCRIPCIONES" style="width:328px" />
-				<p:inputText value="#{facturaAudiomedBean.detalle.precioUnitario}" placeholder="PRECIO UNITARIO" style="width:100px" />
-				<p:inputText value="#{facturaAudiomedBean.detalle.ventasNoSujetas}" placeholder="NO SUJERAS" style="width:125px" />
-				<p:inputText value="#{facturaAudiomedBean.detalle.ventasExentas}" placeholder="EXENTAS" style="width:85px" />
-				<p:inputText value="#{facturaAudiomedBean.detalle.ventasGravadas}" placeholder="GRAVADAS" style="width:95px" />
-				<p:commandButton value="+" action="#{facturaAudiomedBean.cargarDetalle()}"  update="tbDetalles,itmCampos"  ></p:commandButton>
+				<p:inputText value="#{facturaAudiomedBean.detalle.precioUnitario}" placeholder="PRECIO" style="width:70px" />
+				<p:selectOneRadio id="console" value="#{facturaAudiomedBean.tipoConcepto}">
+		            <f:selectItem itemLabel="NO SUJETAS" itemValue="NoSujetas" />
+		            <f:selectItem itemLabel="EXENTAS" itemValue="Exentas" />
+		            <f:selectItem itemLabel="GRAVADAS" itemValue="Gravadas"   />
+		        </p:selectOneRadio><!-- update="tbDetalles,itmCampos" -->
+				<p:commandButton value="+" action="#{facturaAudiomedBean.cargarDetalle()}"  update="form1"  ></p:commandButton>
 			</h:panelGrid>
 			
 			<p:dataTable id="tbDetalles" value="#{facturaAudiomedBean.detalles}" var="fac" >
@@ -64,7 +66,7 @@
 				<p:column headerText="Descripciones" style="width:328px" >
 					<h:outputLabel value="#{fac.descripciones}" />
 				</p:column>
-				<p:column headerText="Precio Unitario" style="width:100px" >
+				<p:column headerText="Precio " style="width:100px" >
 					<h:outputLabel value="#{fac.precioUnitario}" />
 				</p:column>
 				<p:column headerText="No Sujetas" style="width:125px" >
@@ -127,7 +129,6 @@
 			
 			<h:panelGroup style="margin:0 auto;"  >
 				<p:commandButton value="Buscar facturas" action="buscarFacturaAudiomed?faces-redirect=true" ></p:commandButton>
-				<p:commandButton value="Vista Previa" ></p:commandButton>
 				<p:commandButton value="Guardar" action="#{facturaAudiomedBean.agregarFactura()}"  ajax="false" >
 					<f:param name="idFactura" value="#{facturaAudiomedBean.idFactura}" ></f:param>
 				</p:commandButton>

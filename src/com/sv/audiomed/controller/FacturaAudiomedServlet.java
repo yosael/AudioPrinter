@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.sv.audiomed.dao.Conexion;
+import com.sv.audiomed.dao.ReporteFacturaAudiomedDAO;
 import com.sv.audiomed.dao.ReporteJasperUtilDAO;
 
 import net.sf.jasperreports.engine.JasperCompileManager;
@@ -21,7 +22,9 @@ import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.design.JasperDesign;
+import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.engine.xml.JRXmlLoader;
+import net.sf.jasperreports.view.JasperViewer;
 
 @WebServlet("/facturaAudiomedServlet")
 public class FacturaAudiomedServlet extends HttpServlet {
@@ -30,13 +33,20 @@ public class FacturaAudiomedServlet extends HttpServlet {
 	
 	
 	ReporteJasperUtilDAO reporte;
+	ReporteFacturaAudiomedDAO reporteFacturaAudiomedDAO;
 	Connection cn;
+	
+	//Nuevo 
+	private JasperReport jasperReport;
+	private JasperPrint jasperPrint;
+	private JasperViewer jasperViewer;
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 			
 		reporte = new ReporteJasperUtilDAO();
 		cn = Conexion.conectar();
+		reporteFacturaAudiomedDAO = new ReporteFacturaAudiomedDAO();
 		
 		int idFactura=Integer.parseInt(req.getParameter("idFactura").toString());
 		byte[] pdfBytes;	
@@ -45,30 +55,19 @@ public class FacturaAudiomedServlet extends HttpServlet {
 		try {
 			
 			
-			//Prefiero usar el .jrxml a la aplicacion que el .jasper por que es mas facil de versionar
-			//String sourceFileName = rutaFisica + "MiReporte.jrxml";
-			//String sourceFileName ="/AudioPrinter/WebContent/reportes/FacturaAudiomedFormat.jrxml";
-			String sourceFileName ="C:/EclipseNeon/workspace/AudioPrinter/AudioPrinter/WebContent/reportes/FacturaAudiomedFormat.jrxml";
-			
-			File theFile = new File(sourceFileName);
-
-			System.out.println("ARCHIVO: "+theFile);
-			
-			//JasperDesign jasperDesign = JRXmlLoader.load(theFile);//Se carga el archivo
-			System.out.println("ARCHIVO 2: "+theFile);	
-
-
-			Map parameters = new HashMap();//Parametros que usa el jasperreports
+			jasperReport = (JasperReport)JRLoader.loadObjectFromFile("C:\\Users\\Hp\\JaspersoftWorkspace\\FacturaAudiomed\\FacturaAudiomedFormat.jasper");
+			Map parameters = new HashMap();
 			parameters.put("id_factura", idFactura);
 			
-			//Se compila el archivo a .jasper
-			//JasperReport jasperReport = JasperCompileManager.compileReport(jasperDesign);//sourceFileName
-			JasperReport jasperReport = JasperCompileManager.compileReport("reportes/FacturaAudiomedFormat.jrxml");
+			jasperPrint = JasperFillManager.fillReport(jasperReport,parameters,cn);
+			
+			/*jasperViewer = new JasperViewer(jasperPrint);
+			jasperViewer.setVisible(true);*/
 
 			//Aqui se llena el reporte (se ejecuta la consulta)
-			JasperPrint print = new JasperPrint();
-			print = JasperFillManager.fillReport(jasperReport, parameters, cn);
-			 pdfBytes = JasperExportManager.exportReportToPdf(print);
+			//JasperPrint print = new JasperPrint();
+			//print = JasperFillManager.fillReport(jasperReport, parameters, cn);
+			 pdfBytes = JasperExportManager.exportReportToPdf(jasperPrint);
 		
 			resp.setContentType("application/pdf");
 			resp.setHeader("Content-Disposition", "inline;filename=" + "FacturaAudiomed" + ".pdf");

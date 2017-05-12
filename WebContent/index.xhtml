@@ -14,10 +14,12 @@
 <h:body>
 	<h:form>
 		
-		<p:commandButton action="seleccionarFormato" value="Ir a seleccionar formato" ajax="false" />
-		<h:outputLabel value="HOLA BIENVENIDO" />
-		<p:outputLabel value="HOla BIENVENIDO 22" ></p:outputLabel>
-		<p:commandButton action="personas" value="Cancelar" immediate="true"/>
+		<h:panelGrid columns="1"  style="margin:0 auto;margin-top:200px;" >
+			<p:outputLabel value="SISTEMA DE IMPRESION" ></p:outputLabel>
+			<p:separator></p:separator>
+			 <p:commandButton style="margin:0 auto" action="seleccionarFormato" value="Ingresar" ajax="false" />	
+		</h:panelGrid>
+
 	</h:form>
 </h:body>
 

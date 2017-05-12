@@ -12,6 +12,7 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
 import com.sv.audiomed.dao.FacturaAudiomedDAO;
+import com.sv.audiomed.dao.ReporteFacturaAudiomedDAO;
 import com.sv.audiomed.dao.ReporteJasperUtilDAO;
 import com.sv.audiomed.model.DetalleFacturaAudiomed;
 import com.sv.audiomed.model.FacturaAudiomed;
@@ -28,6 +29,7 @@ public class VistaFacturaAudiomedBean implements Serializable {
 	private List<DetalleFacturaAudiomed> detalles;
 	private FacturaAudiomedDAO facturaDAO;
 	private ReporteJasperUtilDAO reporteJasperDAO;
+	private ReporteFacturaAudiomedDAO reporteFacturaAudiomedDAO;
 	
 	@ManagedProperty(value="#{buscarFacturaAudiomedBean}")
 	private BuscarFacturaAudiomedBean buscarFacturaAudiomedBean;
@@ -36,6 +38,7 @@ public class VistaFacturaAudiomedBean implements Serializable {
 	{
 		facturaAudiomed = new FacturaAudiomed();
 		detalles = new ArrayList<DetalleFacturaAudiomed>();
+		reporteFacturaAudiomedDAO = new ReporteFacturaAudiomedDAO();
 	}
 	
 	
@@ -83,7 +86,10 @@ public class VistaFacturaAudiomedBean implements Serializable {
 	
 	public void imprimirFactura()
 	{
-		reporteJasperDAO.generarReporteFacturaAudiomed(idFactura);
+		//reporteJasperDAO.generarReporteFacturaAudiomed(idFactura);imprimirReporteFacturaAudiomed
+		//reporteJasperDAO.imprimirReporteFacturaAudiomed(idFactura);
+		reporteFacturaAudiomedDAO.crearReporte(idFactura);
+		
 	}
 	
 	public String irAlServlet()
