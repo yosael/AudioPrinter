@@ -20,8 +20,8 @@
 			<p:separator></p:separator>
 			
 			<p:selectOneMenu value="#{facturacionBean.formatoSelected}" >
-				<f:selectItem itemLabel="Factura Audiomed"  itemValue="facturaAudiomed"  ></f:selectItem>
-				<f:selectItem itemLabel="Credito Fiscal Audiomed" itemValue="creditoFiscalAudiomed" ></f:selectItem>
+				<f:selectItem itemLabel="Factura Audiomed"  itemValue="facturaAudiomed/facturaAudiomed.xhtml?faces-redirect=true"  ></f:selectItem>
+				<f:selectItem itemLabel="Credito Fiscal Audiomed" itemValue="creditoFiscalAudiomed/creditoFiscalAudiomed.xhtml?faces-redirect=true" ></f:selectItem>
 			</p:selectOneMenu>
 			
 			<p:commandButton ajax="false" action="#{facturacionBean.seleccionarFormato()}" value="Aceptar" />

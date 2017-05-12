@@ -10,15 +10,20 @@
 
 	
 	<h:form id="form1" >
-		<h:panelGrid columns="1" style="margin:0 auto;margin-top:100px;">
+		<h:panelGrid columns="1" style="margin:0 auto;margin-top:40px;">
 			
 			<p:outputLabel value="BUSCAR FACTURAS" ></p:outputLabel>	
 			
 			<p:separator></p:separator>
 			
-			<p:spacer height="80" ></p:spacer>
-			
-			<p:dataTable id="tbFacturas" value="#{buscarFacturaAudiomedBean.facturas}" var="fac" style="max-width:1200px;margin:0 auto"  >
+			<p:spacer height="20" ></p:spacer>
+			<h:panelGrid columns="2" >
+				<p:link  href="../seleccionarFormato.xhtml" tyle="button" >Inicio</p:link>
+				<p:spacer width="20" ></p:spacer>
+				<p:commandButton value="Nueva" action="facturaAudiomed" ></p:commandButton>
+			</h:panelGrid>
+			<p:dataTable id="tbFacturas" value="#{buscarFacturaAudiomedBean.facturas}" var="fac" style="max-width:1200px;margin:0 auto"  rows="10" paginator="true" 
+                          >
 				<f:facet name="header">
 		            Listado de facturas
 		        </f:facet>
@@ -39,7 +44,6 @@
 				</p:column>
 				<p:column  headerText="ACCION"   >
 					<h:commandButton action="#{buscarFacturaAudiomedBean.seleccionarFactura(fac.idFactura)}"  value="VER" >
-					
 					</h:commandButton>
 				</p:column>
 			</p:dataTable>

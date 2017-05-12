@@ -27,10 +27,10 @@ public class DetalleFacturaAudiomedDAO {
 			preparedStatement.setInt(1, detalle.getIdFactura());
 			preparedStatement.setInt(2,detalle.getCantidad());
 			preparedStatement.setString(3, detalle.getDescripciones());
-			preparedStatement.setFloat(4, detalle.getPrecioUnitario());
-			preparedStatement.setFloat(5,detalle.getVentasNoSujetas());
-			preparedStatement.setFloat(6, detalle.getVentasExentas());
-			preparedStatement.setFloat(7, detalle.getVentasGravadas());
+			preparedStatement.setDouble(4, detalle.getPrecioUnitario());
+			preparedStatement.setDouble(5,detalle.getVentasNoSujetas());
+			preparedStatement.setDouble(6, detalle.getVentasExentas());
+			preparedStatement.setDouble(7, detalle.getVentasGravadas());
 			
 			preparedStatement.execute();
 			
@@ -59,10 +59,10 @@ public class DetalleFacturaAudiomedDAO {
 				preparedStatement.setInt(1, idFactura);
 				preparedStatement.setInt(2,detalle.getCantidad());
 				preparedStatement.setString(3, detalle.getDescripciones());
-				preparedStatement.setFloat(4, detalle.getPrecioUnitario());
-				preparedStatement.setFloat(5,detalle.getVentasNoSujetas());
-				preparedStatement.setFloat(6, detalle.getVentasExentas());
-				preparedStatement.setFloat(7, detalle.getVentasGravadas());
+				preparedStatement.setDouble(4, detalle.getPrecioUnitario());
+				preparedStatement.setDouble(5,detalle.getVentasNoSujetas());
+				preparedStatement.setDouble(6, detalle.getVentasExentas());
+				preparedStatement.setDouble(7, detalle.getVentasGravadas());
 				
 				preparedStatement.executeUpdate();
 				

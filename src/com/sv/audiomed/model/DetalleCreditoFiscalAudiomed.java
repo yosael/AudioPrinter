@@ -1,6 +1,6 @@
 package com.sv.audiomed.model;
 
-public class DetalleFacturaAudiomed {
+public class DetalleCreditoFiscalAudiomed {
 	
 	private int idDetalle;
 	private int idFactura;
@@ -10,7 +10,6 @@ public class DetalleFacturaAudiomed {
 	private Double ventasNoSujetas;
 	private Double ventasExentas;
 	private Double ventasGravadas;
-	
 	
 	
 	
@@ -62,8 +61,6 @@ public class DetalleFacturaAudiomed {
 	public void setVentasGravadas(Double ventasGravadas) {
 		this.ventasGravadas = ventasGravadas;
 	}
-	
-	
 	
 	
 	

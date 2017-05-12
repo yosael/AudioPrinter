@@ -1,0 +1,54 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"> 
+
+<h:head></h:head> 
+<body> 
+
+	
+	<h:form id="form1" >
+		<h:panelGrid columns="1" style="margin:0 auto;margin-top:40px;">
+			
+			<p:outputLabel value="BUSCAR FACTURAS" ></p:outputLabel>	
+			
+			<p:separator></p:separator>
+			
+			<p:spacer height="20" ></p:spacer>
+			<h:panelGrid columns="2" >
+				<p:link  href="../seleccionarFormato.xhtml" tyle="button" >Inicio</p:link>
+				<p:spacer width="20" ></p:spacer>
+				<p:commandButton value="Nueva" action="facturaAudiomed" ></p:commandButton>
+			</h:panelGrid>
+			<p:dataTable id="tbFacturas" value="#{buscarFacturaAudiomedBean.facturas}" var="fac" style="max-width:1200px;margin:0 auto"  rows="10" paginator="true" 
+                          >
+				<f:facet name="header">
+		            Listado de facturas
+		        </f:facet>
+				<p:column  headerText="# FACTURA"  filterBy="#{fac.codigoFactura}" >
+						<p:outputLabel value="#{fac.codigoFactura}" />
+				</p:column>
+				<p:column  headerText="PACIENTE" filterBy="#{fac.nombreCliente}" filterMatchMode="contains" >
+						<p:outputLabel value="#{fac.nombreCliente}" />
+				</p:column>
+				<p:column  headerText="FECHA" sortBy="#{fac.fecha}" >
+						<p:outputLabel value="#{fac.fecha}" />
+				</p:column>
+				<p:column  headerText="SUBTOTAL"  >
+						<p:outputLabel value="#{fac.subtotal}" />
+				</p:column>
+				<p:column  headerText="TOTAL"  >
+						<p:outputLabel value="#{fac.ventaTotal}" />
+				</p:column>
+				<p:column  headerText="ACCION"   >
+					<h:commandButton action="#{buscarFacturaAudiomedBean.seleccionarFactura(fac.idFactura)}"  value="VER" >
+					</h:commandButton>
+				</p:column>
+			</p:dataTable>
+			
+		</h:panelGrid>
+	</h:form>
+</body> 
+</html>

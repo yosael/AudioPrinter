@@ -2,7 +2,7 @@ package com.sv.audiomed.model;
 
 import java.util.Date;
 
-public class FacturaAudiomed {
+public class CreditoFiscalAudiomed {
 	
 	private int idFactura;
 	private String codigoFactura;
@@ -10,6 +10,11 @@ public class FacturaAudiomed {
 	private String direccionCliente;
 	private Date fecha;
 	private String docCliente;
+	private String registro;
+	private String notaNumEmision;
+	private String giro;
+	private Date fechaNotaEmision;
+	private String condicionPago;
 	private Double sumaNoSujetas;
 	private Double sumaVentasExentas;
 	private Double sumaVentasGravadas;
@@ -19,9 +24,6 @@ public class FacturaAudiomed {
 	private Double ivaRetenido;
 	private Double ventaTotal;
 	private String letrasMonto;
-	private String vtaActa;
-	
-	
 	
 	
 	public int getIdFactura() {
@@ -60,11 +62,36 @@ public class FacturaAudiomed {
 	public void setDocCliente(String docCliente) {
 		this.docCliente = docCliente;
 	}
-	
-	
-	
-	
-	
+	public String getRegistro() {
+		return registro;
+	}
+	public void setRegistro(String registro) {
+		this.registro = registro;
+	}
+	public String getNotaNumEmision() {
+		return notaNumEmision;
+	}
+	public void setNotaNumEmision(String notaNumEmision) {
+		this.notaNumEmision = notaNumEmision;
+	}
+	public String getGiro() {
+		return giro;
+	}
+	public void setGiro(String giro) {
+		this.giro = giro;
+	}
+	public Date getFechaNotaEmision() {
+		return fechaNotaEmision;
+	}
+	public void setFechaNotaEmision(Date fechaNotaEmision) {
+		this.fechaNotaEmision = fechaNotaEmision;
+	}
+	public String getCondicionPago() {
+		return condicionPago;
+	}
+	public void setCondicionPago(String condicionPago) {
+		this.condicionPago = condicionPago;
+	}
 	public Double getSumaNoSujetas() {
 		return sumaNoSujetas;
 	}
@@ -118,14 +145,6 @@ public class FacturaAudiomed {
 	}
 	public void setLetrasMonto(String letrasMonto) {
 		this.letrasMonto = letrasMonto;
-	}
-	
-	
-	public String getVtaActa() {
-		return vtaActa;
-	}
-	public void setVtaActa(String vtaActa) {
-		this.vtaActa = vtaActa;
 	}
 	
 	

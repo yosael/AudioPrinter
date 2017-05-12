@@ -37,14 +37,14 @@ public class FacturaAudiomedDAO {
 			
 			preparedStatement.setDate(4, sqlDate);
 			preparedStatement.setString(5,factura.getDocCliente());
-			preparedStatement.setFloat(6, factura.getSumaNoSujetas());
-			preparedStatement.setFloat(7, factura.getSumaVentasExentas());
-			preparedStatement.setFloat(8, factura.getSumaVentasGravadas());
-			preparedStatement.setFloat(9,factura.getVentasExentas());
-			preparedStatement.setFloat(10, factura.getVentasNoSujetas());
-			preparedStatement.setFloat(11, factura.getSubtotal());
-			preparedStatement.setFloat(12, factura.getIvaRetenido());
-			preparedStatement.setFloat(13, factura.getVentaTotal());
+			preparedStatement.setDouble(6, factura.getSumaNoSujetas());
+			preparedStatement.setDouble(7, factura.getSumaVentasExentas());
+			preparedStatement.setDouble(8, factura.getSumaVentasGravadas());
+			preparedStatement.setDouble(9,factura.getVentasExentas());
+			preparedStatement.setDouble(10, factura.getVentasNoSujetas());
+			preparedStatement.setDouble(11, factura.getSubtotal());
+			preparedStatement.setDouble(12, factura.getIvaRetenido());
+			preparedStatement.setDouble(13, factura.getVentaTotal());
 			preparedStatement.setString(14, factura.getLetrasMonto());
 			
 			preparedStatement.execute();
@@ -60,6 +60,7 @@ public class FacturaAudiomedDAO {
 	public int agregarFacturaDetalle(FacturaAudiomed factura,List<DetalleFacturaAudiomed> detalles) throws SQLException
 	{
 		int idFactura=0;
+		System.out.println("Entro a registro factura DAO");
 		try {
 				
 			cx.setAutoCommit(false);
@@ -76,14 +77,14 @@ public class FacturaAudiomedDAO {
 			preparedStatement.setDate(4, sqlDate);
 			
 			preparedStatement.setString(5,factura.getDocCliente()!=null?factura.getDocCliente():null);
-			preparedStatement.setFloat(6, factura.getSumaNoSujetas()!=null?factura.getSumaNoSujetas():0f);
-			preparedStatement.setFloat(7, factura.getSumaVentasExentas()!=null?factura.getSumaVentasExentas():0f);
-			preparedStatement.setFloat(8, factura.getSumaVentasGravadas()!=null?factura.getSumaVentasGravadas():0f);
-			preparedStatement.setFloat(9,factura.getVentasExentas()!=null?factura.getVentasExentas():0f);
-			preparedStatement.setFloat(10, factura.getVentasNoSujetas()!=null?factura.getVentasNoSujetas():0f);
-			preparedStatement.setFloat(11, factura.getSubtotal()!=null?factura.getSubtotal():0f);
-			preparedStatement.setFloat(12, factura.getIvaRetenido()!=null?factura.getIvaRetenido():0f);
-			preparedStatement.setFloat(13, factura.getVentaTotal()!=null?factura.getVentaTotal():0f);
+			preparedStatement.setDouble(6, factura.getSumaNoSujetas()!=null?factura.getSumaNoSujetas():0f);
+			preparedStatement.setDouble(7, factura.getSumaVentasExentas()!=null?factura.getSumaVentasExentas():0f);
+			preparedStatement.setDouble(8, factura.getSumaVentasGravadas()!=null?factura.getSumaVentasGravadas():0f);
+			preparedStatement.setDouble(9,factura.getVentasExentas()!=null?factura.getVentasExentas():0f);
+			preparedStatement.setDouble(10, factura.getVentasNoSujetas()!=null?factura.getVentasNoSujetas():0f);
+			preparedStatement.setDouble(11, factura.getSubtotal()!=null?factura.getSubtotal():0f);
+			preparedStatement.setDouble(12, factura.getIvaRetenido()!=null?factura.getIvaRetenido():0f);
+			preparedStatement.setDouble(13, factura.getVentaTotal()!=null?factura.getVentaTotal():0f);
 			preparedStatement.setString(14, factura.getLetrasMonto()!=null?factura.getLetrasMonto():null);
 			
 			preparedStatement.executeUpdate();
@@ -92,30 +93,38 @@ public class FacturaAudiomedDAO {
 			while(rsIdFactura.next())
 				idFactura = rsIdFactura.getInt(1);
 			
-			System.out.println("ID FACTURA "+idFactura);
+			System.out.println("ID FACTURA DAO "+idFactura);
 			
 			preparedStatement.close();
 			
 			
 			//Si da error extraer el idFactura
 			
-			
-			for(DetalleFacturaAudiomed detalle:detalles)
+			if(detalles.size()>0 && idFactura>0)
 			{
-				
-				String sqlDetalle ="Insert into detalle_factura_audiomed(id_factura,cantidad,descripciones,precio_unitario,ventas_nosujetas,ventas_exentas,ventas_gravadas) values(?,?,?,?,?,?,?)";
-				PreparedStatement preparedStatementDetalle = cx.prepareStatement(sqlDetalle);
-				preparedStatementDetalle.setInt(1, idFactura);
-				preparedStatementDetalle.setInt(2,detalle.getCantidad());
-				preparedStatementDetalle.setString(3, detalle.getDescripciones());
-				preparedStatementDetalle.setFloat(4, detalle.getPrecioUnitario());
-				preparedStatementDetalle.setFloat(5,detalle.getVentasNoSujetas()!=null?detalle.getVentasNoSujetas():0f);
-				preparedStatementDetalle.setFloat(6, detalle.getVentasExentas()!=null?detalle.getVentasExentas():0f);
-				preparedStatementDetalle.setFloat(7, detalle.getVentasGravadas()!=null?detalle.getVentasGravadas():0f);
-				
-				preparedStatementDetalle.executeUpdate();
-				preparedStatementDetalle.close();
-				
+				System.out.println("Entro al detalle");
+				for(DetalleFacturaAudiomed detalle:detalles)
+				{
+					
+					String sqlDetalle ="Insert into detalle_factura_audiomed(id_factura,cantidad,descripciones,precio_unitario,ventas_nosujetas,ventas_exentas,ventas_gravadas) values(?,?,?,?,?,?,?)";
+					PreparedStatement preparedStatementDetalle = cx.prepareStatement(sqlDetalle);
+					preparedStatementDetalle.setInt(1, idFactura);
+					preparedStatementDetalle.setInt(2,detalle.getCantidad());
+					preparedStatementDetalle.setString(3, detalle.getDescripciones());
+					preparedStatementDetalle.setDouble(4, detalle.getPrecioUnitario());
+					preparedStatementDetalle.setDouble(5,detalle.getVentasNoSujetas()!=null?detalle.getVentasNoSujetas():0f);
+					preparedStatementDetalle.setDouble(6, detalle.getVentasExentas()!=null?detalle.getVentasExentas():0f);
+					preparedStatementDetalle.setDouble(7, detalle.getVentasGravadas()!=null?detalle.getVentasGravadas():0f);
+					
+					preparedStatementDetalle.executeUpdate();
+					preparedStatementDetalle.close();
+					
+				}
+			}
+			else
+			{
+				cx.rollback();
+				return 0;
 			}
 			
 			
@@ -139,7 +148,7 @@ public class FacturaAudiomedDAO {
 		
 		try {
 			
-			String sql="SELECT * FROM factura_audiomed";
+			String sql="SELECT * FROM factura_audiomed order by id_factura desc";
 			Statement st = cx.createStatement();
 			ResultSet result = st.executeQuery(sql);
 			
@@ -152,14 +161,14 @@ public class FacturaAudiomedDAO {
 				factura.setDireccionCliente(result.getString("direccion_cliente"));
 				factura.setFecha(result.getDate("fecha"));
 				factura.setDocCliente(result.getString("doc_cliente"));
-				factura.setSumaNoSujetas(result.getFloat("suma_nosujetas"));
-				factura.setSumaVentasExentas(result.getFloat("suma_ventas_exentas"));
-				factura.setSumaVentasGravadas(result.getFloat("suma_ventas_gravadas"));
-				factura.setVentasExentas(result.getFloat("ventas_exentas"));
-				factura.setVentasNoSujetas(result.getFloat("ventas_nosujetas"));
-				factura.setSubtotal(result.getFloat("subtotal"));
-				factura.setIvaRetenido(result.getFloat("iva_retenido"));
-				factura.setVentaTotal(result.getFloat("venta_total"));
+				factura.setSumaNoSujetas(result.getDouble("suma_nosujetas"));
+				factura.setSumaVentasExentas(result.getDouble("suma_ventas_exentas"));
+				factura.setSumaVentasGravadas(result.getDouble("suma_ventas_gravadas"));
+				factura.setVentasExentas(result.getDouble("ventas_exentas"));
+				factura.setVentasNoSujetas(result.getDouble("ventas_nosujetas"));
+				factura.setSubtotal(result.getDouble("subtotal"));
+				factura.setIvaRetenido(result.getDouble("iva_retenido"));
+				factura.setVentaTotal(result.getDouble("venta_total"));
 				factura.setLetrasMonto(result.getString("monto_letras"));
 			
 				
@@ -193,14 +202,14 @@ public class FacturaAudiomedDAO {
 				factura.setDireccionCliente(rs.getString("direccion_cliente"));
 				factura.setFecha(rs.getDate("fecha"));
 				factura.setDocCliente(rs.getString("doc_cliente"));
-				factura.setSumaNoSujetas(rs.getFloat("suma_nosujetas"));
-				factura.setSumaVentasExentas(rs.getFloat("suma_ventas_exentas"));
-				factura.setSumaVentasGravadas(rs.getFloat("suma_ventas_gravadas"));
-				factura.setVentasExentas(rs.getFloat("ventas_exentas"));
-				factura.setVentasNoSujetas(rs.getFloat("ventas_nosujetas"));
-				factura.setSubtotal(rs.getFloat("subtotal"));
-				factura.setIvaRetenido(rs.getFloat("iva_retenido"));
-				factura.setVentaTotal(rs.getFloat("venta_total"));
+				factura.setSumaNoSujetas(rs.getDouble("suma_nosujetas"));
+				factura.setSumaVentasExentas(rs.getDouble("suma_ventas_exentas"));
+				factura.setSumaVentasGravadas(rs.getDouble("suma_ventas_gravadas"));
+				factura.setVentasExentas(rs.getDouble("ventas_exentas"));
+				factura.setVentasNoSujetas(rs.getDouble("ventas_nosujetas"));
+				factura.setSubtotal(rs.getDouble("subtotal"));
+				factura.setIvaRetenido(rs.getDouble("iva_retenido"));
+				factura.setVentaTotal(rs.getDouble("venta_total"));
 				factura.setLetrasMonto(rs.getString("monto_letras"));
 				
 			}
@@ -238,10 +247,10 @@ public class FacturaAudiomedDAO {
 				detalle.setIdFactura(rs.getInt("id_factura"));
 				detalle.setCantidad(rs.getInt("cantidad"));
 				detalle.setDescripciones(rs.getString("descripciones"));
-				detalle.setPrecioUnitario(rs.getFloat("precio_unitario"));
-				detalle.setVentasNoSujetas(rs.getFloat("ventas_nosujetas"));
-				detalle.setVentasExentas(rs.getFloat("ventas_exentas"));
-				detalle.setVentasGravadas(rs.getFloat("ventas_gravadas"));
+				detalle.setPrecioUnitario(rs.getDouble("precio_unitario"));
+				detalle.setVentasNoSujetas(rs.getDouble("ventas_nosujetas"));
+				detalle.setVentasExentas(rs.getDouble("ventas_exentas"));
+				detalle.setVentasGravadas(rs.getDouble("ventas_gravadas"));
 				
 				detalles.add(detalle);
 				

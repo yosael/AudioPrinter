@@ -50,7 +50,7 @@ public class BuscarFacturaAudiomedBean implements Serializable {
 	{
 		
 		this.idFacturaSelected=idFactura;
-		
+		System.out.println("Nueva factura: "+idFacturaSelected);
 		return "vistaFacturaAudiomed?faces-redirect=true";
 	}
 

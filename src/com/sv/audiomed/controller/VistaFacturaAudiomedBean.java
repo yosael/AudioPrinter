@@ -8,7 +8,9 @@ import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 
 import com.sv.audiomed.dao.FacturaAudiomedDAO;
@@ -48,16 +50,17 @@ public class VistaFacturaAudiomedBean implements Serializable {
 		facturaDAO = new FacturaAudiomedDAO();
 		reporteJasperDAO = new  ReporteJasperUtilDAO();
 		idFactura = buscarFacturaAudiomedBean.getIdFacturaSelected();
-		
+		System.out.println("ID Factura capturado"+idFactura);
 		cargarFactura();
+		
 	}
 	
 	public void eventoPrueba()
 	{
-		/*FacesContext facesContext = FacesContext. getCurrentInstance();
+		FacesContext facesContext = FacesContext. getCurrentInstance();
 		ExternalContext externalContext = facesContext.getExternalContext();
 		Map params = externalContext.getRequestParameterMap();
-		Integer categorySelected = new Integer((String) params.get("id" ));*/
+		Integer categorySelected = new Integer((String) params.get("idFactura" ));
 	}
 	
 	//Obtener id de factura por url
@@ -77,6 +80,7 @@ public class VistaFacturaAudiomedBean implements Serializable {
 			
 			facturaAudiomed = facturaDAO.buscarFacturaPorId(idFactura);
 			detalles = facturaDAO.buscarDetallesFactura(idFactura);
+			System.out.println("LETRAS MONTO: "+facturaAudiomed.getLetrasMonto());
 			
 		} catch (Exception e) {
 			e.printStackTrace();
