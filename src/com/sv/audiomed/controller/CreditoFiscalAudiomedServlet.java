@@ -13,7 +13,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.sv.audiomed.dao.Conexion;
-import com.sv.audiomed.dao.ReporteCreditoFiscalAudiomedDAO;
 import com.sv.audiomed.dao.ReporteFacturaAudiomedDAO;
 import com.sv.audiomed.dao.ReporteJasperUtilDAO;
 
@@ -27,11 +26,14 @@ import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.engine.xml.JRXmlLoader;
 import net.sf.jasperreports.view.JasperViewer;
 
-@WebServlet("/facturaAudiomedServlet")
-public class FacturaAudiomedServlet extends HttpServlet {
+@WebServlet("/creditoFiscalAudiomedServlet")
+public class CreditoFiscalAudiomedServlet extends HttpServlet {
 	
 	private static final long serialVersionUID = 1L;
 	
+	
+	ReporteJasperUtilDAO reporte;
+	ReporteFacturaAudiomedDAO reporteFacturaAudiomedDAO;
 	Connection cn;
 	
 	//Nuevo 
@@ -42,8 +44,9 @@ public class FacturaAudiomedServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 			
-		
+		reporte = new ReporteJasperUtilDAO();
 		cn = Conexion.conectar();
+		reporteFacturaAudiomedDAO = new ReporteFacturaAudiomedDAO();
 		
 		int idFactura=Integer.parseInt(req.getParameter("idFactura").toString());
 		byte[] pdfBytes;	
@@ -52,7 +55,7 @@ public class FacturaAudiomedServlet extends HttpServlet {
 		try {
 			
 			
-			jasperReport = (JasperReport)JRLoader.loadObjectFromFile("C:\\Users\\Hp\\JaspersoftWorkspace\\FacturaAudiomed\\FacturaAudiomedFormat.jasper");
+			jasperReport = (JasperReport)JRLoader.loadObjectFromFile("C:\\Users\\Hp\\JaspersoftWorkspace\\CreditoFiscalAudiomedFormat\\CreditoFiscalAudiomedFormat.jasper");
 			Map parameters = new HashMap();
 			parameters.put("id_factura", idFactura);
 			
@@ -67,7 +70,7 @@ public class FacturaAudiomedServlet extends HttpServlet {
 			 pdfBytes = JasperExportManager.exportReportToPdf(jasperPrint);
 		
 			resp.setContentType("application/pdf");
-			resp.setHeader("Content-Disposition", "inline;filename=" + "FacturaAudiomed" + ".pdf");
+			resp.setHeader("Content-Disposition", "inline;filename=" + "CreditoFiscalAudiomed" + ".pdf");
 			resp.getOutputStream().write(pdfBytes);
 			resp.flushBuffer();
 		}

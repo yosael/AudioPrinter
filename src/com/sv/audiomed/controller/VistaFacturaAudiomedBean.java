@@ -40,7 +40,7 @@ public class VistaFacturaAudiomedBean implements Serializable {
 	{
 		facturaAudiomed = new FacturaAudiomed();
 		detalles = new ArrayList<DetalleFacturaAudiomed>();
-		reporteFacturaAudiomedDAO = new ReporteFacturaAudiomedDAO();
+		
 	}
 	
 	
@@ -50,6 +50,8 @@ public class VistaFacturaAudiomedBean implements Serializable {
 		facturaDAO = new FacturaAudiomedDAO();
 		reporteJasperDAO = new  ReporteJasperUtilDAO();
 		idFactura = buscarFacturaAudiomedBean.getIdFacturaSelected();
+		reporteFacturaAudiomedDAO = new ReporteFacturaAudiomedDAO();
+		
 		System.out.println("ID Factura capturado"+idFactura);
 		cargarFactura();
 		

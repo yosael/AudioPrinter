@@ -13,7 +13,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.sv.audiomed.dao.Conexion;
-import com.sv.audiomed.dao.ReporteCreditoFiscalAudiomedDAO;
 import com.sv.audiomed.dao.ReporteFacturaAudiomedDAO;
 import com.sv.audiomed.dao.ReporteJasperUtilDAO;
 
@@ -27,10 +26,11 @@ import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.engine.xml.JRXmlLoader;
 import net.sf.jasperreports.view.JasperViewer;
 
-@WebServlet("/facturaAudiomedServlet")
-public class FacturaAudiomedServlet extends HttpServlet {
+@WebServlet("/creditoFiscalDoctorServlet")
+public class CreditoFiscalDoctorServlet extends HttpServlet {
 	
 	private static final long serialVersionUID = 1L;
+	
 	
 	Connection cn;
 	
@@ -42,7 +42,6 @@ public class FacturaAudiomedServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 			
-		
 		cn = Conexion.conectar();
 		
 		int idFactura=Integer.parseInt(req.getParameter("idFactura").toString());
@@ -52,22 +51,16 @@ public class FacturaAudiomedServlet extends HttpServlet {
 		try {
 			
 			
-			jasperReport = (JasperReport)JRLoader.loadObjectFromFile("C:\\Users\\Hp\\JaspersoftWorkspace\\FacturaAudiomed\\FacturaAudiomedFormat.jasper");
+			jasperReport = (JasperReport)JRLoader.loadObjectFromFile("C:\\Users\\Hp\\JaspersoftWorkspace\\CreditoFiscalDoctorFormat\\CreditoFiscalDoctorFormat.jasper");
 			Map parameters = new HashMap();
 			parameters.put("id_factura", idFactura);
 			
 			jasperPrint = JasperFillManager.fillReport(jasperReport,parameters,cn);
 			
-			/*jasperViewer = new JasperViewer(jasperPrint);
-			jasperViewer.setVisible(true);*/
-
-			//Aqui se llena el reporte (se ejecuta la consulta)
-			//JasperPrint print = new JasperPrint();
-			//print = JasperFillManager.fillReport(jasperReport, parameters, cn);
-			 pdfBytes = JasperExportManager.exportReportToPdf(jasperPrint);
+			pdfBytes = JasperExportManager.exportReportToPdf(jasperPrint);
 		
 			resp.setContentType("application/pdf");
-			resp.setHeader("Content-Disposition", "inline;filename=" + "FacturaAudiomed" + ".pdf");
+			resp.setHeader("Content-Disposition", "inline;filename=" + "CreditoFiscalDoctor" + ".pdf");
 			resp.getOutputStream().write(pdfBytes);
 			resp.flushBuffer();
 		}

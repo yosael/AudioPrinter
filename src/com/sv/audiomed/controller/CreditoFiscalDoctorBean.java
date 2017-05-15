@@ -11,33 +11,33 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
-import com.sv.audiomed.dao.CreditoFiscalAudiomedDAO;
-import com.sv.audiomed.model.CreditoFiscalAudiomed;
-import com.sv.audiomed.model.DetalleCreditoFiscalAudiomed;
+import com.sv.audiomed.dao.CreditoFiscalDoctorDAO;
+import com.sv.audiomed.model.CreditoFiscalDoctor;
+import com.sv.audiomed.model.DetalleCreditoFiscalDoctor;
 
 @ManagedBean
 @ViewScoped
-public class CreditoFiscalAudiomedBean implements Serializable {
+public class CreditoFiscalDoctorBean implements Serializable {
 	
 	
 	private static final long serialVersionUID = 1L;
 	
-	private CreditoFiscalAudiomedDAO facturaDAO;
-	private CreditoFiscalAudiomed factura;
-	private DetalleCreditoFiscalAudiomed detalle;
-	private List<DetalleCreditoFiscalAudiomed> detalles;
+	private CreditoFiscalDoctorDAO facturaDAO;
+	private CreditoFiscalDoctor factura;
+	private DetalleCreditoFiscalDoctor detalle;
+	private List<DetalleCreditoFiscalDoctor> detalles;
 	private int idFactura;
 	private String tipoConcepto;
 	
-	public CreditoFiscalAudiomedBean()
+	public CreditoFiscalDoctorBean()
 	{
-		detalles = new ArrayList<DetalleCreditoFiscalAudiomed>();
+		detalles = new ArrayList<DetalleCreditoFiscalDoctor>();
 	}
 	
 	@PostConstruct
 	public void init()
 	{
-		facturaDAO = new CreditoFiscalAudiomedDAO();
+		facturaDAO = new CreditoFiscalDoctorDAO();
 		inicializarFactura();
 		inicializarDetalle();
 		
@@ -45,7 +45,7 @@ public class CreditoFiscalAudiomedBean implements Serializable {
 	
 	public void inicializarDetalle()
 	{
-		detalle = new DetalleCreditoFiscalAudiomed();
+		detalle = new DetalleCreditoFiscalDoctor();
 		detalle.setCantidad(1);
 		detalle.setVentasNoSujetas(0d);
 		detalle.setVentasExentas(0d);
@@ -56,7 +56,7 @@ public class CreditoFiscalAudiomedBean implements Serializable {
 	public void inicializarFactura()
 	{
 		
-		factura = new CreditoFiscalAudiomed();
+		factura = new CreditoFiscalDoctor();
 		factura.setFecha(new Date());
 		factura.setSumaNoSujetas(0d);
 		factura.setSumaVentasExentas(0d);
@@ -85,7 +85,7 @@ public class CreditoFiscalAudiomedBean implements Serializable {
 			if(idFactura==0)
 				return "";
 			else
-				return "buscarCreditoFiscalAudiomed.xhtml?faces-redirect=true";//return "vistafactura.xhtml?faces-redirect=true&idFactura="+idFactura+"";
+				return "buscarCreditoFiscalDoctor.xhtml?faces-redirect=true";//return "vistafactura.xhtml?faces-redirect=true&idFactura="+idFactura+"";
 			
 		} catch (Exception e) {
 				
@@ -214,7 +214,7 @@ public class CreditoFiscalAudiomedBean implements Serializable {
 		return true;
 	}
 	
-	public void quitarConceptoAplicado(DetalleCreditoFiscalAudiomed detalle)
+	public void quitarConceptoAplicado(DetalleCreditoFiscalDoctor detalle)
 	{
 		double monto =0f;
 		monto=detalle.getCantidad()*detalle.getPrecioUnitario();
@@ -261,7 +261,7 @@ public class CreditoFiscalAudiomedBean implements Serializable {
 		factura.setVentaTotal(subtotal+ivaRetenido);
 	}
 	
-	public void quitarDetalle(DetalleCreditoFiscalAudiomed detalle)
+	public void quitarDetalle(DetalleCreditoFiscalDoctor detalle)
 	{
 		quitarConceptoAplicado(detalle);
 		actualizarTotales();
@@ -272,27 +272,27 @@ public class CreditoFiscalAudiomedBean implements Serializable {
 		return new Long(Math.round(num*100))/100.0;
 	}
 
-	public CreditoFiscalAudiomed getFactura() {
+	public CreditoFiscalDoctor getFactura() {
 		return factura;
 	}
 
-	public void setFactura(CreditoFiscalAudiomed factura) {
+	public void setFactura(CreditoFiscalDoctor factura) {
 		this.factura = factura;
 	}
 
-	public DetalleCreditoFiscalAudiomed getDetalle() {
+	public DetalleCreditoFiscalDoctor getDetalle() {
 		return detalle;
 	}
 
-	public void setDetalle(DetalleCreditoFiscalAudiomed detalle) {
+	public void setDetalle(DetalleCreditoFiscalDoctor detalle) {
 		this.detalle = detalle;
 	}
 
-	public List<DetalleCreditoFiscalAudiomed> getDetalles() {
+	public List<DetalleCreditoFiscalDoctor> getDetalles() {
 		return detalles;
 	}
 
-	public void setDetalles(List<DetalleCreditoFiscalAudiomed> detalles) {
+	public void setDetalles(List<DetalleCreditoFiscalDoctor> detalles) {
 		this.detalles = detalles;
 	}
 

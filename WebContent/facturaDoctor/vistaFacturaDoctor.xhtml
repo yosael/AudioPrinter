@@ -6,15 +6,15 @@
       xmlns:p="http://primefaces.org/ui"> 
 
 <h:head>
-	<title>Credito Fiscal Audiomed</title>
-	<link rel="stylesheet" type="text/css" href="../css/estilos.css" media="screean" />
+	<title>Factura Audiomed</title>
+	<link rel="stylesheet" type="text/css" href="css/estilos.css" media="screean" />
 </h:head>
 	<!-- <f:metadata>
-		<f:viewParam name="idFactura" value="#{vistaCreditoFiscalAudiomedBean.idFactura}" />
+		<f:viewParam name="idFactura" value="#{vistaFacturaDoctorBean.idFactura}" />
 	</f:metadata> --> 
 	 
 	 <f:metadata>
-           <f:viewParam name="idFactura" value="#{vistaCreditoFiscalAudiomedBean.idFactura}"/>
+           <f:viewParam name="idFactura" value="#{vistaFacturaDoctorBean.idFactura}"/>
        </f:metadata>
 <body> 
 
@@ -26,7 +26,7 @@
 					<p:spacer width="400" height="90" ></p:spacer>
 					<h:panelGrid columns="1" >
 						<p:outputLabel value="FACTURA" ></p:outputLabel>
-						<p:outputLabel style="color:red" value="#{'No '}#{vistaCreditoFiscalAudiomedBean.factura.codigoFactura}" ></p:outputLabel>
+						<p:outputLabel style="color:red" value="#{'No '}#{vistaFacturaDoctorBean.facturaDoctor.codigoFactura}" ></p:outputLabel>
 					</h:panelGrid>
 			</h:panelGrid>
 			
@@ -34,42 +34,26 @@
 
 				<h:panelGrid columns="3" >
 					<h:panelGrid columns="2" >
-						<p:outputLabel value="Senor: " styleClass="negrita" />
-						<p:outputLabel value="#{vistaCreditoFiscalAudiomedBean.factura.nombreCliente}" />
+						<p:outputLabel value="CLIENTE: " />
+						<p:outputLabel value="#{vistaFacturaDoctorBean.facturaDoctor.nombreCliente}" />
 						
-						<p:outputLabel value="Direccion: " styleClass="negrita" />
-						<p:outputLabel value="#{vistaCreditoFiscalAudiomedBean.factura.direccionCliente}" />
-						
-						<p:outputLabel value="Nota de Remision No: " />
-						<p:outputLabel value="#{vistaCreditoFiscalAudiomedBean.factura.notaNumEmision}" />
-						
-						<p:outputLabel value="Fecha de Remision No: " />
-						<p:outputLabel value="#{vistaCreditoFiscalAudiomedBean.factura.fechaNotaEmision}" />
-						
+						<p:outputLabel value="DIRECCION: " />
+						<p:outputLabel value="#{vistaFacturaDoctorBean.facturaDoctor.direccionCliente}" />
 					</h:panelGrid>
 					<p:spacer width="190" height="0" ></p:spacer>
 					<h:panelGrid columns="2" >
-						<p:outputLabel value="Fecha: " />
-						<p:outputLabel value="#{vistaCreditoFiscalAudiomedBean.factura.fecha}" />
-						
-						<p:outputLabel value="Dui/Nit: " />
-						<p:outputLabel value="#{vistaCreditoFiscalAudiomedBean.factura.docCliente}" />
-						
-						<p:outputLabel value="Registro: " />
-						<p:outputLabel value="#{vistaCreditoFiscalAudiomedBean.factura.registro}" />
-						
-						<p:outputLabel value="Giro: " />
-						<p:outputLabel value="#{vistaCreditoFiscalAudiomedBean.factura.giro}" />
-						
-						<p:outputLabel value="Condicion de pago: " />
-						<p:outputLabel value="#{vistaCreditoFiscalAudiomedBean.factura.condicionPago}" />
-						
+						<p:outputLabel value="FECHA:" />
+						<p:outputLabel value="#{vistaFacturaDoctorBean.facturaDoctor.fecha}" />
+						<p:outputLabel value="DUI/NIT: " />
+						<p:outputLabel value="#{vistaFacturaDoctorBean.facturaDoctor.docCliente}" />
+						<p:outputLabel value="VTA A ACTA DE: " />
+						<p:outputLabel value="#{vistaFacturaDoctorBean.facturaDoctor.vtaActa}" />	
 					</h:panelGrid> 
 				</h:panelGrid>
 
 			</h:panelGrid>
 			
-			<p:dataTable id="tbDetalles" value="#{vistaCreditoFiscalAudiomedBean.detalles}" var="fac" style="margin:0;" >
+			<p:dataTable id="tbDetalles" value="#{vistaFacturaDoctorBean.detalles}" var="fac" style="margin:0;" >
 				<p:column  headerText="Cantidad" style="max-width:75px" >
 					<p:outputLabel value="#{fac.cantidad}" />
 				</p:column>
@@ -100,7 +84,7 @@
 			<p:panelGrid columns="2" >
 				
 				<h:panelGrid columns="2">
-					<p:outputLabel value="#{vistaCreditoFiscalAudiomedBean.factura.letrasMonto}" ></p:outputLabel>
+					<p:outputLabel value="#{vistaFacturaDoctorBean.facturaDoctor.letrasMonto}" ></p:outputLabel>
 					<p:spacer width="400" height="2" ></p:spacer>
 				</h:panelGrid>
 					
@@ -110,37 +94,37 @@
 					<h:panelGrid columns="7"  >
 						<p:outputLabel value="Sumas: " style="max-width:400px;" />
 						<p:spacer width="110" height="0" ></p:spacer>
-						<p:outputLabel value="#{vistaCreditoFiscalAudiomedBean.factura.sumaNoSujetas}" style="max-width:125px" />
+						<p:outputLabel value="#{vistaFacturaDoctorBean.facturaDoctor.sumaNoSujetas}" style="max-width:125px" />
 						<p:spacer width="40" height="0" ></p:spacer>
-						<p:outputLabel value="#{vistaCreditoFiscalAudiomedBean.factura.sumaVentasExentas}" style="max-width:85px" />
+						<p:outputLabel value="#{vistaFacturaDoctorBean.facturaDoctor.sumaVentasExentas}" style="max-width:85px" />
 						<p:spacer width="50" height="0" ></p:spacer>
-						<p:outputLabel value="#{vistaCreditoFiscalAudiomedBean.factura.sumaVentasGravadas}" style="max-width:95px" />
+						<p:outputLabel value="#{vistaFacturaDoctorBean.facturaDoctor.sumaVentasGravadas}" style="max-width:95px" />
 					</h:panelGrid>
 					
 					<h:panelGrid columns="4" >
 						<p:outputLabel value="Ventas Extentas: " style="max-width:240px;" />
 						<p:spacer width="180" height="0" ></p:spacer>
-						<p:outputLabel value="#{vistaCreditoFiscalAudiomedBean.factura.ventasExentas}" />
+						<p:outputLabel value="#{vistaFacturaDoctorBean.facturaDoctor.ventasExentas}" />
 						<p:spacer width="25" height="0" ></p:spacer>
 						
 						<p:outputLabel value="Ventas No Sujetas: " style="max-width:220px" />
 						<p:spacer width="80" height="0" ></p:spacer>
-						<p:outputLabel value="#{vistaCreditoFiscalAudiomedBean.factura.ventasNoSujetas}" />
+						<p:outputLabel value="#{vistaFacturaDoctorBean.facturaDoctor.ventasNoSujetas}" />
 						<p:spacer width="5" height="0" ></p:spacer>
 						
 						<p:outputLabel value="Ventas Sub-total: " style="max-width:220px" />
 						<p:spacer width="70" height="0" ></p:spacer>
-						<p:outputLabel value="#{vistaCreditoFiscalAudiomedBean.factura.subtotal}" />
+						<p:outputLabel value="#{vistaFacturaDoctorBean.facturaDoctor.subtotal}" />
 						<p:spacer width="5" height="0" ></p:spacer>
 						
 						<p:outputLabel value="IVA Retenido" style="max-width:220px" />
 						<p:spacer width="70" height="0" ></p:spacer>
-						<p:outputLabel value="#{vistaCreditoFiscalAudiomedBean.factura.ivaRetenido}" />
+						<p:outputLabel value="#{vistaFacturaDoctorBean.facturaDoctor.ivaRetenido}" />
 						<p:spacer width="5" height="0" ></p:spacer>
 						
 						<p:outputLabel value="VENTA TOTAL " style="max-width:220px" />
 						<p:spacer width="70" height="0" ></p:spacer>
-						<p:outputLabel value="#{vistaCreditoFiscalAudiomedBean.factura.ventaTotal}" />
+						<p:outputLabel value="#{vistaFacturaDoctorBean.facturaDoctor.ventaTotal}" />
 						<p:spacer width="5" height="0" ></p:spacer>
 						
 					</h:panelGrid>
@@ -152,9 +136,9 @@
 			<h:panelGroup style="margin:0 auto;"  >
 				<p:link  href="../seleccionarFormato.xhtml" tyle="button" >Inicio</p:link>
 				<p:spacer width="20" ></p:spacer>
-				<p:commandButton value="Buscar facturas" action="buscarCreditoFiscalAudiomed?faces-redirect=true" ></p:commandButton>
+				<p:commandButton value="Buscar facturas" action="buscarFacturaDoctor?faces-redirect=true" ></p:commandButton>
 				<p:commandButton value="Editar" ></p:commandButton>
-				<p:commandButton onclick="window.open('../creditoFiscalAudiomedServlet?idFactura=#{vistaCreditoFiscalAudiomedBean.idFactura}','','')" target="_black" value="Imprimir" ajax="false" ></p:commandButton>
+				<p:commandButton onclick="window.open('../facturaDoctorServlet?idFactura=#{vistaFacturaDoctorBean.idFactura}','','')" target="_black" value="Imprimir" ajax="false" ></p:commandButton>
 			</h:panelGroup>
 			
 		</p:panelGrid>
