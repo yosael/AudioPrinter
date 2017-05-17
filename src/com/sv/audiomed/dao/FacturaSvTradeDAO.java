@@ -9,21 +9,23 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.sv.audiomed.model.CreditoFiscalAudiomed;
-import com.sv.audiomed.model.DetalleCreditoFiscalAudiomed;
 import com.sv.audiomed.model.DetalleFacturaAudiomed;
+import com.sv.audiomed.model.DetalleFacturaSvTrade;
 import com.sv.audiomed.model.FacturaAudiomed;
+import com.sv.audiomed.model.FacturaSvTrade;
 
-public class CreditoFiscalAudiomedDAO {
+public class FacturaSvTradeDAO {
 	
-private Connection cx;
 	
-	public CreditoFiscalAudiomedDAO()
+	private Connection cx;
+	
+	public FacturaSvTradeDAO()
 	{
 		cx = Conexion.conectar();
 	}
 	
-	public int agregarFacturaDetalle(CreditoFiscalAudiomed factura,List<DetalleCreditoFiscalAudiomed> detalles) throws SQLException
+	
+	public int agregarFacturaDetalle(FacturaSvTrade factura,List<DetalleFacturaSvTrade> detalles) throws SQLException
 	{
 		int idFactura=0;
 		System.out.println("Entro a registro factura DAO");
@@ -33,7 +35,7 @@ private Connection cx;
 			ResultSet rsIdFactura;
 			
 			
-			String sql ="insert into creditofiscal_audiomed (codigo_factura,nombre_cliente,direccion_cliente,fecha,doc_cliente,registro,nota_num_emision,giro,fecha_nota_emision,condicion_pago,suma_nosujetas,suma_ventas_exentas,suma_ventas_gravadas,ventas_exentas,ventas_nosujetas,subtotal,iva_retenido,venta_total,monto_letras) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+			String sql ="insert into factura_svtrade(codigo_factura,nombre_cliente,direccion_cliente,fecha,doc_cliente,condicion_pago,suma_nosujetas,suma_ventas_exentas,suma_ventas_gravadas,ventas_exentas,ventas_nosujetas,subtotal,iva_retenido,venta_total,monto_letras) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 			PreparedStatement preparedStatement = cx.prepareStatement(sql,PreparedStatement.RETURN_GENERATED_KEYS);
 			preparedStatement.setString(1, factura.getCodigoFactura());
 			preparedStatement.setString(2, factura.getNombreCliente());
@@ -43,24 +45,16 @@ private Connection cx;
 			preparedStatement.setDate(4, sqlDate);
 			
 			preparedStatement.setString(5,factura.getDocCliente()!=null?factura.getDocCliente():" ");
-			preparedStatement.setString(6, factura.getRegistro()!=null?factura.getRegistro():" ");
-			preparedStatement.setString(7, factura.getNotaNumEmision()!=null?factura.getNotaNumEmision():" ");
-			preparedStatement.setString(8, factura.getGiro()!=null?factura.getGiro():" ");
-			
-			Date sqlDate2 = new Date(factura.getFechaNotaEmision().getTime());
-			preparedStatement.setDate(9, sqlDate2);
-			
-			preparedStatement.setString(10, factura.getCondicionPago()!=null?factura.getCondicionPago():" ");
-			
-			preparedStatement.setDouble(11, factura.getSumaNoSujetas()!=null?factura.getSumaNoSujetas():0d);
-			preparedStatement.setDouble(12, factura.getSumaVentasExentas()!=null?factura.getSumaVentasExentas():0d);
-			preparedStatement.setDouble(13, factura.getSumaVentasGravadas()!=null?factura.getSumaVentasGravadas():0d);
-			preparedStatement.setDouble(14,factura.getVentasExentas()!=null?factura.getVentasExentas():0d);
-			preparedStatement.setDouble(15, factura.getVentasNoSujetas()!=null?factura.getVentasNoSujetas():0d);
-			preparedStatement.setDouble(16, factura.getSubtotal()!=null?factura.getSubtotal():0d);
-			preparedStatement.setDouble(17, factura.getIvaRetenido()!=null?factura.getIvaRetenido():0d);
-			preparedStatement.setDouble(18, factura.getVentaTotal()!=null?factura.getVentaTotal():0d);
-			preparedStatement.setString(19, factura.getLetrasMonto()!=null?factura.getLetrasMonto():" ");
+			preparedStatement.setString(6, factura.getCondicionPago()!=null?factura.getCondicionPago():" ");
+			preparedStatement.setDouble(7, factura.getSumaNoSujetas()!=null?factura.getSumaNoSujetas():0f);
+			preparedStatement.setDouble(8, factura.getSumaVentasExentas()!=null?factura.getSumaVentasExentas():0f);
+			preparedStatement.setDouble(9, factura.getSumaVentasGravadas()!=null?factura.getSumaVentasGravadas():0f);
+			preparedStatement.setDouble(10,factura.getVentasExentas()!=null?factura.getVentasExentas():0f);
+			preparedStatement.setDouble(11, factura.getVentasNoSujetas()!=null?factura.getVentasNoSujetas():0f);
+			preparedStatement.setDouble(12, factura.getSubtotal()!=null?factura.getSubtotal():0f);
+			preparedStatement.setDouble(13, factura.getIvaRetenido()!=null?factura.getIvaRetenido():0f);
+			preparedStatement.setDouble(14, factura.getVentaTotal()!=null?factura.getVentaTotal():0f);
+			preparedStatement.setString(15, factura.getLetrasMonto()!=null?factura.getLetrasMonto():" ");
 			
 			preparedStatement.executeUpdate();
 			
@@ -78,18 +72,18 @@ private Connection cx;
 			if(detalles.size()>0 && idFactura>0)
 			{
 				System.out.println("Entro al detalle");
-				for(DetalleCreditoFiscalAudiomed detalle:detalles)
+				for(DetalleFacturaSvTrade detalle:detalles)
 				{
 					
-					String sqlDetalle ="insert into detalle_creditofiscal_audiomed(id_factura,cantidad,descripciones,precio_unitario,ventas_nosujetas,ventas_exentas,ventas_gravadas) values(?,?,?,?,?,?,?)";
+					String sqlDetalle ="Insert into detalle_factura_svtrade(id_factura,cantidad,descripciones,precio_unitario,ventas_nosujetas,ventas_exentas,ventas_gravadas) values(?,?,?,?,?,?,?)";
 					PreparedStatement preparedStatementDetalle = cx.prepareStatement(sqlDetalle);
 					preparedStatementDetalle.setInt(1, idFactura);
 					preparedStatementDetalle.setInt(2,detalle.getCantidad());
 					preparedStatementDetalle.setString(3, detalle.getDescripciones());
 					preparedStatementDetalle.setDouble(4, detalle.getPrecioUnitario());
-					preparedStatementDetalle.setDouble(5,detalle.getVentasNoSujetas()!=null?detalle.getVentasNoSujetas():0d);
-					preparedStatementDetalle.setDouble(6, detalle.getVentasExentas()!=null?detalle.getVentasExentas():0d);
-					preparedStatementDetalle.setDouble(7, detalle.getVentasGravadas()!=null?detalle.getVentasGravadas():0d);
+					preparedStatementDetalle.setDouble(5,detalle.getVentasNoSujetas()!=null?detalle.getVentasNoSujetas():0f);
+					preparedStatementDetalle.setDouble(6, detalle.getVentasExentas()!=null?detalle.getVentasExentas():0f);
+					preparedStatementDetalle.setDouble(7, detalle.getVentasGravadas()!=null?detalle.getVentasGravadas():0f);
 					
 					preparedStatementDetalle.executeUpdate();
 					preparedStatementDetalle.close();
@@ -117,32 +111,26 @@ private Connection cx;
 		
 	}
 	
-	
-	public List<CreditoFiscalAudiomed> buscarTodos()
+	public List<FacturaSvTrade> buscarTodos()
 	{
-		List<CreditoFiscalAudiomed> lista = new ArrayList<CreditoFiscalAudiomed>();
+		List<FacturaSvTrade> lista = new ArrayList<FacturaSvTrade>();
 		
 		try {
 			
-			String sql="SELECT * FROM creditofiscal_audiomed order by id_factura desc";
+			String sql="SELECT * FROM factura_svtrade order by id_factura desc";
 			Statement st = cx.createStatement();
 			ResultSet result = st.executeQuery(sql);
 			
 			while(result.next())
 			{
-				CreditoFiscalAudiomed factura = new CreditoFiscalAudiomed();
+				FacturaSvTrade factura = new FacturaSvTrade();
 				factura.setIdFactura(result.getInt("id_factura"));
 				factura.setCodigoFactura(result.getString("codigo_factura"));
 				factura.setNombreCliente(result.getString("nombre_cliente"));
 				factura.setDireccionCliente(result.getString("direccion_cliente"));
 				factura.setFecha(result.getDate("fecha"));
 				factura.setDocCliente(result.getString("doc_cliente"));
-				factura.setRegistro(result.getString("registro"));
-				factura.setNotaNumEmision(result.getString("nota_num_emision"));
-				factura.setGiro(result.getString("giro"));
-				factura.setFechaNotaEmision(result.getDate("fecha_nota_emision"));
 				factura.setCondicionPago(result.getString("condicion_pago"));
-				
 				factura.setSumaNoSujetas(result.getDouble("suma_nosujetas"));
 				factura.setSumaVentasExentas(result.getDouble("suma_ventas_exentas"));
 				factura.setSumaVentasGravadas(result.getDouble("suma_ventas_gravadas"));
@@ -165,14 +153,14 @@ private Connection cx;
 	}
 	
 	
-	public CreditoFiscalAudiomed buscarFacturaPorId(int idFactura)
+	public FacturaSvTrade buscarFacturaPorId(int idFactura)
 	{
 		
-		CreditoFiscalAudiomed factura = new CreditoFiscalAudiomed();
+		FacturaSvTrade factura = new FacturaSvTrade();
 		
 		try {
 			
-			String sql="select * from creditofiscal_audiomed where id_factura=?";
+			String sql="select * from factura_svtrade where id_factura=?";
 			PreparedStatement preparedStatement = cx.prepareStatement(sql);
 			preparedStatement.setInt(1, idFactura);
 			ResultSet rs = preparedStatement.executeQuery();
@@ -185,13 +173,7 @@ private Connection cx;
 				factura.setDireccionCliente(rs.getString("direccion_cliente"));
 				factura.setFecha(rs.getDate("fecha"));
 				factura.setDocCliente(rs.getString("doc_cliente"));
-				
-				factura.setRegistro(rs.getString("registro"));
-				factura.setNotaNumEmision(rs.getString("nota_num_emision"));
-				factura.setGiro(rs.getString("giro"));
-				factura.setFechaNotaEmision(rs.getDate("fecha_nota_emision"));
 				factura.setCondicionPago(rs.getString("condicion_pago"));
-				
 				factura.setSumaNoSujetas(rs.getDouble("suma_nosujetas"));
 				factura.setSumaVentasExentas(rs.getDouble("suma_ventas_exentas"));
 				factura.setSumaVentasGravadas(rs.getDouble("suma_ventas_gravadas"));
@@ -217,14 +199,13 @@ private Connection cx;
 		return factura;
 	}
 	
-	
-	public List<DetalleCreditoFiscalAudiomed> buscarDetallesFactura(int idFactura)
+	public List<DetalleFacturaSvTrade> buscarDetallesFactura(int idFactura)
 	{
-		List<DetalleCreditoFiscalAudiomed> detalles = new ArrayList<DetalleCreditoFiscalAudiomed>();
+		List<DetalleFacturaSvTrade> detalles = new ArrayList<DetalleFacturaSvTrade>();
 		
 		try {
 			
-			String sql="select * from detalle_creditofiscal_audiomed where id_factura=?";
+			String sql="select * from detalle_factura_svtrade where id_factura=?";
 			PreparedStatement preparedStatement = cx.prepareStatement(sql);
 			preparedStatement.setInt(1, idFactura);
 			ResultSet rs = preparedStatement.executeQuery();
@@ -232,7 +213,7 @@ private Connection cx;
 			while(rs.next())
 			{
 				
-				DetalleCreditoFiscalAudiomed detalle = new DetalleCreditoFiscalAudiomed();
+				DetalleFacturaSvTrade detalle = new DetalleFacturaSvTrade();
 				detalle.setIdDetalle(rs.getInt("id_detalle"));
 				detalle.setIdFactura(rs.getInt("id_factura"));
 				detalle.setCantidad(rs.getInt("cantidad"));

@@ -6,17 +6,17 @@
       xmlns:p="http://primefaces.org/ui"> 
 
 <h:head>
-	<title>Factura Doctor</title>
+	<title>Factura Audiomed</title>
 	<link rel="stylesheet" type="text/css" href="css/estilos.css" media="screean" />
 </h:head>
 	<!-- <f:metadata>
-		<f:viewParam name="idFactura" value="#{vistaFacturaDoctorBean.idFactura}" />
+		<f:viewParam name="idFactura" value="#{vistaFacturaSvTradeBean.idFactura}" />
 	</f:metadata> --> 
 	 
 	 <f:metadata>
-           <f:viewParam name="idFactura" value="#{vistaFacturaDoctorBean.idFactura}"/>
+           <f:viewParam name="idFactura" value="#{vistaFacturaSvTradeBean.idFactura}"/>
        </f:metadata>
-<body  > 
+<body> 
 
 	<h:form id="form1" >
 		<p:panelGrid columns="1" style="max-width:900px;margin:0 auto" styleClass="borderRd" >
@@ -26,33 +26,34 @@
 					<p:spacer width="400" height="90" ></p:spacer>
 					<h:panelGrid columns="1" >
 						<p:outputLabel value="FACTURA" ></p:outputLabel>
-						<p:outputLabel style="color:red" value="#{'No '}#{vistaFacturaDoctorBean.facturaDoctor.codigoFactura}" ></p:outputLabel>
+						<p:outputLabel style="color:red" value="#{'No '}#{vistaFacturaSvTradeBean.factura.codigoFactura}" ></p:outputLabel>
 					</h:panelGrid>
 			</h:panelGrid>
 			
 			<h:panelGrid columns="5" >
+
 				<h:panelGrid columns="3" >
 					<h:panelGrid columns="2" >
 						<p:outputLabel value="CLIENTE: " />
-						<p:outputLabel value="#{vistaFacturaDoctorBean.facturaDoctor.nombreCliente}" />
+						<p:outputLabel value="#{vistaFacturaSvTradeBean.factura.nombreCliente}" />
 						
 						<p:outputLabel value="DIRECCION: " />
-						<p:outputLabel value="#{vistaFacturaDoctorBean.facturaDoctor.direccionCliente}" />
+						<p:outputLabel value="#{vistaFacturaSvTradeBean.factura.direccionCliente}" />
 					</h:panelGrid>
 					<p:spacer width="190" height="0" ></p:spacer>
 					<h:panelGrid columns="2" >
 						<p:outputLabel value="FECHA:" />
-						<p:outputLabel value="#{vistaFacturaDoctorBean.facturaDoctor.fecha}" />
+						<p:outputLabel value="#{vistaFacturaSvTradeBean.factura.fecha}" />
 						<p:outputLabel value="DUI/NIT: " />
-						<p:outputLabel value="#{vistaFacturaDoctorBean.facturaDoctor.docCliente}" />
-						<p:outputLabel value="VTA A ACTA DE: " />
-						<p:outputLabel value="#{vistaFacturaDoctorBean.facturaDoctor.vtaActa}" />	
+						<p:outputLabel value="#{vistaFacturaSvTradeBean.factura.docCliente}" />
+						<p:outputLabel value="" />
+						<p:outputLabel value="" />	
 					</h:panelGrid> 
 				</h:panelGrid>
 
 			</h:panelGrid>
 			
-			<p:dataTable id="tbDetalles" value="#{vistaFacturaDoctorBean.detalles}" var="fac" style="margin:0;" >
+			<p:dataTable id="tbDetalles" value="#{vistaFacturaSvTradeBean.detalles}" var="fac" style="margin:0;" >
 				<p:column  headerText="Cantidad" style="max-width:75px" >
 					<p:outputLabel value="#{fac.cantidad}" />
 				</p:column>
@@ -83,7 +84,7 @@
 			<p:panelGrid columns="2" >
 				
 				<h:panelGrid columns="2">
-					<p:inputTextarea value="#{vistaFacturaDoctorBean.facturaDoctor.letrasMonto}" rows="7" cols="42" readonly="true" ></p:inputTextarea>
+					<p:inputTextarea value="#{vistaFacturaSvTradeBean.factura.letrasMonto}" rows="7" cols="42" readonly="true" ></p:inputTextarea>
 				</h:panelGrid>
 					
 				
@@ -92,37 +93,37 @@
 					<h:panelGrid columns="7"  >
 						<p:outputLabel value="Sumas: " style="max-width:400px;" />
 						<p:spacer width="110" height="0" ></p:spacer>
-						<p:outputLabel value="#{vistaFacturaDoctorBean.facturaDoctor.sumaNoSujetas}" style="max-width:125px" />
+						<p:outputLabel value="#{vistaFacturaSvTradeBean.factura.sumaNoSujetas}" style="max-width:125px" />
 						<p:spacer width="40" height="0" ></p:spacer>
-						<p:outputLabel value="#{vistaFacturaDoctorBean.facturaDoctor.sumaVentasExentas}" style="max-width:85px" />
+						<p:outputLabel value="#{vistaFacturaSvTradeBean.factura.sumaVentasExentas}" style="max-width:85px" />
 						<p:spacer width="50" height="0" ></p:spacer>
-						<p:outputLabel value="#{vistaFacturaDoctorBean.facturaDoctor.sumaVentasGravadas}" style="max-width:95px" />
+						<p:outputLabel value="#{vistaFacturaSvTradeBean.factura.sumaVentasGravadas}" style="max-width:95px" />
 					</h:panelGrid>
 					
 					<h:panelGrid columns="4" >
 						<p:outputLabel value="Ventas Extentas: " style="max-width:240px;" />
 						<p:spacer width="180" height="0" ></p:spacer>
-						<p:outputLabel value="#{vistaFacturaDoctorBean.facturaDoctor.ventasExentas}" />
+						<p:outputLabel value="#{vistaFacturaSvTradeBean.factura.ventasExentas}" />
 						<p:spacer width="25" height="0" ></p:spacer>
 						
 						<p:outputLabel value="Ventas No Sujetas: " style="max-width:220px" />
 						<p:spacer width="80" height="0" ></p:spacer>
-						<p:outputLabel value="#{vistaFacturaDoctorBean.facturaDoctor.ventasNoSujetas}" />
+						<p:outputLabel value="#{vistaFacturaSvTradeBean.factura.ventasNoSujetas}" />
 						<p:spacer width="5" height="0" ></p:spacer>
 						
 						<p:outputLabel value="Ventas Sub-total: " style="max-width:220px" />
 						<p:spacer width="70" height="0" ></p:spacer>
-						<p:outputLabel value="#{vistaFacturaDoctorBean.facturaDoctor.subtotal}" />
+						<p:outputLabel value="#{vistaFacturaSvTradeBean.factura.subtotal}" />
 						<p:spacer width="5" height="0" ></p:spacer>
 						
 						<p:outputLabel value="IVA Retenido" style="max-width:220px" />
 						<p:spacer width="70" height="0" ></p:spacer>
-						<p:outputLabel value="#{vistaFacturaDoctorBean.facturaDoctor.ivaRetenido}" />
+						<p:outputLabel value="#{vistaFacturaSvTradeBean.factura.ivaRetenido}" />
 						<p:spacer width="5" height="0" ></p:spacer>
 						
 						<p:outputLabel value="VENTA TOTAL " style="max-width:220px" />
 						<p:spacer width="70" height="0" ></p:spacer>
-						<p:outputLabel value="#{vistaFacturaDoctorBean.facturaDoctor.ventaTotal}" />
+						<p:outputLabel value="#{vistaFacturaSvTradeBean.factura.ventaTotal}" />
 						<p:spacer width="5" height="0" ></p:spacer>
 						
 					</h:panelGrid>
@@ -134,9 +135,9 @@
 			<h:panelGroup style="margin:0 auto;"  >
 				<p:link  href="../seleccionarFormato.xhtml" tyle="button" >Inicio</p:link>
 				<p:spacer width="20" ></p:spacer>
-				<p:commandButton value="Buscar facturas" action="buscarFacturaDoctor?faces-redirect=true" ></p:commandButton>
+				<p:commandButton value="Buscar facturas" action="buscarFacturaSvTrade?faces-redirect=true" ></p:commandButton>
 				<p:commandButton value="Editar" ></p:commandButton>
-				<p:commandButton onclick="window.open('../facturaDoctorServlet?idFactura=#{vistaFacturaDoctorBean.idFactura}','','')" target="_black" value="Imprimir" ajax="false" ></p:commandButton>
+				<p:commandButton onclick="window.open('../FacturaSvTradeServlet?idFactura=#{vistaFacturaSvTradeBean.idFactura}','','')" target="_black" value="Imprimir" ajax="false" ></p:commandButton>
 			</h:panelGroup>
 			
 		</p:panelGrid>
