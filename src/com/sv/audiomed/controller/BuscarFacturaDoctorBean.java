@@ -7,6 +7,7 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.persistence.PostLoad;
 
 import com.sv.audiomed.dao.FacturaDoctorDAO;
 import com.sv.audiomed.model.FacturaDoctor;
@@ -23,9 +24,14 @@ public class BuscarFacturaDoctorBean implements Serializable {
 	List<FacturaDoctor> facturas;
 	private int idFacturaSelected=0;
 	
+	public BuscarFacturaDoctorBean()
+	{
+		
+	}
 	
 	
-	@PostConstruct
+	
+	/*@PostConstruct
 	public void init()
 	{
 		
@@ -33,6 +39,14 @@ public class BuscarFacturaDoctorBean implements Serializable {
 		facturas = new ArrayList<FacturaDoctor>();
 		buscarFactura();
 		
+	}*/
+	
+	public void iniciar()
+	{
+		System.out.println("Entro a iniciar");
+		facturaDoctorDAO = new FacturaDoctorDAO();
+		facturas = new ArrayList<FacturaDoctor>();
+		buscarFactura();
 	}
 	
 	public void buscarFactura()

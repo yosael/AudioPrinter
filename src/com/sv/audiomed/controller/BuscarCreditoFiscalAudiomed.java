@@ -23,9 +23,20 @@ public class BuscarCreditoFiscalAudiomed implements Serializable{
 	private int idFacturaSelected=0;
 	
 	
+	public BuscarCreditoFiscalAudiomed()
+	{
+		
+	}
 	
-	@PostConstruct
+	/*@PostConstruct
 	public void init()
+	{
+		facturaDAO = new CreditoFiscalAudiomedDAO();
+		facturas= new ArrayList<CreditoFiscalAudiomed>();
+		buscarFacturas();
+	}*/
+	
+	public void iniciar()
 	{
 		facturaDAO = new CreditoFiscalAudiomedDAO();
 		facturas= new ArrayList<CreditoFiscalAudiomed>();

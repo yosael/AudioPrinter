@@ -24,8 +24,12 @@ public class BuscarFacturaAudiomedBean implements Serializable {
 	private int idFacturaSelected=0;
 	
 	
+	public BuscarFacturaAudiomedBean()
+	{
+		
+	}
 	
-	@PostConstruct
+	/*@PostConstruct
 	public void init()
 	{
 		
@@ -33,6 +37,16 @@ public class BuscarFacturaAudiomedBean implements Serializable {
 		facturas = new ArrayList<FacturaAudiomed>();
 		buscarFactura();
 		
+	}*/
+	
+	public void iniciar()
+	{
+		
+		System.out.println("Entro a iniciar Factura Audiomed");
+		
+		facturaAudiomedDAO = new FacturaAudiomedDAO();
+		facturas = new ArrayList<FacturaAudiomed>();
+		buscarFactura();
 	}
 	
 	public void buscarFactura()

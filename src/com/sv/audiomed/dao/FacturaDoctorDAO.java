@@ -36,8 +36,8 @@ public class FacturaDoctorDAO {
 			Date sqlDate = new Date(factura.getFecha().getTime());
 			
 			preparedStatement.setDate(4, sqlDate);
-			preparedStatement.setString(5,factura.getDocCliente());
-			preparedStatement.setString(6, factura.getVtaCtaDe());
+			preparedStatement.setString(5,factura.getDocCliente()!=null?factura.getDocCliente():" ");
+			preparedStatement.setString(6, factura.getVtaCtaDe()!=null?factura.getVtaCtaDe():" ");
 			preparedStatement.setDouble(7, factura.getSumaNoSujetas());
 			preparedStatement.setDouble(8, factura.getSumaVentasExentas());
 			preparedStatement.setDouble(9, factura.getSumaVentasGravadas());

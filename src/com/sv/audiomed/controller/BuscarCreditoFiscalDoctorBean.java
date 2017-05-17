@@ -22,10 +22,21 @@ public class BuscarCreditoFiscalDoctorBean implements Serializable{
 	List<CreditoFiscalDoctor> facturas;
 	private int idFacturaSelected=0;
 	
+	public BuscarCreditoFiscalDoctorBean()
+	{
+		
+	}
 	
 	
-	@PostConstruct
+	/*@PostConstruct
 	public void init()
+	{
+		facturaDAO = new CreditoFiscalDoctorDAO();
+		facturas= new ArrayList<CreditoFiscalDoctor>();
+		buscarFacturas();
+	}*/
+	
+	public void iniciar()
 	{
 		facturaDAO = new CreditoFiscalDoctorDAO();
 		facturas= new ArrayList<CreditoFiscalDoctor>();
