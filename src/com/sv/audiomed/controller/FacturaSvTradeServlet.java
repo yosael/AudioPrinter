@@ -44,9 +44,10 @@ public class FacturaSvTradeServlet extends HttpServlet {
 		
 		try {
 			
+			String archivo=getServletContext().getRealPath("/reportes/FacturaSvTrade/FacturaSvTradeFormat.jasper");
 			
-			jasperReport = (JasperReport)JRLoader.loadObjectFromFile("C:\\Users\\Hp\\JaspersoftWorkspace\\FacturaSvTrade\\FacturaSvTradeFormat.jasper");
-			Map parameters = new HashMap();
+			jasperReport = (JasperReport)JRLoader.loadObjectFromFile(archivo);
+			Map<String, Object> parameters = new HashMap<String, Object>();
 			parameters.put("id_factura", idFactura);
 			
 			jasperPrint = JasperFillManager.fillReport(jasperReport,parameters,cn);

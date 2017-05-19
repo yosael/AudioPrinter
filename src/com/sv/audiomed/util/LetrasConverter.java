@@ -353,7 +353,7 @@ public class LetrasConverter {
 		
 		Double numAprox=moneyDecimal(numero);
 		
-		String letras;
+		String letras="";
 		int parteEntera=numAprox.intValue();
 		double parteDecimal=numAprox-parteEntera;
 		
@@ -369,7 +369,8 @@ public class LetrasConverter {
 			
 		}
 		
-		letras+=" dolares";
+		if(numero>0)
+			letras+=" dolares";
 		
 		return letras;
 	}

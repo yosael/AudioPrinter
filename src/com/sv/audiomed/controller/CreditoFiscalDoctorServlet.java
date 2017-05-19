@@ -1,6 +1,6 @@
 package com.sv.audiomed.controller;
 
-import java.io.File;
+
 import java.io.IOException;
 import java.sql.Connection;
 import java.util.HashMap;
@@ -13,17 +13,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.sv.audiomed.dao.Conexion;
-import com.sv.audiomed.dao.ReporteFacturaAudiomedDAO;
-import com.sv.audiomed.dao.ReporteJasperUtilDAO;
 
-import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
-import net.sf.jasperreports.engine.design.JasperDesign;
 import net.sf.jasperreports.engine.util.JRLoader;
-import net.sf.jasperreports.engine.xml.JRXmlLoader;
 import net.sf.jasperreports.view.JasperViewer;
 
 @WebServlet("/creditoFiscalDoctorServlet")
@@ -50,9 +45,10 @@ public class CreditoFiscalDoctorServlet extends HttpServlet {
 		
 		try {
 			
+			String archivo=getServletContext().getRealPath("/reportes/CreditoFiscalDoctor/CreditoFiscalDoctorFormat.jasper");
 			
-			jasperReport = (JasperReport)JRLoader.loadObjectFromFile("C:\\Users\\Hp\\JaspersoftWorkspace\\CreditoFiscalDoctorFormat\\CreditoFiscalDoctorFormat.jasper");
-			Map parameters = new HashMap();
+			jasperReport = (JasperReport)JRLoader.loadObjectFromFile(archivo);
+			Map<String, Object> parameters = new HashMap<String, Object>();
 			parameters.put("id_factura", idFactura);
 			
 			jasperPrint = JasperFillManager.fillReport(jasperReport,parameters,cn);

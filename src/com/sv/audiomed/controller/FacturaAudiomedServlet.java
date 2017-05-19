@@ -2,6 +2,8 @@ package com.sv.audiomed.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.sql.Connection;
 import java.util.HashMap;
 import java.util.Map;
@@ -51,9 +53,10 @@ public class FacturaAudiomedServlet extends HttpServlet {
 		
 		try {
 			
-			
-			jasperReport = (JasperReport)JRLoader.loadObjectFromFile("C:\\Users\\Hp\\JaspersoftWorkspace\\FacturaAudiomed\\FacturaAudiomedFormat.jasper");
-			Map parameters = new HashMap();
+					
+			String archivo=getServletContext().getRealPath("/reportes/FacturaAudiomed/FacturaAudiomedFormat.jasper");			
+			jasperReport = (JasperReport)JRLoader.loadObjectFromFile(archivo);
+			Map<String, Object> parameters = new HashMap<String, Object>();
 			parameters.put("id_factura", idFactura);
 			
 			jasperPrint = JasperFillManager.fillReport(jasperReport,parameters,cn);

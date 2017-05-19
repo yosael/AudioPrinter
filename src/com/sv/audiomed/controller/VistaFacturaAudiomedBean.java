@@ -1,7 +1,9 @@
 package com.sv.audiomed.controller;
 
 import java.io.Serializable;
+import java.sql.Connection;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -13,11 +15,18 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 
+import com.sv.audiomed.dao.Conexion;
 import com.sv.audiomed.dao.FacturaAudiomedDAO;
 import com.sv.audiomed.dao.ReporteFacturaAudiomedDAO;
 import com.sv.audiomed.dao.ReporteJasperUtilDAO;
 import com.sv.audiomed.model.DetalleFacturaAudiomed;
 import com.sv.audiomed.model.FacturaAudiomed;
+
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.util.JRLoader;
+import net.sf.jasperreports.view.JasperViewer;
 
 @ManagedBean(name = "vistaFacturaAudiomedBean")
 @ViewScoped
@@ -113,6 +122,33 @@ public class VistaFacturaAudiomedBean implements Serializable {
 		idFactura = new Integer(param.get("idFactura").toString());
 		
 		return idFactura;
+	}
+	
+	
+	public void imprimirViewer()
+	{
+		Connection cn;
+		cn = Conexion.conectar();
+		//Nuevo 
+		JasperReport jasperReport;
+		JasperPrint jasperPrint;
+		JasperViewer jasperViewer;
+		try {
+			
+			jasperReport = (JasperReport)JRLoader.loadObjectFromFile("C:\\Users\\Hp\\JaspersoftWorkspace\\FacturaAudiomed\\FacturaAudiomedFormat.jasper");
+			Map parameters = new HashMap();
+			parameters.put("id_factura", idFactura);
+			
+			jasperPrint = JasperFillManager.fillReport(jasperReport,parameters,cn);
+			
+			jasperViewer = new JasperViewer(jasperPrint);
+			jasperViewer.setVisible(true);
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 	}
 	
 

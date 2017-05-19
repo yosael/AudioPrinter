@@ -54,9 +54,10 @@ public class CreditoFiscalAudiomedServlet extends HttpServlet {
 		
 		try {
 			
+			String archivo=getServletContext().getRealPath("/reportes/CreditoFiscalAudiomed/CreditoFiscalAudiomedFormat.jasper");
 			
-			jasperReport = (JasperReport)JRLoader.loadObjectFromFile("C:\\Users\\Hp\\JaspersoftWorkspace\\CreditoFiscalAudiomedFormat\\CreditoFiscalAudiomedFormat.jasper");
-			Map parameters = new HashMap();
+			jasperReport = (JasperReport)JRLoader.loadObjectFromFile(archivo);
+			Map<String, Object> parameters = new HashMap<String, Object>();
 			parameters.put("id_factura", idFactura);
 			
 			jasperPrint = JasperFillManager.fillReport(jasperReport,parameters,cn);

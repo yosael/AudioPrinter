@@ -14,6 +14,7 @@ import javax.faces.context.FacesContext;
 import com.sv.audiomed.dao.CreditoFiscalAudiomedDAO;
 import com.sv.audiomed.model.CreditoFiscalAudiomed;
 import com.sv.audiomed.model.DetalleCreditoFiscalAudiomed;
+import com.sv.audiomed.util.LetrasConverter;
 
 @ManagedBean
 @ViewScoped
@@ -136,6 +137,7 @@ public class CreditoFiscalAudiomedBean implements Serializable {
 		
 		aplicarConcepto();
 		actualizarTotales();
+		convertirNumerosALetras();
 		detalles.add(detalle);
 		inicializarDetalle();
 		
@@ -265,7 +267,15 @@ public class CreditoFiscalAudiomedBean implements Serializable {
 	{
 		quitarConceptoAplicado(detalle);
 		actualizarTotales();
+		convertirNumerosALetras();
 		detalles.remove(detalle);
+	}
+	
+	public void convertirNumerosALetras()
+	{
+		LetrasConverter convertidor = new LetrasConverter();
+		String numeroLetras = convertidor.convertir(factura.getVentaTotal());
+		factura.setLetrasMonto(numeroLetras);
 	}
 	
 	public Double moneyDecimal(Double num) {

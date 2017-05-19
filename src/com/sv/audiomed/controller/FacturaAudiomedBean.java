@@ -1,8 +1,11 @@
 package com.sv.audiomed.controller;
 
+import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
@@ -10,11 +13,18 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
+import com.sv.audiomed.dao.Conexion;
 import com.sv.audiomed.dao.DetalleFacturaAudiomedDAO;
 import com.sv.audiomed.dao.FacturaAudiomedDAO;
 import com.sv.audiomed.model.DetalleFacturaAudiomed;
 import com.sv.audiomed.model.FacturaAudiomed;
 import com.sv.audiomed.util.LetrasConverter;
+
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.util.JRLoader;
+import net.sf.jasperreports.view.JasperViewer;
 
 @ManagedBean(name = "facturaAudiomedBean")
 @ViewScoped
@@ -287,6 +297,9 @@ public class FacturaAudiomedBean {
 		String numeroLetras = convertidor.convertir(facturaAudiomed.getVentaTotal());
 		facturaAudiomed.setLetrasMonto(numeroLetras);
 	}
+	
+	
+	
 	
 	
 	

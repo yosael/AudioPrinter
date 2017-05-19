@@ -13,6 +13,7 @@ import javax.faces.context.FacesContext;
 import com.sv.audiomed.dao.FacturaDoctorDAO;
 import com.sv.audiomed.model.DetalleFacturaDoctor;
 import com.sv.audiomed.model.FacturaDoctor;
+import com.sv.audiomed.util.LetrasConverter;
 
 @ManagedBean(name = "facturaDoctorBean")
 @ViewScoped
@@ -191,6 +192,7 @@ public class FacturaDoctorBean {
 		
 		aplicarConcepto();
 		actualizarTotales();
+		convertirNumerosALetras();
 		detalles.add(detalle);
 		inicializarDetalle();
 		
@@ -273,7 +275,16 @@ public class FacturaDoctorBean {
 	{
 		quitarConceptoAplicado(detalle);
 		actualizarTotales();
+		convertirNumerosALetras();
 		detalles.remove(detalle);
+	}
+	
+	
+	public void convertirNumerosALetras()
+	{
+		LetrasConverter convertidor = new LetrasConverter();
+		String numeroLetras = convertidor.convertir(facturaDoctor.getVentaTotal());
+		facturaDoctor.setLetrasMonto(numeroLetras);
 	}
 	
 	
