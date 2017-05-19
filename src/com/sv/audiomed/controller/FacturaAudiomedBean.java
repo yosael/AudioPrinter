@@ -14,6 +14,7 @@ import com.sv.audiomed.dao.DetalleFacturaAudiomedDAO;
 import com.sv.audiomed.dao.FacturaAudiomedDAO;
 import com.sv.audiomed.model.DetalleFacturaAudiomed;
 import com.sv.audiomed.model.FacturaAudiomed;
+import com.sv.audiomed.util.LetrasConverter;
 
 @ManagedBean(name = "facturaAudiomedBean")
 @ViewScoped
@@ -146,7 +147,7 @@ public class FacturaAudiomedBean {
 		facturaAudiomed.setIvaRetenido(ivaRetenido);
 		
 		facturaAudiomed.setVentaTotal(0d);
-		facturaAudiomed.setVentaTotal(subtotal+ivaRetenido);
+		facturaAudiomed.setVentaTotal(moneyDecimal(subtotal+ivaRetenido));
 	}
 	
 	public void quitarConceptoAplicado(DetalleFacturaAudiomed detalle)
@@ -192,6 +193,7 @@ public class FacturaAudiomedBean {
 		
 		aplicarConcepto();
 		actualizarTotales();
+		convertirNumerosALetras();
 		detalles.add(detalle);
 		inicializarDetalle();
 		
@@ -274,7 +276,16 @@ public class FacturaAudiomedBean {
 	{
 		quitarConceptoAplicado(detalle);
 		actualizarTotales();
+		convertirNumerosALetras();
 		detalles.remove(detalle);
+	}
+	
+	
+	public void convertirNumerosALetras()
+	{
+		LetrasConverter convertidor = new LetrasConverter();
+		String numeroLetras = convertidor.convertir(facturaAudiomed.getVentaTotal());
+		facturaAudiomed.setLetrasMonto(numeroLetras);
 	}
 	
 	

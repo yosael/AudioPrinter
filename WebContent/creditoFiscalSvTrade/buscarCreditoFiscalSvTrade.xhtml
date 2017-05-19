@@ -6,13 +6,14 @@
       xmlns:p="http://primefaces.org/ui"> 
 
 <h:head></h:head> 
-<body onload="#{buscarFacturaAudiomedBean.iniciar()}" > 
+<body onload="#{buscarCreditoFiscalSvTradeBean.iniciar()}" >  
 
 	
 	<h:form id="form1" >
+	
 		<h:panelGrid columns="1" style="margin:0 auto;margin-top:40px;">
 			
-			<p:outputLabel value="BUSCAR FACTURAS" ></p:outputLabel>	
+			<p:outputLabel value="BUSCAR COMPROBANTE CREDITO FISCAL SV TRADE" ></p:outputLabel>	
 			
 			<p:separator></p:separator>
 			
@@ -20,12 +21,12 @@
 			<h:panelGrid columns="2" >
 				<p:link  href="../seleccionarFormato.xhtml" tyle="button" >Inicio</p:link>
 				<p:spacer width="20" ></p:spacer>
-				<p:commandButton value="Nueva" action="facturaAudiomed" ></p:commandButton>
+				<p:commandButton value="Nueva" action="creditoFiscalSvTrade.xhtml" ></p:commandButton>
 			</h:panelGrid>
-			<p:dataTable id="tbFacturas" value="#{buscarFacturaAudiomedBean.facturas}" var="fac" style="max-width:1200px;margin:0 auto"  rows="10" paginator="true" 
+			<p:dataTable id="tbFacturas" value="#{buscarCreditoFiscalSvTradeBean.facturas}" var="fac" style="max-width:1200px;margin:0 auto"  rows="10" paginator="true" 
                           >
 				<f:facet name="header">
-		            Listado de facturas
+		            Listado de creditos fiscales
 		        </f:facet>
 				<p:column  headerText="# FACTURA"  filterBy="#{fac.codigoFactura}" >
 						<p:outputLabel value="#{fac.codigoFactura}" />
@@ -43,9 +44,8 @@
 						<p:outputLabel value="#{fac.ventaTotal}" />
 				</p:column>
 				<p:column  headerText="ACCION"   >
-					<h:commandButton action="#{buscarFacturaAudiomedBean.seleccionarFactura(fac.idFactura)}"  value="VER" >
+					<h:commandButton action="#{buscarCreditoFiscalSvTradeBean.seleccionarFactura(fac.idFactura)}"  value="VER" >
 					</h:commandButton>
-					<!-- <p:link  href="vistaFacturaAudiomed.xhtml?idFactura=#{fac.idFactura}" >Ver</p:link> -->
 				</p:column>
 			</p:dataTable>
 			
