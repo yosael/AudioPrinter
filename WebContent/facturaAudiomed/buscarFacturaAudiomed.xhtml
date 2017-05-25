@@ -18,19 +18,25 @@
 			
 			<p:spacer height="20" ></p:spacer>
 			<h:panelGrid columns="2" >
-				<p:link  href="../seleccionarFormato.xhtml" tyle="button" >Inicio</p:link>
-				<p:spacer width="20" ></p:spacer>
-				<p:commandButton value="Nueva" action="facturaAudiomed" ></p:commandButton>
+				<p:link  href="../seleccionarFormato.xhtml"  >
+					<p:button value="Inicio" icon="fa fa-home" ></p:button>
+				</p:link>
+				<p:commandButton value="Nueva" action="facturaAudiomed" icon="fa fa-plus" ></p:commandButton>
+				
 			</h:panelGrid>
-			<p:dataTable id="tbFacturas" value="#{buscarFacturaAudiomedBean.facturas}" var="fac" style="max-width:1200px;margin:0 auto"  rows="10" paginator="true" 
+			<p:dataTable id="tbFacturas" value="#{buscarFacturaAudiomedBean.facturas}" var="fac"  style="max-width:1200px;margin:0 auto"  rows="10" paginator="true" 
                           >
 				<f:facet name="header">
 		            Listado de facturas
 		        </f:facet>
+		        <p:column  headerText="..."   >
+					<p:commandButton action="#{buscarFacturaAudiomedBean.generarNueva(fac.idFactura)}" icon="fa fa-plus"  value="Generar" title="Generar Nueva Factura" >
+					</p:commandButton>
+				</p:column>
 				<p:column  headerText="# FACTURA"  filterBy="#{fac.codigoFactura}" >
 						<p:outputLabel value="#{fac.codigoFactura}" />
 				</p:column>
-				<p:column  headerText="PACIENTE" filterBy="#{fac.nombreCliente}" filterMatchMode="contains" >
+				<p:column  headerText="PACIENTE" filterBy="#{fac.nombreCliente}" >
 						<p:outputLabel value="#{fac.nombreCliente}" />
 				</p:column>
 				<p:column  headerText="FECHA" sortBy="#{fac.fecha}" >
@@ -42,9 +48,13 @@
 				<p:column  headerText="TOTAL"  >
 						<p:outputLabel value="#{fac.ventaTotal}" />
 				</p:column>
-				<p:column  headerText="ACCION"   >
-					<h:commandButton action="#{buscarFacturaAudiomedBean.seleccionarFactura(fac.idFactura)}"  value="VER" >
-					</h:commandButton>
+				<p:column  headerText="..."   >
+					<p:commandButton action="#{buscarFacturaAudiomedBean.seleccionarFactura(fac.idFactura)}" icon="fa fa-search"  value="Ver" >
+					</p:commandButton>
+					<!-- <h:link outcome="vistaFacturaAudiomed.xhtml">  
+					  <f:param name="idFactura" value="#{fac.idFactura}"/>
+					  <p:button value="Ver factura" ></p:button>
+					</h:link> -->  
 					<!-- <p:link  href="vistaFacturaAudiomed.xhtml?idFactura=#{fac.idFactura}" >Ver</p:link> -->
 				</p:column>
 			</p:dataTable>

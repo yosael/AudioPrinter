@@ -26,5 +26,6 @@
 	<classpathentry exported="true" kind="lib" path="C:/Users/Hp/Desktop/Librerias/joda-time-2.0.jar"/>
 	<classpathentry exported="true" kind="lib" path="C:/Users/Hp/Desktop/Librerias/itextpdf-5.4.3.jar"/>
 	<classpathentry exported="true" kind="lib" path="C:/Users/Hp/Desktop/Librerias/com.lowagie.text-2.1.7.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/Hp/Documents/font-awesome-4.2.0.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

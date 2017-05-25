@@ -64,9 +64,15 @@ public class BuscarFacturaSvTradeBean implements Serializable {
 	public String seleccionarFactura(int idFactura)
 	{
 		
-		this.idFacturaSelected=idFactura;
+		idFacturaSelected=idFactura;
 		System.out.println("Nueva factura: "+idFacturaSelected);
 		return "vistaFacturaSvTrade?faces-redirect=true";
+	}
+	
+	public String generarNueva(int idFactura)
+	{
+		idFacturaSelected=idFactura;
+		return "facturaSvTrade?faces-redirect=true";
 	}
 
 	

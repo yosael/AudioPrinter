@@ -14,6 +14,7 @@
 	</f:metadata> --> 
 	 
 	 <f:metadata>
+           <!-- <f:viewParam name="idFactura" value="#{vistaFacturaAudiomedBean.idFactura}"/> -->
            <f:viewParam name="idFactura" value="#{vistaFacturaAudiomedBean.idFactura}"/>
        </f:metadata>
 <body> 
@@ -87,7 +88,6 @@
 					<p:inputTextarea value="#{vistaFacturaAudiomedBean.facturaAudiomed.letrasMonto}" rows="7" cols="42" readonly="true" ></p:inputTextarea>
 				</h:panelGrid>
 					
-				
 				<h:panelGrid columns="1" style="border:none;" >
 				
 					<h:panelGrid columns="7"  >
@@ -125,7 +125,6 @@
 						<p:spacer width="70" height="0" ></p:spacer>
 						<p:outputLabel value="#{vistaFacturaAudiomedBean.facturaAudiomed.ventaTotal}" />
 						<p:spacer width="5" height="0" ></p:spacer>
-						
 					</h:panelGrid>
 					
 				</h:panelGrid>
@@ -133,12 +132,12 @@
 			</p:panelGrid>
 			
 			<h:panelGroup style="margin:0 auto;"  >
-				<p:link  href="../seleccionarFormato.xhtml" tyle="button" >Inicio</p:link>
-				<p:spacer width="20" ></p:spacer>
-				<p:commandButton value="Buscar facturas" action="buscarFacturaAudiomed?faces-redirect=true" ></p:commandButton>
-				<p:commandButton value="Editar" ></p:commandButton>
-				<!-- <p:commandButton value="Imprimir"  action="#{vistaFacturaAudiomedBean.imprimirFactura()}" ajax="false" ></p:commandButton> -->
-				<p:commandButton onclick="window.open('../facturaAudiomedServlet?idFactura=#{vistaFacturaAudiomedBean.idFactura}','','')" target="_black" value="Imprimir" ajax="false" ></p:commandButton>
+				<p:link  href="../seleccionarFormato.xhtml"  >
+					<p:button value="Inicio" icon="fa fa-home" ></p:button>
+				</p:link>
+				<p:commandButton value="Buscar facturas" icon="fa fa-search" action="buscarFacturaAudiomed?faces-redirect=true" ></p:commandButton>
+				<p:commandButton value="Editar" icon="fa fa-edit" ></p:commandButton>
+				<p:commandButton onclick="window.open('../facturaAudiomedServlet?idFactura=#{vistaFacturaAudiomedBean.idFactura}','','')" icon="fa fa-print" target="_black" value="Imprimir" ajax="false" ></p:commandButton>
 			</h:panelGroup>
 			
 		</p:panelGrid>

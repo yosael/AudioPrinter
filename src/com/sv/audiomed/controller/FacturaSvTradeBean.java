@@ -7,12 +7,14 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
 import com.sv.audiomed.dao.FacturaSvTradeDAO;
 import com.sv.audiomed.model.DetalleFacturaSvTrade;
 import com.sv.audiomed.model.FacturaSvTrade;
+import com.sv.audiomed.util.LetrasConverter;
 
 @ManagedBean(name = "facturaSvTradeBean")
 @ViewScoped
@@ -27,6 +29,8 @@ public class FacturaSvTradeBean {
 	private String tipoConcepto="";
 	
 	
+	@ManagedProperty(value="#{buscarFacturaSvTradeBean}")
+	private BuscarFacturaSvTradeBean buscarFacturaSvTradeBean;
 	
 	@PostConstruct
 	public void init()
@@ -34,6 +38,7 @@ public class FacturaSvTradeBean {
 		facturaDAO = new FacturaSvTradeDAO();
 		inicializarFactura();
 		inicializarDetalle();
+		cargarFactura();
 	}
 	
 	public void inicializarDetalle()
@@ -59,6 +64,27 @@ public class FacturaSvTradeBean {
 		factura.setSubtotal(0d);
 		factura.setIvaRetenido(0d);
 		factura.setVentaTotal(0d);
+	}
+	
+	public void cargarFactura()
+	{
+		
+		try {
+			
+			idFactura = buscarFacturaSvTradeBean.getIdFacturaSelected();
+			
+			if(idFactura>0)
+			{
+				factura = facturaDAO.buscarFacturaPorId(idFactura);
+				factura.setCodigoFactura("");
+				factura.setFecha(new Date());
+				detalles = facturaDAO.buscarDetallesFactura(idFactura);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 	}
 	
 	
@@ -195,6 +221,7 @@ public class FacturaSvTradeBean {
 		
 		aplicarConcepto();
 		actualizarTotales();
+		convertirNumerosALetras();
 		detalles.add(detalle);
 		inicializarDetalle();
 		
@@ -277,10 +304,16 @@ public class FacturaSvTradeBean {
 	{
 		quitarConceptoAplicado(detalle);
 		actualizarTotales();
+		convertirNumerosALetras();
 		detalles.remove(detalle);
 	}
 	
-	
+	public void convertirNumerosALetras()
+	{
+		LetrasConverter convertidor = new LetrasConverter();
+		String numeroLetras = convertidor.convertir(factura.getVentaTotal());
+		factura.setLetrasMonto(numeroLetras);
+	}
 	
 	//Getters and Setters
 	
@@ -323,6 +356,14 @@ public class FacturaSvTradeBean {
 
 	public void setTipoConcepto(String tipoConcepto) {
 		this.tipoConcepto = tipoConcepto;
+	}
+
+	public BuscarFacturaSvTradeBean getBuscarFacturaSvTradeBean() {
+		return buscarFacturaSvTradeBean;
+	}
+
+	public void setBuscarFacturaSvTradeBean(BuscarFacturaSvTradeBean buscarFacturaSvTradeBean) {
+		this.buscarFacturaSvTradeBean = buscarFacturaSvTradeBean;
 	}
 	
 	

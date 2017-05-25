@@ -133,11 +133,12 @@
 			</p:panelGrid>
 			
 			<h:panelGroup style="margin:0 auto;"  >
-				<p:link  href="../seleccionarFormato.xhtml" tyle="button" >Inicio</p:link>
-				<p:spacer width="20" ></p:spacer>
-				<p:commandButton value="Buscar facturas" action="buscarFacturaSvTrade?faces-redirect=true" ></p:commandButton>
-				<p:commandButton value="Editar" ></p:commandButton>
-				<p:commandButton onclick="window.open('../facturaSvTradeServlet?idFactura=#{vistaFacturaSvTradeBean.idFactura}','','')" target="_black" value="Imprimir" ajax="false" ></p:commandButton>
+				<p:link  href="../seleccionarFormato.xhtml"  >
+					<p:button value="Inicio" icon="fa fa-home" ></p:button>
+				</p:link>
+				<p:commandButton value="Buscar facturas" icon="fa fa-search" action="buscarFacturaSvTrade?faces-redirect=true" ></p:commandButton>
+				<p:commandButton value="Editar" icon="fa fa-edit" ></p:commandButton>
+				<p:commandButton onclick="window.open('../facturaSvTradeServlet?idFactura=#{vistaFacturaSvTradeBean.idFactura}','','')" icon="fa fa-print" target="_black" value="Imprimir" ajax="false" ></p:commandButton>
 			</h:panelGroup>
 			
 		</p:panelGrid>

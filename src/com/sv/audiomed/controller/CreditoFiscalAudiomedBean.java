@@ -15,6 +15,7 @@ import com.sv.audiomed.dao.CreditoFiscalAudiomedDAO;
 import com.sv.audiomed.model.CreditoFiscalAudiomed;
 import com.sv.audiomed.model.DetalleCreditoFiscalAudiomed;
 import com.sv.audiomed.util.LetrasConverter;
+import com.sv.audiomed.util.Util;
 
 @ManagedBean
 @ViewScoped
@@ -29,10 +30,12 @@ public class CreditoFiscalAudiomedBean implements Serializable {
 	private List<DetalleCreditoFiscalAudiomed> detalles;
 	private int idFactura;
 	private String tipoConcepto;
+	private boolean aplicarIvaRetenido;
 	
 	public CreditoFiscalAudiomedBean()
 	{
 		detalles = new ArrayList<DetalleCreditoFiscalAudiomed>();
+		aplicarIvaRetenido=false;
 	}
 	
 	@PostConstruct
@@ -64,6 +67,7 @@ public class CreditoFiscalAudiomedBean implements Serializable {
 		factura.setSumaVentasGravadas(0d);
 		factura.setVentasExentas(0d);
 		factura.setVentasNoSujetas(0d);
+		factura.setPorcentIva(0d);
 		factura.setSubtotal(0d);
 		factura.setIvaRetenido(0d);
 		factura.setVentaTotal(0d);
@@ -106,7 +110,7 @@ public class CreditoFiscalAudiomedBean implements Serializable {
 		{
 			monto =moneyDecimal(monto);
 			detalle.setVentasNoSujetas(monto);
-			factura.setSumaNoSujetas(factura.getSumaNoSujetas()+monto);
+			factura.setSumaNoSujetas(moneyDecimal(factura.getSumaNoSujetas()+monto));
 			factura.setVentasNoSujetas(factura.getSumaNoSujetas());
 		}
 		else if(tipoConcepto.equals("Exentas"))
@@ -114,15 +118,19 @@ public class CreditoFiscalAudiomedBean implements Serializable {
 			monto =moneyDecimal(monto);
 			
 			detalle.setVentasExentas(monto);
-			factura.setSumaVentasExentas(factura.getSumaVentasExentas()+monto);
+			factura.setSumaVentasExentas(moneyDecimal(factura.getSumaVentasExentas()+monto));
 			factura.setVentasExentas(factura.getSumaVentasExentas());
 			
 		}
 		else
 		{
 			monto =moneyDecimal(monto);
+			monto = recudirIvaAdetalle(monto);// Se aplican precios sin iva
+			
+			detalle.setPrecioUnitario(recudirIvaAdetalle(detalle.getPrecioUnitario()));
+			
 			detalle.setVentasGravadas(monto);
-			factura.setSumaVentasGravadas(factura.getSumaVentasGravadas()+monto);
+			factura.setSumaVentasGravadas(moneyDecimal(factura.getSumaVentasGravadas()+monto));
 			
 		}
 		
@@ -218,14 +226,16 @@ public class CreditoFiscalAudiomedBean implements Serializable {
 	
 	public void quitarConceptoAplicado(DetalleCreditoFiscalAudiomed detalle)
 	{
-		double monto =0f;
+		double monto =0d;
+		
 		monto=detalle.getCantidad()*detalle.getPrecioUnitario();
+		
 		
 		if(detalle.getVentasNoSujetas()>0)
 		{
-			monto =moneyDecimal(monto);
+			monto =moneyDecimal(monto);		
 			detalle.setVentasNoSujetas(monto);
-			factura.setSumaNoSujetas(factura.getSumaNoSujetas()-monto);
+			factura.setSumaNoSujetas(moneyDecimal(factura.getSumaNoSujetas()-monto));
 			factura.setVentasNoSujetas(factura.getSumaNoSujetas());
 		}
 		else if(detalle.getVentasExentas()>0)
@@ -233,15 +243,16 @@ public class CreditoFiscalAudiomedBean implements Serializable {
 			monto =moneyDecimal(monto);
 			
 			detalle.setVentasExentas(monto);
-			factura.setSumaVentasExentas(factura.getSumaVentasExentas()-monto);
+			factura.setSumaVentasExentas(moneyDecimal(factura.getSumaVentasExentas()-monto));
 			factura.setVentasExentas(factura.getSumaVentasExentas());
 			
 		}
 		else
 		{
-			monto =moneyDecimal(monto);
+			monto = moneyDecimal(monto);
+			
 			detalle.setVentasGravadas(monto);
-			factura.setSumaVentasGravadas(factura.getSumaVentasGravadas()-monto);
+			factura.setSumaVentasGravadas(moneyDecimal(factura.getSumaVentasGravadas()-monto));
 			
 		}
 	}
@@ -250,17 +261,30 @@ public class CreditoFiscalAudiomedBean implements Serializable {
 	{
 		
 		double subtotal=factura.getSumaVentasGravadas()+factura.getVentasExentas()+factura.getVentasNoSujetas();
+		double total=0d;
+		double iva=0d;
+		
 		subtotal = moneyDecimal(subtotal);
-		System.out.println("Subtotal"+subtotal);
 		factura.setSubtotal(subtotal);
 		
-		double ivaRetenido=factura.getSumaVentasGravadas()*(0.13f);
-		ivaRetenido = moneyDecimal(ivaRetenido);
-		System.out.println("IVA RETENIDO"+ivaRetenido);
-		factura.setIvaRetenido(ivaRetenido);
+		iva=moneyDecimal(factura.getSumaVentasGravadas()*Util.porcentIvaActual());
 		
-		factura.setVentaTotal(0d);
-		factura.setVentaTotal(subtotal+ivaRetenido);
+		factura.setPorcentIva(iva);
+		
+		total=moneyDecimal(subtotal+factura.getVentasExentas()+factura.getVentasNoSujetas()+iva);
+		factura.setVentaTotal(total);
+		
+		if(aplicarIvaRetenido==true)
+		{
+			aplicarIvaRetenido();
+		}
+		
+	}
+	
+	public Double recudirIvaAdetalle(Double monto)
+	{
+		Double sinIva=moneyDecimal(monto/1.13);
+		return sinIva;
 	}
 	
 	public void quitarDetalle(DetalleCreditoFiscalAudiomed detalle)
@@ -281,6 +305,52 @@ public class CreditoFiscalAudiomedBean implements Serializable {
 	public Double moneyDecimal(Double num) {
 		return new Long(Math.round(num*100))/100.0;
 	}
+	
+	public void aplicarIvaRetenido()
+	{
+		double ivaRetenido=factura.getSumaVentasGravadas()/1.13*0.01;
+		double total=factura.getVentaTotal();
+		
+		ivaRetenido = Util.moneyDecimal(ivaRetenido);
+		total= Util.moneyDecimal(total-ivaRetenido);
+		
+		factura.setIvaRetenido(ivaRetenido);
+		factura.setVentaTotal(total);
+	}
+	
+	public void quitarIveRetenido()
+	{
+		double ivaRetenido=factura.getSumaVentasGravadas()/1.13*0.01;
+		double total=factura.getVentaTotal();
+		
+		ivaRetenido = Util.moneyDecimal(ivaRetenido);
+		total= Util.moneyDecimal(total+ivaRetenido);
+		
+		factura.setIvaRetenido(0d);
+		factura.setVentaTotal(total);
+	}
+	
+	public void verificarAplicacionIveRetenido()
+	{
+		
+		System.out.println("Estado de booleano "+aplicarIvaRetenido);
+		
+		if(aplicarIvaRetenido==true)
+		{
+			aplicarIvaRetenido();
+			
+		}
+		else if(aplicarIvaRetenido==false)
+		{
+			quitarIveRetenido();
+		}
+		
+		convertirNumerosALetras();
+	}
+	
+	
+	
+	//getters and setters
 
 	public CreditoFiscalAudiomed getFactura() {
 		return factura;
@@ -321,6 +391,17 @@ public class CreditoFiscalAudiomedBean implements Serializable {
 	public void setTipoConcepto(String tipoConcepto) {
 		this.tipoConcepto = tipoConcepto;
 	}
+
+	public boolean isAplicarIvaRetenido() {
+		return aplicarIvaRetenido;
+	}
+
+	public void setAplicarIvaRetenido(boolean aplicarIvaRetenido) {
+		this.aplicarIvaRetenido = aplicarIvaRetenido;
+	}
+
+	
+	
 	
 
 	

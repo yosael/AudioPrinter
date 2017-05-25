@@ -18,15 +18,20 @@
 			
 			<p:spacer height="20" ></p:spacer>
 			<h:panelGrid columns="2" >
-				<p:link  href="../seleccionarFormato.xhtml" tyle="button" >Inicio</p:link>
-				<p:spacer width="20" ></p:spacer>
-				<p:commandButton value="Nueva" action="facturaSvTrade" ></p:commandButton>
+				<p:link  href="../seleccionarFormato.xhtml"  >
+					<p:button value="Inicio" icon="fa fa-home" ></p:button>
+				</p:link>
+				<p:commandButton value="Nueva" action="facturaSvTrade" icon="fa fa-plus" ></p:commandButton>
 			</h:panelGrid>
 			<p:dataTable id="tbFacturas" value="#{buscarFacturaSvTradeBean.facturas}" var="fac" style="max-width:1200px;margin:0 auto"  rows="10" paginator="true" 
                           >
 				<f:facet name="header">
 		            Listado de facturas
 		        </f:facet>
+		        <p:column  headerText="..."   >
+					<p:commandButton action="#{buscarFacturaSvTradeBean.seleccionarFactura(fac.idFactura)}" icon="fa fa-plus" value="Generar" >
+					</p:commandButton>
+				</p:column>
 				<p:column  headerText="# FACTURA"  filterBy="#{fac.codigoFactura}" >
 						<p:outputLabel value="#{fac.codigoFactura}" />
 				</p:column>
@@ -42,9 +47,9 @@
 				<p:column  headerText="TOTAL"  >
 						<p:outputLabel value="#{fac.ventaTotal}" />
 				</p:column>
-				<p:column  headerText="ACCION"   >
-					<h:commandButton action="#{buscarFacturaSvTradeBean.seleccionarFactura(fac.idFactura)}"  value="VER" >
-					</h:commandButton>
+				<p:column  headerText="..."   >
+					<p:commandButton action="#{buscarFacturaSvTradeBean.seleccionarFactura(fac.idFactura)}" icon="fa fa-search" value="Ver" >
+					</p:commandButton>
 				</p:column>
 			</p:dataTable>
 			

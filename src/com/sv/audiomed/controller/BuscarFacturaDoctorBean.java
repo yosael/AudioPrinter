@@ -68,6 +68,13 @@ public class BuscarFacturaDoctorBean implements Serializable {
 		System.out.println("Nueva factura: "+idFacturaSelected);
 		return "vistaFacturaDoctor?faces-redirect=true";
 	}
+	
+	public String generarNueva(int idFactura)
+	{
+		this.idFacturaSelected=idFactura;
+		
+		return "facturaDoctor?faces-redirect=true";
+	}
 
 	
 	public List<FacturaDoctor> getFacturas() {

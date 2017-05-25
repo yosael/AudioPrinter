@@ -17,6 +17,10 @@
 		<p:growl id="growl" life="2000" />
 		
 		<p:panelGrid columns="1" style="width:990px;margin:0 auto" >
+		
+			<h:panelGrid columns="1" >
+				<p:outputLabel value="CREDITO FISCAL AUDIOMED"  ></p:outputLabel>
+			</h:panelGrid>
 			
 			<h:panelGrid columns="5" >
 				
@@ -98,7 +102,7 @@
 			<p:panelGrid columns="2" >
 				
 				<h:panelGrid columns="2">
-					<p:inputTextarea value="#{creditoFiscalAudiomedBean.factura.letrasMonto}" ></p:inputTextarea>
+					<p:inputTextarea value="#{creditoFiscalAudiomedBean.factura.letrasMonto}" autoResize="false" ></p:inputTextarea>
 					<p:spacer width="218" height="2" ></p:spacer>
 				</h:panelGrid>
 					
@@ -114,21 +118,26 @@
 					</h:panelGrid>
 					
 					<h:panelGrid columns="3" >
-						<p:outputLabel value="Ventas Extentas: " style="width:220px" />
+						<p:outputLabel value="13% de IVA: " style="width:220px" />
 						<p:spacer width="70" height="0" ></p:spacer>
-						<p:inputText value="#{creditoFiscalAudiomedBean.factura.ventasExentas}" />
-						
-						<p:outputLabel value="Ventas No Sujetas: " style="width:220px" />
-						<p:spacer width="70" height="0" ></p:spacer>
-						<p:inputText value="#{creditoFiscalAudiomedBean.factura.ventasNoSujetas}" />
+						<p:inputText value="#{creditoFiscalAudiomedBean.factura.porcentIva}" />
 						
 						<p:outputLabel value="Ventas Sub-total: " style="width:220px" />
 						<p:spacer width="70" height="0" ></p:spacer>
 						<p:inputText value="#{creditoFiscalAudiomedBean.factura.subtotal}" />
 						
-						<p:outputLabel value="IVA Retenido" style="width:220px" />
+						<h:panelGrid columns="2" >
+							<p:outputLabel value="IVA Retenido(-)" style="width:220px" />
+							<p:selectBooleanCheckbox value="#{creditoFiscalAudiomedBean.aplicarIvaRetenido}" >
+								<p:ajax update="form1"  listener="#{creditoFiscalAudiomedBean.verificarAplicacionIveRetenido()}" />
+							</p:selectBooleanCheckbox>
+						</h:panelGrid>	
 						<p:spacer width="70" height="0" ></p:spacer>
 						<p:inputText value="#{creditoFiscalAudiomedBean.factura.ivaRetenido}" />
+						
+						<p:outputLabel value="Ventas Exentas: " style="width:220px" />
+						<p:spacer width="70" height="0" ></p:spacer>
+						<p:inputText value="#{creditoFiscalAudiomedBean.factura.ventasExentas}" />
 						
 						<p:outputLabel value="VENTA TOTAL " style="width:220px" />
 						<p:spacer width="70" height="0" ></p:spacer>
@@ -141,11 +150,11 @@
 			</p:panelGrid>
 			
 			<h:panelGroup style="margin:0 auto;"  >
-				<!-- <p:commandButton value="Inicio" action="../seleccionarFormato.xhtml" ></p:commandButton> -->
-				<p:link  href="../seleccionarFormato.xhtml" tyle="button" >Inicio</p:link>
-				<p:spacer width="20" ></p:spacer>
-				<p:commandButton value="Buscar facturas" action="buscarCreditoFiscalAudiomed?faces-redirect=true" ></p:commandButton>
-				<p:commandButton value="Guardar"  action="#{creditoFiscalAudiomedBean.agregarFactura()}"  update="form1" onclick="this.disabled=true" >
+				<p:link  href="../seleccionarFormato.xhtml"  >
+					<p:button value="Inicio" icon="fa fa-home" ></p:button>
+				</p:link>
+				<p:commandButton value="Buscar facturas" action="buscarCreditoFiscalAudiomed?faces-redirect=true" icon="fa fa-search" ></p:commandButton>
+				<p:commandButton value="Guardar"  action="#{creditoFiscalAudiomedBean.agregarFactura()}" icon="fa fa-save"  update="form1" onclick="this.disabled=true" >
 					<f:param value="#{creditoFiscalAudiomedBean.idFactura}" ></f:param>
 				</p:commandButton>
 			</h:panelGroup>

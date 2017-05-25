@@ -1,30 +1,23 @@
 package com.sv.audiomed.controller;
 
-import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
-import com.sv.audiomed.dao.Conexion;
-import com.sv.audiomed.dao.DetalleFacturaAudiomedDAO;
+
 import com.sv.audiomed.dao.FacturaAudiomedDAO;
 import com.sv.audiomed.model.DetalleFacturaAudiomed;
 import com.sv.audiomed.model.FacturaAudiomed;
 import com.sv.audiomed.util.LetrasConverter;
+import com.sv.audiomed.util.Util;
 
-import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.JasperReport;
-import net.sf.jasperreports.engine.util.JRLoader;
-import net.sf.jasperreports.view.JasperViewer;
 
 @ManagedBean(name = "facturaAudiomedBean")
 @ViewScoped
@@ -32,13 +25,23 @@ public class FacturaAudiomedBean {
 	
 	private FacturaAudiomed facturaAudiomed;
 	private FacturaAudiomedDAO facturaAudiomedDAO;
-	//private DetalleFacturaAudiomedDAO detalleFacturaAudiomedDAO;
-	private List<DetalleFacturaAudiomed> detalles = new ArrayList<DetalleFacturaAudiomed>();
+	private List<DetalleFacturaAudiomed> detalles;
 	private DetalleFacturaAudiomed detalle;
-	private int idFactura=0;
-	private String tipoConcepto="";
+	private int idFactura;
+	private String tipoConcepto;
+	private boolean aplicarIvaRetenido;
+	
+	@ManagedProperty(value="#{buscarFacturaAudiomedBean}")
+	private BuscarFacturaAudiomedBean buscarFacturaAudiomedBean;
 	
 	
+	public FacturaAudiomedBean() {
+		
+		idFactura=0;
+		aplicarIvaRetenido = false;
+		tipoConcepto="";
+		detalles = new ArrayList<DetalleFacturaAudiomed>();
+	}
 	
 	@PostConstruct
 	public void init()
@@ -46,6 +49,7 @@ public class FacturaAudiomedBean {
 		facturaAudiomedDAO = new FacturaAudiomedDAO();
 		inicializarFactura();
 		inicializarDetalle();
+		cargarFactura();
 	}
 	
 	public void inicializarDetalle()
@@ -71,6 +75,27 @@ public class FacturaAudiomedBean {
 		facturaAudiomed.setSubtotal(0d);
 		facturaAudiomed.setIvaRetenido(0d);
 		facturaAudiomed.setVentaTotal(0d);
+	}
+	
+	public void cargarFactura()
+	{
+		
+		try {
+			
+			idFactura= buscarFacturaAudiomedBean.getIdFacturaSelected();
+			
+			if(idFactura>0)
+			{
+				this.facturaAudiomed = facturaAudiomedDAO.buscarFacturaPorId(idFactura);
+				facturaAudiomed.setCodigoFactura("");
+				facturaAudiomed.setFecha(new Date());
+				this.detalles = facturaAudiomedDAO.buscarDetallesFactura(idFactura);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 	}
 	
 	
@@ -104,7 +129,6 @@ public class FacturaAudiomedBean {
 	{
 		for(DetalleFacturaAudiomed detalle: detalles)
 		{
-			
 			detalle.setIdFactura(facturaAudiomed.getIdFactura());
 		}
 		
@@ -118,26 +142,32 @@ public class FacturaAudiomedBean {
 		
 		if(tipoConcepto.equals("NoSujetas"))
 		{
-			monto =moneyDecimal(monto);
+			monto =Util.moneyDecimal(monto);
 			detalle.setVentasNoSujetas(monto);
 			facturaAudiomed.setSumaNoSujetas(facturaAudiomed.getSumaNoSujetas()+monto);
 			facturaAudiomed.setVentasNoSujetas(facturaAudiomed.getSumaNoSujetas());
 		}
 		else if(tipoConcepto.equals("Exentas"))
 		{
-			monto =moneyDecimal(monto);
+			monto =Util.moneyDecimal(monto);
 			
 			detalle.setVentasExentas(monto);
 			facturaAudiomed.setSumaVentasExentas(facturaAudiomed.getSumaVentasExentas()+monto);
 			facturaAudiomed.setVentasExentas(facturaAudiomed.getSumaVentasExentas());
 			
 		}
-		else
+		else if(tipoConcepto.equals("Gravadas"))
 		{
-			monto =moneyDecimal(monto);
+			monto =Util.moneyDecimal(monto);
 			detalle.setVentasGravadas(monto);
 			facturaAudiomed.setSumaVentasGravadas(facturaAudiomed.getSumaVentasGravadas()+monto);
 			
+		}
+		else
+		{
+			monto =Util.moneyDecimal(monto);
+			detalle.setVentasGravadas(monto);
+			facturaAudiomed.setSumaVentasGravadas(facturaAudiomed.getSumaVentasGravadas()+monto);
 		}
 		
 		
@@ -147,17 +177,20 @@ public class FacturaAudiomedBean {
 	{
 		
 		double subtotal=facturaAudiomed.getSumaVentasGravadas()+facturaAudiomed.getVentasExentas()+facturaAudiomed.getVentasNoSujetas();
-		subtotal = moneyDecimal(subtotal);
-		System.out.println("Subtotal"+subtotal);
+		double total=0d;
+		
+		subtotal = Util.moneyDecimal(subtotal);
 		facturaAudiomed.setSubtotal(subtotal);
 		
-		double ivaRetenido=facturaAudiomed.getSumaVentasGravadas()*(0.13f);
-		ivaRetenido = moneyDecimal(ivaRetenido);
-		System.out.println("IVA RETENIDO"+ivaRetenido);
-		facturaAudiomed.setIvaRetenido(ivaRetenido);
+		total=subtotal+facturaAudiomed.getVentasExentas()+facturaAudiomed.getVentasNoSujetas();//Revisar
 		
-		facturaAudiomed.setVentaTotal(0d);
-		facturaAudiomed.setVentaTotal(moneyDecimal(subtotal+ivaRetenido));
+		facturaAudiomed.setVentaTotal(Util.moneyDecimal(total));
+		
+		if(aplicarIvaRetenido==true)
+		{
+			aplicarIvaRetenido();
+		}
+
 	}
 	
 	public void quitarConceptoAplicado(DetalleFacturaAudiomed detalle)
@@ -167,32 +200,31 @@ public class FacturaAudiomedBean {
 		
 		if(detalle.getVentasNoSujetas()>0)
 		{
-			monto =moneyDecimal(monto);
+			monto =Util.moneyDecimal(monto);
 			detalle.setVentasNoSujetas(monto);
-			facturaAudiomed.setSumaNoSujetas(facturaAudiomed.getSumaNoSujetas()-monto);
+			facturaAudiomed.setSumaNoSujetas(Util.moneyDecimal(facturaAudiomed.getSumaNoSujetas()-monto));
 			facturaAudiomed.setVentasNoSujetas(facturaAudiomed.getSumaNoSujetas());
 		}
 		else if(detalle.getVentasExentas()>0)
 		{
-			monto =moneyDecimal(monto);
+			monto =Util.moneyDecimal(monto);
 			
 			detalle.setVentasExentas(monto);
-			facturaAudiomed.setSumaVentasExentas(facturaAudiomed.getSumaVentasExentas()-monto);
+			facturaAudiomed.setSumaVentasExentas(Util.moneyDecimal(facturaAudiomed.getSumaVentasExentas()-monto));
 			facturaAudiomed.setVentasExentas(facturaAudiomed.getSumaVentasExentas());
 			
 		}
 		else
 		{
-			monto =moneyDecimal(monto);
+			monto =Util.moneyDecimal(monto);
 			detalle.setVentasGravadas(monto);
 			facturaAudiomed.setSumaVentasGravadas(facturaAudiomed.getSumaVentasGravadas()-monto);
 			
 		}
 	}
 	
-	public Double moneyDecimal(Double num) {
-		return new Long(Math.round(num*100))/100.0;
-	}
+	
+	
 	
 	
 	public void cargarDetalle()
@@ -214,8 +246,7 @@ public class FacturaAudiomedBean {
 	public boolean validarFacturaAudiomed()
 	{
 		
-		System.out.println("entro a validar");
-		System.out.println(facturaAudiomed.getCodigoFactura());
+		
 		if(facturaAudiomed.getCodigoFactura()==null || facturaAudiomed.getCodigoFactura().equals(""))
 		{
 			System.out.println("Entro a factura valida");
@@ -298,7 +329,47 @@ public class FacturaAudiomedBean {
 		facturaAudiomed.setLetrasMonto(numeroLetras);
 	}
 	
+	public void aplicarIvaRetenido()
+	{
+		double ivaRetenido=facturaAudiomed.getSumaVentasGravadas()/1.13*0.01;
+		double total=facturaAudiomed.getVentaTotal();
+		
+		ivaRetenido = Util.moneyDecimal(ivaRetenido);
+		total= Util.moneyDecimal(total-ivaRetenido);
+		
+		facturaAudiomed.setIvaRetenido(ivaRetenido);
+		facturaAudiomed.setVentaTotal(total);
+	}
 	
+	public void quitarIvaRetenido()
+	{
+		double ivaRetenido=facturaAudiomed.getSumaVentasGravadas()/1.13*0.01;
+		double total=facturaAudiomed.getVentaTotal();
+		
+		ivaRetenido = Util.moneyDecimal(ivaRetenido);
+		total= Util.moneyDecimal(total+ivaRetenido);
+		
+		facturaAudiomed.setIvaRetenido(0d);
+		facturaAudiomed.setVentaTotal(total);
+	}
+	
+	public void verificarAplicacionIvaRetenido()
+	{
+		
+		System.out.println("Estado de booleano "+aplicarIvaRetenido);
+		
+		if(aplicarIvaRetenido==true)
+		{
+			aplicarIvaRetenido();
+			
+		}
+		else if(aplicarIvaRetenido==false)
+		{
+			quitarIvaRetenido();
+		}
+		
+		convertirNumerosALetras();
+	}
 	
 	
 	
@@ -345,6 +416,28 @@ public class FacturaAudiomedBean {
 	public void setTipoConcepto(String tipoConcepto) {
 		this.tipoConcepto = tipoConcepto;
 	}
+
+	public BuscarFacturaAudiomedBean getBuscarFacturaAudiomedBean() {
+		return buscarFacturaAudiomedBean;
+	}
+
+	public void setBuscarFacturaAudiomedBean(BuscarFacturaAudiomedBean buscarFacturaAudiomedBean) {
+		this.buscarFacturaAudiomedBean = buscarFacturaAudiomedBean;
+	}
+
+	public boolean isAplicarIvaRetenido() {
+		return aplicarIvaRetenido;
+	}
+
+	public void setAplicarIvaRetenido(boolean aplicarIvaRetenido) {
+		this.aplicarIvaRetenido = aplicarIvaRetenido;
+	}
+
+	
+	
+	
+	
+	
 	
 	
 	

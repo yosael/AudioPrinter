@@ -7,6 +7,7 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
@@ -14,6 +15,7 @@ import com.sv.audiomed.dao.FacturaDoctorDAO;
 import com.sv.audiomed.model.DetalleFacturaDoctor;
 import com.sv.audiomed.model.FacturaDoctor;
 import com.sv.audiomed.util.LetrasConverter;
+import com.sv.audiomed.util.Util;
 
 @ManagedBean(name = "facturaDoctorBean")
 @ViewScoped
@@ -22,12 +24,22 @@ public class FacturaDoctorBean {
 	private FacturaDoctor facturaDoctor;
 	private FacturaDoctorDAO facturaDoctorDAO;
 	//private DetalleFacturaDoctorDAO detalleFacturaDoctorDAO;
-	private List<DetalleFacturaDoctor> detalles = new ArrayList<DetalleFacturaDoctor>();
+	private List<DetalleFacturaDoctor> detalles;
 	private DetalleFacturaDoctor detalle;
-	private int idFactura=0;
-	private String tipoConcepto="";
+	private int idFactura;
+	private String tipoConcepto;
+	private boolean aplicarIvaRetenido;
 	
 	
+	@ManagedProperty(value="#{buscarFacturaDoctorBean}")
+	private BuscarFacturaDoctorBean buscarFacturaDoctorBean;
+	
+	public FacturaDoctorBean() {
+		detalles = new ArrayList<DetalleFacturaDoctor>();
+		idFactura=0;
+		tipoConcepto="";
+		aplicarIvaRetenido=false;
+	}
 	
 	@PostConstruct
 	public void init()
@@ -35,6 +47,7 @@ public class FacturaDoctorBean {
 		facturaDoctorDAO = new FacturaDoctorDAO();
 		inicializarFactura();
 		inicializarDetalle();
+		cargarFactura();
 	}
 	
 	public void inicializarDetalle()
@@ -60,6 +73,29 @@ public class FacturaDoctorBean {
 		facturaDoctor.setSubtotal(0d);
 		facturaDoctor.setIvaRetenido(0d);
 		facturaDoctor.setVentaTotal(0d);
+	}
+	
+	
+	public void cargarFactura()
+	{
+		
+		try {
+			
+			idFactura = buscarFacturaDoctorBean.getIdFacturaSelected();
+			
+			if(idFactura>0)
+			{
+				facturaDoctor = facturaDoctorDAO.buscarFacturaPorId(idFactura);
+				facturaDoctor.setCodigoFactura("");
+				facturaDoctor.setFecha(new Date());
+				detalles = facturaDoctorDAO.buscarDetallesFactura(idFactura);
+			}
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 	}
 	
 	
@@ -136,17 +172,19 @@ public class FacturaDoctorBean {
 	{
 		
 		double subtotal=facturaDoctor.getSumaVentasGravadas()+facturaDoctor.getVentasExentas()+facturaDoctor.getVentasNoSujetas();
-		subtotal = moneyDecimal(subtotal);
-		System.out.println("Subtotal"+subtotal);
+		double total=0d;
+		
+		subtotal = Util.moneyDecimal(subtotal);
 		facturaDoctor.setSubtotal(subtotal);
 		
-		double ivaRetenido=facturaDoctor.getSumaVentasGravadas()*(0.13f);
-		ivaRetenido = moneyDecimal(ivaRetenido);
-		System.out.println("IVA RETENIDO"+ivaRetenido);
-		facturaDoctor.setIvaRetenido(ivaRetenido);
+		total=subtotal+facturaDoctor.getVentasExentas()+facturaDoctor.getVentasNoSujetas();//Revisar
 		
-		facturaDoctor.setVentaTotal(0d);
-		facturaDoctor.setVentaTotal(subtotal+ivaRetenido);
+		facturaDoctor.setVentaTotal(Util.moneyDecimal(total));
+		
+		if(aplicarIvaRetenido==true)
+		{
+			aplicarIvaRetenido();
+		}
 	}
 	
 	public void quitarConceptoAplicado(DetalleFacturaDoctor detalle)
@@ -288,6 +326,49 @@ public class FacturaDoctorBean {
 	}
 	
 	
+	public void aplicarIvaRetenido()
+	{
+		double ivaRetenido=facturaDoctor.getSumaVentasGravadas()/1.13*0.01;
+		double total=facturaDoctor.getVentaTotal();
+		
+		ivaRetenido = Util.moneyDecimal(ivaRetenido);
+		total= Util.moneyDecimal(total-ivaRetenido);
+		
+		facturaDoctor.setIvaRetenido(ivaRetenido);
+		facturaDoctor.setVentaTotal(total);
+	}
+	
+	public void quitarIvaRetenido()
+	{
+		double ivaRetenido=facturaDoctor.getSumaVentasGravadas()/1.13*0.01;
+		double total=facturaDoctor.getVentaTotal();
+		
+		ivaRetenido = Util.moneyDecimal(ivaRetenido);
+		total= Util.moneyDecimal(total+ivaRetenido);
+		
+		facturaDoctor.setIvaRetenido(0d);
+		facturaDoctor.setVentaTotal(total);
+	}
+	
+	public void verificarAplicacionIvaRetenido()
+	{
+		
+		System.out.println("Estado de booleano "+aplicarIvaRetenido);
+		
+		if(aplicarIvaRetenido==true)
+		{
+			aplicarIvaRetenido();
+			
+		}
+		else if(aplicarIvaRetenido==false)
+		{
+			quitarIvaRetenido();
+		}
+		
+		convertirNumerosALetras();
+	}
+	
+	
 	
 	//Getters and Setters
 	
@@ -330,6 +411,22 @@ public class FacturaDoctorBean {
 
 	public void setTipoConcepto(String tipoConcepto) {
 		this.tipoConcepto = tipoConcepto;
+	}
+
+	public BuscarFacturaDoctorBean getBuscarFacturaDoctorBean() {
+		return buscarFacturaDoctorBean;
+	}
+
+	public void setBuscarFacturaDoctorBean(BuscarFacturaDoctorBean buscarFacturaDoctorBean) {
+		this.buscarFacturaDoctorBean = buscarFacturaDoctorBean;
+	}
+
+	public boolean isAplicarIvaRetenido() {
+		return aplicarIvaRetenido;
+	}
+
+	public void setAplicarIvaRetenido(boolean aplicarIvaRetenido) {
+		this.aplicarIvaRetenido = aplicarIvaRetenido;
 	}
 	
 	

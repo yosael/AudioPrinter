@@ -18,6 +18,7 @@
 	<h:form id="form1" >
 		<p:panelGrid columns="1" style="max-width:900px;margin:0 auto" styleClass="borderRd" >
 		
+		
 			<h:panelGrid columns="3" style="margin:0;padding:0;" >
 					<p:outputLabel style="font-weight:bold" value="Centro Audiologico Medico S.A de C.V" ></p:outputLabel>
 					<p:spacer width="400" height="90" ></p:spacer>
@@ -146,11 +147,12 @@
 			</p:panelGrid>
 			
 			<h:panelGroup style="margin:0 auto;"  >
-				<p:link  href="../seleccionarFormato.xhtml" tyle="button" >Inicio</p:link>
-				<p:spacer width="20" ></p:spacer>
-				<p:commandButton value="Buscar facturas" action="buscarCreditoFiscalSvTrade?faces-redirect=true" ></p:commandButton>
-				<p:commandButton value="Editar" ></p:commandButton>
-				<p:commandButton onclick="window.open('../creditoFiscalSvTradeServlet?idFactura=#{vistaCreditoFiscalSvTradeBean.idFactura}','','')" target="_black" value="Imprimir" ajax="false" ></p:commandButton>
+				<p:link  href="../seleccionarFormato.xhtml"  >
+					<p:button value="Inicio" icon="fa fa-home" ></p:button>
+				</p:link>
+				<p:commandButton value="Buscar facturas" icon="fa fa-search" action="buscarCreditoFiscalSvTrade?faces-redirect=true" ></p:commandButton>
+				<p:commandButton value="Editar" icon="fa fa-edit" ></p:commandButton>
+				<p:commandButton onclick="window.open('../creditoFiscalSvTradeServlet?idFactura=#{vistaCreditoFiscalSvTradeBean.idFactura}','','')" icon="fa fa-print" target="_black" value="Imprimir" ajax="false" ></p:commandButton>
 			</h:panelGroup>
 			
 		</p:panelGrid>

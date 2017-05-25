@@ -21,7 +21,7 @@ public class BuscarFacturaAudiomedBean implements Serializable {
 	String busqueda="";
 	FacturaAudiomedDAO facturaAudiomedDAO;
 	List<FacturaAudiomed> facturas;
-	private int idFacturaSelected=0;
+	private int idFacturaSelected;
 	
 	
 	public BuscarFacturaAudiomedBean()
@@ -66,6 +66,12 @@ public class BuscarFacturaAudiomedBean implements Serializable {
 		this.idFacturaSelected=idFactura;
 		System.out.println("Nueva factura: "+idFacturaSelected);
 		return "vistaFacturaAudiomed?faces-redirect=true";
+	}
+	
+	public String generarNueva(int idFactura)
+	{
+		this.idFacturaSelected=idFactura;
+		return "facturaAudiomed.xhtml?faces-redirect=true";
 	}
 
 	

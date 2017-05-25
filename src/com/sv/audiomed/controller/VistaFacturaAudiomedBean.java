@@ -8,8 +8,10 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
+import javax.enterprise.context.ConversationScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.RequestScoped;
 import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
@@ -35,12 +37,12 @@ public class VistaFacturaAudiomedBean implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	
-	private int idFactura=0;
+	private int idFactura;
 	private FacturaAudiomed facturaAudiomed;
 	private List<DetalleFacturaAudiomed> detalles;
 	private FacturaAudiomedDAO facturaDAO;
-	private ReporteJasperUtilDAO reporteJasperDAO;
 	private ReporteFacturaAudiomedDAO reporteFacturaAudiomedDAO;
+	private String vista;
 	
 	@ManagedProperty(value="#{buscarFacturaAudiomedBean}")
 	private BuscarFacturaAudiomedBean buscarFacturaAudiomedBean;
@@ -57,13 +59,18 @@ public class VistaFacturaAudiomedBean implements Serializable {
 	public void init()
 	{
 		facturaDAO = new FacturaAudiomedDAO();
-		reporteJasperDAO = new  ReporteJasperUtilDAO();
+		
 		idFactura = buscarFacturaAudiomedBean.getIdFacturaSelected();
 		reporteFacturaAudiomedDAO = new ReporteFacturaAudiomedDAO();
 		
 		System.out.println("ID Factura capturado"+idFactura);
 		cargarFactura();
 		
+	}
+	
+	public void verVista()
+	{
+		System.out.println("Vista variable "+idFactura);
 	}
 	
 	public void eventoPrueba()
@@ -80,7 +87,7 @@ public class VistaFacturaAudiomedBean implements Serializable {
 		
 		try {
 			
-			idFactura = buscarFacturaAudiomedBean.getIdFacturaSelected();
+			//idFactura = buscarFacturaAudiomedBean.getIdFacturaSelected();
 			/*FacesContext facesContext = FacesContext.getCurrentInstance();
 			Map<String,String> param = facesContext.getExternalContext().getRequestParameterMap();
 			System.out.println("CONTENIDO PARAMETRO"+param.get("idFactura"));
@@ -186,6 +193,16 @@ public class VistaFacturaAudiomedBean implements Serializable {
 
 	public void setBuscarFacturaAudiomedBean(BuscarFacturaAudiomedBean buscarFacturaAudiomedBean) {
 		this.buscarFacturaAudiomedBean = buscarFacturaAudiomedBean;
+	}
+
+
+	public String getVista() {
+		return vista;
+	}
+
+
+	public void setVista(String vista) {
+		this.vista = vista;
 	}
 	
 	

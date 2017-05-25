@@ -31,7 +31,7 @@ private Connection cx;
 			ResultSet rsIdFactura;
 			
 			
-			String sql ="insert into creditofiscal_doctor (codigo_factura,nombre_cliente,direccion_cliente,fecha,doc_cliente,registro,nota_num_emision,giro,fecha_nota_emision,condicion_pago,suma_nosujetas,suma_ventas_exentas,suma_ventas_gravadas,ventas_exentas,ventas_nosujetas,subtotal,iva_retenido,venta_total,monto_letras) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+			String sql ="insert into creditofiscal_doctor (codigo_factura,nombre_cliente,direccion_cliente,fecha,doc_cliente,registro,nota_num_emision,giro,fecha_nota_emision,condicion_pago,suma_nosujetas,suma_ventas_exentas,suma_ventas_gravadas,ventas_exentas,ventas_nosujetas,subtotal,iva_retenido,venta_total,monto_letras,porcent_iva) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 			PreparedStatement preparedStatement = cx.prepareStatement(sql,PreparedStatement.RETURN_GENERATED_KEYS);
 			preparedStatement.setString(1, factura.getCodigoFactura());
 			preparedStatement.setString(2, factura.getNombreCliente());
@@ -45,8 +45,15 @@ private Connection cx;
 			preparedStatement.setString(7, factura.getNotaNumEmision()!=null?factura.getNotaNumEmision():null);
 			preparedStatement.setString(8, factura.getGiro()!=null?factura.getGiro():null);
 			
-			Date sqlDate2 = new Date(factura.getFechaNotaEmision().getTime());
-			preparedStatement.setDate(9, sqlDate2);
+			if(factura.getFechaNotaEmision()!=null)
+			{
+				Date sqlDate2 = new Date(factura.getFechaNotaEmision().getTime());
+				preparedStatement.setDate(9, sqlDate2);
+			}
+			else
+			{
+				preparedStatement.setDate(9, null);
+			}
 			
 			preparedStatement.setString(10, factura.getCondicionPago()!=null?factura.getCondicionPago():null);
 			
@@ -59,6 +66,7 @@ private Connection cx;
 			preparedStatement.setDouble(17, factura.getIvaRetenido()!=null?factura.getIvaRetenido():0d);
 			preparedStatement.setDouble(18, factura.getVentaTotal()!=null?factura.getVentaTotal():0d);
 			preparedStatement.setString(19, factura.getLetrasMonto()!=null?factura.getLetrasMonto():null);
+			preparedStatement.setDouble(20, factura.getPorcentIva()!=null?factura.getPorcentIva():0d);
 			
 			preparedStatement.executeUpdate();
 			
@@ -150,6 +158,7 @@ private Connection cx;
 				factura.setIvaRetenido(result.getDouble("iva_retenido"));
 				factura.setVentaTotal(result.getDouble("venta_total"));
 				factura.setLetrasMonto(result.getString("monto_letras"));
+				factura.setPorcentIva(result.getDouble("porcent_iva"));
 			
 				
 				lista.add(factura);
@@ -199,6 +208,8 @@ private Connection cx;
 				factura.setIvaRetenido(rs.getDouble("iva_retenido"));
 				factura.setVentaTotal(rs.getDouble("venta_total"));
 				factura.setLetrasMonto(rs.getString("monto_letras"));
+				factura.setPorcentIva(rs.getDouble("porcent_iva"));
+				
 				
 			}
 			

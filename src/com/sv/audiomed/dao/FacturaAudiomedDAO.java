@@ -76,7 +76,7 @@ public class FacturaAudiomedDAO {
 			Date sqlDate = new Date(factura.getFecha().getTime());
 			preparedStatement.setDate(4, sqlDate);
 			
-			preparedStatement.setString(5,factura.getDocCliente()!=null?factura.getDocCliente():null);
+			preparedStatement.setString(5,factura.getDocCliente()!=null?factura.getDocCliente():" ");
 			preparedStatement.setDouble(6, factura.getSumaNoSujetas()!=null?factura.getSumaNoSujetas():0f);
 			preparedStatement.setDouble(7, factura.getSumaVentasExentas()!=null?factura.getSumaVentasExentas():0f);
 			preparedStatement.setDouble(8, factura.getSumaVentasGravadas()!=null?factura.getSumaVentasGravadas():0f);
@@ -85,7 +85,7 @@ public class FacturaAudiomedDAO {
 			preparedStatement.setDouble(11, factura.getSubtotal()!=null?factura.getSubtotal():0f);
 			preparedStatement.setDouble(12, factura.getIvaRetenido()!=null?factura.getIvaRetenido():0f);
 			preparedStatement.setDouble(13, factura.getVentaTotal()!=null?factura.getVentaTotal():0f);
-			preparedStatement.setString(14, factura.getLetrasMonto()!=null?factura.getLetrasMonto():null);
+			preparedStatement.setString(14, factura.getLetrasMonto()!=null?factura.getLetrasMonto():" ");
 			
 			preparedStatement.executeUpdate();
 			

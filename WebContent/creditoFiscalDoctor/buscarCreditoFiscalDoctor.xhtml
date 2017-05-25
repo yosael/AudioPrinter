@@ -19,9 +19,10 @@
 			
 			<p:spacer height="20" ></p:spacer>
 			<h:panelGrid columns="2" >
-				<p:link  href="../seleccionarFormato.xhtml" tyle="button" >Inicio</p:link>
-				<p:spacer width="20" ></p:spacer>
-				<p:commandButton value="Nueva" action="creditoFiscalDoctor.xhtml" ></p:commandButton>
+				<p:link  href="../seleccionarFormato.xhtml"  >
+					<p:button value="Inicio" icon="fa fa-home" ></p:button>
+				</p:link>
+				<p:commandButton value="Nueva" action="creditoFiscalDoctor.xhtml"  icon="fa fa-plus"  ></p:commandButton>
 			</h:panelGrid>
 			<p:dataTable id="tbFacturas" value="#{buscarCreditoFiscalDoctorBean.facturas}" var="fac" style="max-width:1200px;margin:0 auto"  rows="10" paginator="true" 
                           >

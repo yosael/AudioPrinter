@@ -77,8 +77,8 @@ public class FacturaDoctorDAO {
 			Date sqlDate = new Date(factura.getFecha().getTime());
 			preparedStatement.setDate(4, sqlDate);
 			
-			preparedStatement.setString(5,factura.getDocCliente()!=null?factura.getDocCliente():null);
-			preparedStatement.setString(6, factura.getVtaCtaDe()!=null?factura.getVtaCtaDe():null);
+			preparedStatement.setString(5,factura.getDocCliente()!=null?factura.getDocCliente():" ");
+			preparedStatement.setString(6, factura.getVtaCtaDe()!=null?factura.getVtaCtaDe():" ");
 			preparedStatement.setDouble(7, factura.getSumaNoSujetas()!=null?factura.getSumaNoSujetas():0f);
 			preparedStatement.setDouble(8, factura.getSumaVentasExentas()!=null?factura.getSumaVentasExentas():0f);
 			preparedStatement.setDouble(9, factura.getSumaVentasGravadas()!=null?factura.getSumaVentasGravadas():0f);
@@ -87,7 +87,7 @@ public class FacturaDoctorDAO {
 			preparedStatement.setDouble(12, factura.getSubtotal()!=null?factura.getSubtotal():0f);
 			preparedStatement.setDouble(13, factura.getIvaRetenido()!=null?factura.getIvaRetenido():0f);
 			preparedStatement.setDouble(14, factura.getVentaTotal()!=null?factura.getVentaTotal():0f);
-			preparedStatement.setString(15, factura.getLetrasMonto()!=null?factura.getLetrasMonto():null);
+			preparedStatement.setString(15, factura.getLetrasMonto()!=null?factura.getLetrasMonto():" ");
 			
 			preparedStatement.executeUpdate();
 			

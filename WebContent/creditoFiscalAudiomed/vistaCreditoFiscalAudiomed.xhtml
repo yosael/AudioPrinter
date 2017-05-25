@@ -117,15 +117,10 @@
 					</h:panelGrid>
 					
 					<h:panelGrid columns="4" >
-						<p:outputLabel value="Ventas Extentas: " style="max-width:240px;" />
+						<p:outputLabel value="13% de IVA " style="max-width:240px;" />
 						<p:spacer width="180" height="0" ></p:spacer>
-						<p:outputLabel value="#{vistaCreditoFiscalAudiomedBean.factura.ventasExentas}" />
+						<p:outputLabel value="#{vistaCreditoFiscalAudiomedBean.factura.porcentIva}" />
 						<p:spacer width="25" height="0" ></p:spacer>
-						
-						<p:outputLabel value="Ventas No Sujetas: " style="max-width:220px" />
-						<p:spacer width="80" height="0" ></p:spacer>
-						<p:outputLabel value="#{vistaCreditoFiscalAudiomedBean.factura.ventasNoSujetas}" />
-						<p:spacer width="5" height="0" ></p:spacer>
 						
 						<p:outputLabel value="Ventas Sub-total: " style="max-width:220px" />
 						<p:spacer width="70" height="0" ></p:spacer>
@@ -135,6 +130,11 @@
 						<p:outputLabel value="IVA Retenido" style="max-width:220px" />
 						<p:spacer width="70" height="0" ></p:spacer>
 						<p:outputLabel value="#{vistaCreditoFiscalAudiomedBean.factura.ivaRetenido}" />
+						<p:spacer width="5" height="0" ></p:spacer>
+						
+						<p:outputLabel value="Ventas Exentas " style="max-width:220px" />
+						<p:spacer width="80" height="0" ></p:spacer>
+						<p:outputLabel value="#{vistaCreditoFiscalAudiomedBean.factura.ventasExentas}" />
 						<p:spacer width="5" height="0" ></p:spacer>
 						
 						<p:outputLabel value="VENTA TOTAL " style="max-width:220px" />
@@ -149,11 +149,12 @@
 			</p:panelGrid>
 			
 			<h:panelGroup style="margin:0 auto;"  >
-				<p:link  href="../seleccionarFormato.xhtml" tyle="button" >Inicio</p:link>
-				<p:spacer width="20" ></p:spacer>
-				<p:commandButton value="Buscar facturas" action="buscarCreditoFiscalAudiomed?faces-redirect=true" ></p:commandButton>
-				<p:commandButton value="Editar" ></p:commandButton>
-				<p:commandButton onclick="window.open('../creditoFiscalAudiomedServlet?idFactura=#{vistaCreditoFiscalAudiomedBean.idFactura}','','')" target="_black" value="Imprimir" ajax="false" ></p:commandButton>
+				<p:link  href="../seleccionarFormato.xhtml"  >
+					<p:button value="Inicio" icon="fa fa-home" ></p:button>
+				</p:link>
+				<p:commandButton value="Buscar facturas" icon="fa fa-search" action="buscarCreditoFiscalAudiomed?faces-redirect=true" ></p:commandButton>
+				<p:commandButton value="Editar" icon="fa fa-edit" ></p:commandButton>
+				<p:commandButton onclick="window.open('../creditoFiscalAudiomedServlet?idFactura=#{vistaCreditoFiscalAudiomedBean.idFactura}','','')" icon="fa fa-print" target="_black" value="Imprimir" ajax="false" ></p:commandButton>
 			</h:panelGroup>
 			
 		</p:panelGrid>

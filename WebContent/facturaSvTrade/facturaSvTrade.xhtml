@@ -17,6 +17,10 @@
 		<p:growl id="growl" life="2000" />
 		
 		<p:panelGrid columns="1" style="width:990px;margin:0 auto" >
+		
+			<h:panelGrid columns="1" >
+				<p:outputLabel value="FACTURA SV TRADE"  ></p:outputLabel>
+			</h:panelGrid>
 			
 			<h:panelGrid columns="5" >
 				
@@ -129,11 +133,11 @@
 			</p:panelGrid>
 			
 			<h:panelGroup style="margin:0 auto;"  >
-				<!-- <p:commandButton value="Inicio" action="../seleccionarFormato.xhtml" ></p:commandButton> -->
-				<p:link  href="../seleccionarFormato.xhtml" tyle="button" >Inicio</p:link>
-				<p:spacer width="20" ></p:spacer>
-				<p:commandButton value="Buscar facturas" action="buscarFacturaSvTrade?faces-redirect=true" ></p:commandButton>
-				<p:commandButton value="Guardar"  action="#{facturaSvTradeBean.agregarFactura()}"  update="form1" onclick="this.disabled=true" >
+				<p:link  href="../seleccionarFormato.xhtml"  >
+					<p:button value="Inicio" icon="fa fa-home" ></p:button>
+				</p:link>
+				<p:commandButton value="Buscar facturas" action="buscarFacturaSvTrade?faces-redirect=true" icon="fa fa-search" ></p:commandButton>
+				<p:commandButton value="Guardar"  action="#{facturaSvTradeBean.agregarFactura()}" icon="fa fa-save"  update="form1" onclick="this.disabled=true" >
 					<f:param value="#{facturaSvTradeBean.idFactura}" ></f:param>
 				</p:commandButton>
 			</h:panelGroup>

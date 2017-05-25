@@ -10,6 +10,7 @@ public class DetalleFacturaAudiomed {
 	private Double ventasNoSujetas;
 	private Double ventasExentas;
 	private Double ventasGravadas;
+	private Boolean incluyeIva;
 	
 	
 	
@@ -61,6 +62,14 @@ public class DetalleFacturaAudiomed {
 	}
 	public void setVentasGravadas(Double ventasGravadas) {
 		this.ventasGravadas = ventasGravadas;
+	}
+	
+	
+	public Boolean getIncluyeIva() {
+		return incluyeIva;
+	}
+	public void setIncluyeIva(Boolean incluyeIva) {
+		this.incluyeIva = incluyeIva;
 	}
 	
 	

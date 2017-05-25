@@ -43,7 +43,7 @@ public class FacturaDoctorServlet extends HttpServlet {
 		
 		try {
 			
-			String archivo=getServletContext().getRealPath("/reportes/FacturaDoctor/FacturaDoctorFormat.jasper");
+			String archivo=getServletContext().getRealPath("/reportes/FacturaDoctor/FacturaDoctorN.jasper");
 			jasperReport = (JasperReport)JRLoader.loadObjectFromFile(archivo);
 			Map<String, Object> parameters = new HashMap<String, Object>();
 			parameters.put("id_factura", idFactura);
