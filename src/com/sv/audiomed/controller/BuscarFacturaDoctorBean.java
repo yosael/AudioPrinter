@@ -73,7 +73,7 @@ public class BuscarFacturaDoctorBean implements Serializable {
 	{
 		this.idFacturaSelected=idFactura;
 		
-		return "facturaDoctor?faces-redirect=true";
+		return "generarFacturaDoctor?faces-redirect=true";
 	}
 
 	

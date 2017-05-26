@@ -4,12 +4,10 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
 import com.sv.audiomed.dao.FacturaSvTradeDAO;
-import com.sv.audiomed.model.FacturaAudiomed;
 import com.sv.audiomed.model.FacturaSvTrade;
 
 @ManagedBean(name = "buscarFacturaSvTradeBean")
@@ -63,7 +61,6 @@ public class BuscarFacturaSvTradeBean implements Serializable {
 	
 	public String seleccionarFactura(int idFactura)
 	{
-		
 		idFacturaSelected=idFactura;
 		System.out.println("Nueva factura: "+idFacturaSelected);
 		return "vistaFacturaSvTrade?faces-redirect=true";

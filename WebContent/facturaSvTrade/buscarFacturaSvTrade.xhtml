@@ -29,7 +29,7 @@
 		            Listado de facturas
 		        </f:facet>
 		        <p:column  headerText="..."   >
-					<p:commandButton action="#{buscarFacturaSvTradeBean.seleccionarFactura(fac.idFactura)}" icon="fa fa-plus" value="Generar" >
+					<p:commandButton action="#{buscarFacturaSvTradeBean.generarNueva(fac.idFactura)}" icon="fa fa-plus" value="Generar" >
 					</p:commandButton>
 				</p:column>
 				<p:column  headerText="# FACTURA"  filterBy="#{fac.codigoFactura}" >

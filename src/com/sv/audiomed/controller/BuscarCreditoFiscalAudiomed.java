@@ -20,12 +20,12 @@ public class BuscarCreditoFiscalAudiomed implements Serializable{
 	
 	CreditoFiscalAudiomedDAO facturaDAO;
 	List<CreditoFiscalAudiomed> facturas;
-	private int idFacturaSelected=0;
+	private int idFacturaSelected;
 	
 	
 	public BuscarCreditoFiscalAudiomed()
 	{
-		
+		idFacturaSelected=0;
 	}
 	
 	/*@PostConstruct
@@ -52,6 +52,12 @@ public class BuscarCreditoFiscalAudiomed implements Serializable{
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public String generarNueva(int idFactura)
+	{
+		this.idFacturaSelected=idFactura;
+		return "generarCreditoFiscalAudiomed.xhtml?faces-redirect=true";
 	}
 	
 	public String seleccionarFactura(int idFactura)

@@ -71,7 +71,7 @@ public class BuscarFacturaAudiomedBean implements Serializable {
 	public String generarNueva(int idFactura)
 	{
 		this.idFacturaSelected=idFactura;
-		return "facturaAudiomed.xhtml?faces-redirect=true";
+		return "generarFacturaAudiomed.xhtml?faces-redirect=true";
 	}
 
 	

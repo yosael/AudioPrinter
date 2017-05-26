@@ -49,7 +49,7 @@ public class FacturaAudiomedBean {
 		facturaAudiomedDAO = new FacturaAudiomedDAO();
 		inicializarFactura();
 		inicializarDetalle();
-		cargarFactura();
+		//cargarFactura();
 	}
 	
 	public void inicializarDetalle()
@@ -144,7 +144,7 @@ public class FacturaAudiomedBean {
 		{
 			monto =Util.moneyDecimal(monto);
 			detalle.setVentasNoSujetas(monto);
-			facturaAudiomed.setSumaNoSujetas(facturaAudiomed.getSumaNoSujetas()+monto);
+			facturaAudiomed.setSumaNoSujetas(Util.moneyDecimal(facturaAudiomed.getSumaNoSujetas()+monto));
 			facturaAudiomed.setVentasNoSujetas(facturaAudiomed.getSumaNoSujetas());
 		}
 		else if(tipoConcepto.equals("Exentas"))
@@ -152,7 +152,7 @@ public class FacturaAudiomedBean {
 			monto =Util.moneyDecimal(monto);
 			
 			detalle.setVentasExentas(monto);
-			facturaAudiomed.setSumaVentasExentas(facturaAudiomed.getSumaVentasExentas()+monto);
+			facturaAudiomed.setSumaVentasExentas(Util.moneyDecimal(facturaAudiomed.getSumaVentasExentas()+monto));
 			facturaAudiomed.setVentasExentas(facturaAudiomed.getSumaVentasExentas());
 			
 		}
@@ -160,15 +160,15 @@ public class FacturaAudiomedBean {
 		{
 			monto =Util.moneyDecimal(monto);
 			detalle.setVentasGravadas(monto);
-			facturaAudiomed.setSumaVentasGravadas(facturaAudiomed.getSumaVentasGravadas()+monto);
+			facturaAudiomed.setSumaVentasGravadas(Util.moneyDecimal(facturaAudiomed.getSumaVentasGravadas()+monto));
 			
 		}
-		else
+		/*else
 		{
 			monto =Util.moneyDecimal(monto);
 			detalle.setVentasGravadas(monto);
 			facturaAudiomed.setSumaVentasGravadas(facturaAudiomed.getSumaVentasGravadas()+monto);
-		}
+		}*/
 		
 		
 	}

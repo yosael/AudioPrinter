@@ -9,19 +9,17 @@
 
 <h:head>
 	<title>Inicio</title>
-	
 </h:head>
- 
 
 <h:body >
 	<h:form id="form1" >
 		
 		<p:growl id="growl" life="2000" />
 		
-		<p:panelGrid columns="1" style="width:1050px;margin:0 auto" >
+		<p:panelGrid columns="1" style="width:990px;margin:0 auto" >
 		
 			<h:panelGrid columns="1" >
-				<p:outputLabel value="FACTURA AUDIOMED"  ></p:outputLabel>
+				<p:outputLabel value="FACTURA DOCTOR"  ></p:outputLabel>
 			</h:panelGrid>
 			
 			<h:panelGrid columns="5" >
@@ -30,43 +28,42 @@
 				<p:outputLabel value="" />
 				<p:spacer width="100" height="0" ></p:spacer>
 				<p:outputLabel value="NO FACTURA: " />
-				<p:inputText value="#{generarFacturaAudiomedBean.facturaAudiomed.codigoFactura}" />
+				<p:inputText value="#{generarFacturaDoctorBean.facturaDoctor.codigoFactura}" />
 			
 				<p:outputLabel value="CLIENTE: " />
-				<p:inputText value="#{generarFacturaAudiomedBean.facturaAudiomed.nombreCliente}" />
+				<p:inputText value="#{generarFacturaDoctorBean.facturaDoctor.nombreCliente}" />
 				<p:spacer width="100" height="0" ></p:spacer>
 				<p:outputLabel value="FECHA: " />
-				<p:calendar value="#{generarFacturaAudiomedBean.facturaAudiomed.fecha}" >
+				<p:calendar value="#{generarFacturaDoctorBean.facturaDoctor.fecha}" >
 				</p:calendar>
 				
 				<p:outputLabel value="DIRECCION: " />
-				<p:inputText value="#{generarFacturaAudiomedBean.facturaAudiomed.direccionCliente}" />
+				<p:inputText value="#{generarFacturaDoctorBean.facturaDoctor.direccionCliente}" />
 				<p:spacer width="100" height="0" ></p:spacer>
 				<p:outputLabel value="DUI/NIT: " />
-				<p:inputText value="#{generarFacturaAudiomedBean.facturaAudiomed.docCliente}" />
+				<p:inputText value="#{generarFacturaDoctorBean.facturaDoctor.docCliente}" />
 				
 				<p:outputLabel value="" />
 				<p:outputLabel value="" />
 				<p:spacer width="100" height="0" ></p:spacer>
 				<p:outputLabel value="VTA A ACTA DE: " />
-				<p:inputText value="#{generarFacturaAudiomedBean.facturaAudiomed.vtaActa}" />
+				<p:inputText value="#{generarFacturaDoctorBean.facturaDoctor.vtaActa}" />
 				
 			</h:panelGrid>
 			<!--  -->
-			<h:panelGrid columns="7" id="itmCampos" >
-				<p:inputText value="#{generarFacturaAudiomedBean.detalle.cantidad}" placeholder="CANTIDAD" style="width:75px" />
-				<p:inputText value="#{generarFacturaAudiomedBean.detalle.descripciones}" placeholder="DESCRIPCIONES" style="width:328px" />
-				<p:inputText value="#{generarFacturaAudiomedBean.detalle.precioUnitario}" placeholder="PRECIO" style="width:70px" />
-				<p:selectOneRadio id="console" value="#{generarFacturaAudiomedBean.tipoConcepto}">
+			<h:panelGrid columns="6" id="itmCampos" >
+				<p:inputText value="#{generarFacturaDoctorBean.detalle.cantidad}" placeholder="CANTIDAD" style="width:75px" />
+				<p:inputText value="#{generarFacturaDoctorBean.detalle.descripciones}" placeholder="DESCRIPCIONES" style="width:328px" />
+				<p:inputText value="#{generarFacturaDoctorBean.detalle.precioUnitario}" placeholder="PRECIO" style="width:70px" />
+				<p:selectOneRadio id="console" value="#{generarFacturaDoctorBean.tipoConcepto}">
 		            <f:selectItem itemLabel="NO SUJETAS" itemValue="NoSujetas" />
 		            <f:selectItem itemLabel="EXENTAS" itemValue="Exentas" />
 		            <f:selectItem itemLabel="GRAVADAS" itemValue="Gravadas"   />
-		            <!-- <f:selectItem itemLabel="IN-IVA" itemValue="IncluyeIva"   /> -->
 		        </p:selectOneRadio><!-- update="tbDetalles,itmCampos" -->
-				<p:commandButton value="+" action="#{generarFacturaAudiomedBean.cargarDetalle()}"  update="form1"   ></p:commandButton>
+				<p:commandButton value="+" action="#{generarFacturaDoctorBean.cargarDetalle()}"  update="form1"   ></p:commandButton>
 			</h:panelGrid>
 			
-			<p:dataTable id="tbDetalles" value="#{generarFacturaAudiomedBean.detalles}" var="det" >
+			<p:dataTable id="tbDetalles" value="#{generarFacturaDoctorBean.detalles}" var="det" >
 				<p:column  headerText="Cantidad" style="width:75px" >
 					<p:outputLabel value="#{det.cantidad}" />
 				</p:column>
@@ -85,17 +82,16 @@
 				<p:column headerText="Gravadas" style="width:95px" >
 					<h:outputLabel value="#{det.ventasGravadas}" />
 				</p:column>
-				
 				<p:column headerText="">
-					<p:commandLink value="x" style="color:red;" actionListener="#{generarFacturaAudiomedBean.quitarDetalle(det)}" update="form1" ></p:commandLink>
+					<p:commandLink value="x" style="color:red;" actionListener="#{generarFacturaDoctorBean.quitarDetalle(det)}" update="form1" ></p:commandLink>
 				</p:column>
 			</p:dataTable>
 			
 			<p:panelGrid columns="2" >
 				
 				<h:panelGrid columns="2">
-					<p:inputTextarea value="#{generarFacturaAudiomedBean.facturaAudiomed.letrasMonto}"  autoResize="false" ></p:inputTextarea>
-					<p:spacer width="298" height="2" ></p:spacer>
+					<p:inputTextarea value="#{generarFacturaDoctorBean.facturaDoctor.letrasMonto}" ></p:inputTextarea>
+					<p:spacer width="218" height="2" ></p:spacer>
 				</h:panelGrid>
 					
 				
@@ -104,36 +100,36 @@
 					<h:panelGrid columns="5"  >
 						<p:outputLabel value="Sumas: " style="width:220px;" />
 						<p:spacer width="70" height="0" ></p:spacer>
-						<p:inputText value="#{generarFacturaAudiomedBean.facturaAudiomed.sumaNoSujetas}" style="width:75px" />
-						<p:inputText value="#{generarFacturaAudiomedBean.facturaAudiomed.sumaVentasExentas}" style="width:75px" />
-						<p:inputText value="#{generarFacturaAudiomedBean.facturaAudiomed.sumaVentasGravadas}" style="width:75px" />
+						<p:inputText value="#{generarFacturaDoctorBean.facturaDoctor.sumaNoSujetas}" style="width:75px" />
+						<p:inputText value="#{generarFacturaDoctorBean.facturaDoctor.sumaVentasExentas}" style="width:75px" />
+						<p:inputText value="#{generarFacturaDoctorBean.facturaDoctor.sumaVentasGravadas}" style="width:75px" />
 					</h:panelGrid>
 					
 					<h:panelGrid columns="3" >
 						<p:outputLabel value="Ventas Extentas: " style="width:220px" />
 						<p:spacer width="70" height="0" ></p:spacer>
-						<p:inputText value="#{generarFacturaAudiomedBean.facturaAudiomed.ventasExentas}" />
+						<p:inputText value="#{generarFacturaDoctorBean.facturaDoctor.ventasExentas}" />
 						
 						<p:outputLabel value="Ventas No Sujetas: " style="width:220px" />
 						<p:spacer width="70" height="0" ></p:spacer>
-						<p:inputText value="#{generarFacturaAudiomedBean.facturaAudiomed.ventasNoSujetas}" />
+						<p:inputText value="#{generarFacturaDoctorBean.facturaDoctor.ventasNoSujetas}" />
 						
 						<p:outputLabel value="Ventas Sub-total: " style="width:220px" />
 						<p:spacer width="70" height="0" ></p:spacer>
-						<p:inputText value="#{generarFacturaAudiomedBean.facturaAudiomed.subtotal}" />
+						<p:inputText value="#{generarFacturaDoctorBean.facturaDoctor.subtotal}" />
 						
 						<h:panelGrid columns="2" >
 							<p:outputLabel value="IVA Retenido(-)" style="width:220px" />
-							<p:selectBooleanCheckbox value="#{generarFacturaAudiomedBean.aplicarIvaRetenido}" >
-								<p:ajax update="form1"  listener="#{generarFacturaAudiomedBean.verificarAplicacionIvaRetenido()}" />
+							<p:selectBooleanCheckbox value="#{generarFacturaDoctorBean.aplicarIvaRetenido}" >
+								<p:ajax update="form1"  listener="#{generarFacturaDoctorBean.verificarAplicacionIvaRetenido()}" />
 							</p:selectBooleanCheckbox>
 						</h:panelGrid>	
 						<p:spacer width="70" height="0" ></p:spacer>
-						<p:inputText value="#{generarFacturaAudiomedBean.facturaAudiomed.ivaRetenido}" />
+						<p:inputText value="#{generarFacturaDoctorBean.facturaDoctor.ivaRetenido}" />
 						
 						<p:outputLabel value="VENTA TOTAL " style="width:220px" />
 						<p:spacer width="70" height="0" ></p:spacer>
-						<p:inputText value="#{generarFacturaAudiomedBean.facturaAudiomed.ventaTotal}" />
+						<p:inputText value="#{generarFacturaDoctorBean.facturaDoctor.ventaTotal}" />
 						
 					</h:panelGrid>
 					
@@ -142,13 +138,12 @@
 			</p:panelGrid>
 			
 			<h:panelGroup style="margin:0 auto;"  >
-				<!-- <p:commandButton value="Inicio" action="../seleccionarFormato.xhtml" ></p:commandButton> -->
 				<p:link  href="../seleccionarFormato.xhtml"  >
 					<p:button value="Inicio" icon="fa fa-home" ></p:button>
 				</p:link>
-				<p:commandButton value="Buscar facturas" action="buscarFacturaAudiomed?faces-redirect=true" icon="fa fa-search" ></p:commandButton>
-				<p:commandButton value="Guardar"  action="#{generarFacturaAudiomedBean.agregarFactura()}"  icon="fa fa-save"  update="form1" onclick="this.disabled=true" >
-					<f:param value="#{generarFacturaAudiomedBean.idFactura}" ></f:param>
+				<p:commandButton value="Buscar facturas" action="buscarFacturaDoctor?faces-redirect=true" icon="fa fa-search" ></p:commandButton>
+				<p:commandButton value="Guardar"  action="#{generarFacturaDoctorBean.agregarFactura()}" icon="fa fa-save"  update="form1" onclick="this.disabled=true" >
+					<f:param value="#{generarFacturaDoctorBean.idFactura}" ></f:param>
 				</p:commandButton>
 			</h:panelGroup>
 			

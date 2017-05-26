@@ -8,6 +8,7 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
@@ -19,7 +20,7 @@ import com.sv.audiomed.util.Util;
 
 @ManagedBean
 @ViewScoped
-public class CreditoFiscalDoctorBean implements Serializable {
+public class GenerarCreditoFiscalDoctorBean implements Serializable {
 	
 	
 	private static final long serialVersionUID = 1L;
@@ -32,12 +33,14 @@ public class CreditoFiscalDoctorBean implements Serializable {
 	private String tipoConcepto;
 	private boolean aplicarIvaRetenido;
 	
+	@ManagedProperty(value="#{buscarCreditoFiscalDoctorBean}")
+	private BuscarCreditoFiscalDoctorBean buscarCreditoFiscalDoctorBean;
 	
-	
-	public CreditoFiscalDoctorBean()
+	public GenerarCreditoFiscalDoctorBean()
 	{
 		detalles = new ArrayList<DetalleCreditoFiscalDoctor>();
 		aplicarIvaRetenido=false;
+		
 	}
 	
 	@PostConstruct
@@ -46,7 +49,7 @@ public class CreditoFiscalDoctorBean implements Serializable {
 		facturaDAO = new CreditoFiscalDoctorDAO();
 		inicializarFactura();
 		inicializarDetalle();
-		
+		cargarFactura();
 	}
 	
 	public void inicializarDetalle()
@@ -76,6 +79,22 @@ public class CreditoFiscalDoctorBean implements Serializable {
 		factura.setVentaTotal(0d);
 	}
 	
+	public void cargarFactura()
+	{
+		
+		try {
+			
+			idFactura = buscarCreditoFiscalDoctorBean.getIdFacturaSelected();
+			factura = facturaDAO.buscarFacturaPorId(idFactura);
+			factura.setCodigoFactura("");
+			factura.setFecha(new Date());
+			detalles = facturaDAO.buscarDetallesFactura(idFactura);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
 	
 	
 	public String agregarFactura()
@@ -401,7 +420,16 @@ public class CreditoFiscalDoctorBean implements Serializable {
 		this.aplicarIvaRetenido = aplicarIvaRetenido;
 	}
 
+	public BuscarCreditoFiscalDoctorBean getBuscarCreditoFiscalDoctorBean() {
+		return buscarCreditoFiscalDoctorBean;
+	}
 
+	public void setBuscarCreditoFiscalDoctorBean(BuscarCreditoFiscalDoctorBean buscarCreditoFiscalDoctorBean) {
+		this.buscarCreditoFiscalDoctorBean = buscarCreditoFiscalDoctorBean;
+	}
+	
+
+	
 	
 	
 }

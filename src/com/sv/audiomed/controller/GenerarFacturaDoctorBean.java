@@ -11,42 +11,40 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
-
-import com.sv.audiomed.dao.FacturaAudiomedDAO;
-import com.sv.audiomed.model.DetalleFacturaAudiomed;
-import com.sv.audiomed.model.FacturaAudiomed;
+import com.sv.audiomed.dao.FacturaDoctorDAO;
+import com.sv.audiomed.model.DetalleFacturaDoctor;
+import com.sv.audiomed.model.FacturaDoctor;
 import com.sv.audiomed.util.LetrasConverter;
 import com.sv.audiomed.util.Util;
 
-
-@ManagedBean(name = "generarFacturaAudiomedBean")
+@ManagedBean(name = "generarFacturaDoctorBean")
 @ViewScoped
-public class GenerarFacturaAudiomedBean {
+public class GenerarFacturaDoctorBean {
 	
-	private FacturaAudiomed facturaAudiomed;
-	private FacturaAudiomedDAO facturaAudiomedDAO;
-	private List<DetalleFacturaAudiomed> detalles;
-	private DetalleFacturaAudiomed detalle;
+	private FacturaDoctor facturaDoctor;
+	private FacturaDoctorDAO facturaDoctorDAO;
+	private List<DetalleFacturaDoctor> detalles;
+	private DetalleFacturaDoctor detalle;
 	private int idFactura;
 	private String tipoConcepto;
 	private boolean aplicarIvaRetenido;
 	
-	@ManagedProperty(value="#{buscarFacturaAudiomedBean}")
-	private BuscarFacturaAudiomedBean buscarFacturaAudiomedBean;
 	
+	@ManagedProperty(value="#{buscarFacturaDoctorBean}")
+	private BuscarFacturaDoctorBean buscarFacturaDoctorBean;
 	
-	public GenerarFacturaAudiomedBean() {
+	public GenerarFacturaDoctorBean() {
 		
+		detalles = new ArrayList<DetalleFacturaDoctor>();
 		idFactura=0;
-		aplicarIvaRetenido = false;
 		tipoConcepto="";
-		detalles = new ArrayList<DetalleFacturaAudiomed>();
+		aplicarIvaRetenido=false;
 	}
 	
 	@PostConstruct
 	public void init()
 	{
-		facturaAudiomedDAO = new FacturaAudiomedDAO();
+		facturaDoctorDAO = new FacturaDoctorDAO();
 		inicializarFactura();
 		inicializarDetalle();
 		cargarFactura();
@@ -54,7 +52,7 @@ public class GenerarFacturaAudiomedBean {
 	
 	public void inicializarDetalle()
 	{
-		detalle = new DetalleFacturaAudiomed();
+		detalle = new DetalleFacturaDoctor();
 		detalle.setCantidad(1);
 		detalle.setVentasNoSujetas(0d);
 		detalle.setVentasExentas(0d);
@@ -65,33 +63,34 @@ public class GenerarFacturaAudiomedBean {
 	public void inicializarFactura()
 	{
 		
-		facturaAudiomed = new FacturaAudiomed();
-		facturaAudiomed.setFecha(new Date());
-		facturaAudiomed.setSumaNoSujetas(0d);
-		facturaAudiomed.setSumaVentasExentas(0d);
-		facturaAudiomed.setSumaVentasGravadas(0d);
-		facturaAudiomed.setVentasExentas(0d);
-		facturaAudiomed.setVentasNoSujetas(0d);
-		facturaAudiomed.setSubtotal(0d);
-		facturaAudiomed.setIvaRetenido(0d);
-		facturaAudiomed.setVentaTotal(0d);
+		facturaDoctor = new FacturaDoctor();
+		facturaDoctor.setFecha(new Date());
+		facturaDoctor.setSumaNoSujetas(0d);
+		facturaDoctor.setSumaVentasExentas(0d);
+		facturaDoctor.setSumaVentasGravadas(0d);
+		facturaDoctor.setVentasExentas(0d);
+		facturaDoctor.setVentasNoSujetas(0d);
+		facturaDoctor.setSubtotal(0d);
+		facturaDoctor.setIvaRetenido(0d);
+		facturaDoctor.setVentaTotal(0d);
 	}
+	
 	
 	public void cargarFactura()
 	{
 		
 		try {
 			
-			idFactura= buscarFacturaAudiomedBean.getIdFacturaSelected();
-			System.out.println("ID FACTURA "+idFactura);
+			idFactura = buscarFacturaDoctorBean.getIdFacturaSelected();
 			
 			if(idFactura>0)
 			{
-				this.facturaAudiomed = facturaAudiomedDAO.buscarFacturaPorId(idFactura);
-				facturaAudiomed.setCodigoFactura("");
-				facturaAudiomed.setFecha(new Date());
-				this.detalles = facturaAudiomedDAO.buscarDetallesFactura(idFactura);
+				facturaDoctor = facturaDoctorDAO.buscarFacturaPorId(idFactura);
+				facturaDoctor.setCodigoFactura("");
+				facturaDoctor.setFecha(new Date());
+				detalles = facturaDoctorDAO.buscarDetallesFactura(idFactura);
 			}
+			
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -103,19 +102,17 @@ public class GenerarFacturaAudiomedBean {
 	public String agregarFactura()
 	{
 
-		if(!validarFacturaAudiomed())
+		if(!validarFacturaDoctor())
 			return "";
-		
 		
 		try {
 			
-			idFactura= facturaAudiomedDAO.agregarFacturaDetalle(facturaAudiomed, detalles);
-			System.out.println("ID FACTURA2 "+idFactura);
+			idFactura= facturaDoctorDAO.agregarFacturaDetalle(facturaDoctor, detalles);
 			
 			if(idFactura==0)
 				return "";
 			else
-				return "buscarFacturaAudiomed.xhtml?faces-redirect=true";//return "vistaFacturaAudiomed.xhtml?faces-redirect=true&idFactura="+idFactura+"";
+				return "buscarFacturaDoctor.xhtml?faces-redirect=true";//return "vistaFacturaDoctor.xhtml?faces-redirect=true&idFactura="+idFactura+"";
 			
 		} catch (Exception e) {
 				
@@ -128,12 +125,13 @@ public class GenerarFacturaAudiomedBean {
 	
 	public String agregarDetalleFactura()
 	{
-		for(DetalleFacturaAudiomed detalle: detalles)
+		for(DetalleFacturaDoctor detalle: detalles)
 		{
-			detalle.setIdFactura(facturaAudiomed.getIdFactura());
+			
+			detalle.setIdFactura(facturaDoctor.getIdFactura());
 		}
 		
-		return "vistaFacturaAudiomed";
+		return "vistaFacturaDoctor";
 	}
 	
 	public void aplicarConcepto()
@@ -143,33 +141,27 @@ public class GenerarFacturaAudiomedBean {
 		
 		if(tipoConcepto.equals("NoSujetas"))
 		{
-			monto =Util.moneyDecimal(monto);
+			monto =moneyDecimal(monto);
 			detalle.setVentasNoSujetas(monto);
-			facturaAudiomed.setSumaNoSujetas(Util.moneyDecimal(facturaAudiomed.getSumaNoSujetas()+monto));
-			facturaAudiomed.setVentasNoSujetas(facturaAudiomed.getSumaNoSujetas());
+			facturaDoctor.setSumaNoSujetas(facturaDoctor.getSumaNoSujetas()+monto);
+			facturaDoctor.setVentasNoSujetas(facturaDoctor.getSumaNoSujetas());
 		}
 		else if(tipoConcepto.equals("Exentas"))
 		{
-			monto =Util.moneyDecimal(monto);
+			monto =moneyDecimal(monto);
 			
 			detalle.setVentasExentas(monto);
-			facturaAudiomed.setSumaVentasExentas(Util.moneyDecimal(facturaAudiomed.getSumaVentasExentas()+monto));
-			facturaAudiomed.setVentasExentas(facturaAudiomed.getSumaVentasExentas());
+			facturaDoctor.setSumaVentasExentas(facturaDoctor.getSumaVentasExentas()+monto);
+			facturaDoctor.setVentasExentas(facturaDoctor.getSumaVentasExentas());
 			
 		}
-		else if(tipoConcepto.equals("Gravadas"))
+		else
 		{
-			monto =Util.moneyDecimal(monto);
+			monto =moneyDecimal(monto);
 			detalle.setVentasGravadas(monto);
-			facturaAudiomed.setSumaVentasGravadas(Util.moneyDecimal(facturaAudiomed.getSumaVentasGravadas()+monto));
+			facturaDoctor.setSumaVentasGravadas(facturaDoctor.getSumaVentasGravadas()+monto);
 			
 		}
-		/*else
-		{
-			monto =Util.moneyDecimal(monto);
-			detalle.setVentasGravadas(monto);
-			facturaAudiomed.setSumaVentasGravadas(facturaAudiomed.getSumaVentasGravadas()+monto);
-		}*/
 		
 		
 	}
@@ -177,55 +169,55 @@ public class GenerarFacturaAudiomedBean {
 	public void actualizarTotales()
 	{
 		
-		double subtotal=facturaAudiomed.getSumaVentasGravadas()+facturaAudiomed.getVentasExentas()+facturaAudiomed.getVentasNoSujetas();
+		double subtotal=facturaDoctor.getSumaVentasGravadas()+facturaDoctor.getVentasExentas()+facturaDoctor.getVentasNoSujetas();
 		double total=0d;
 		
 		subtotal = Util.moneyDecimal(subtotal);
-		facturaAudiomed.setSubtotal(subtotal);
+		facturaDoctor.setSubtotal(subtotal);
 		
-		total=subtotal+facturaAudiomed.getVentasExentas()+facturaAudiomed.getVentasNoSujetas();//Revisar
+		total=subtotal+facturaDoctor.getVentasExentas()+facturaDoctor.getVentasNoSujetas();//Revisar
 		
-		facturaAudiomed.setVentaTotal(Util.moneyDecimal(total));
+		facturaDoctor.setVentaTotal(Util.moneyDecimal(total));
 		
 		if(aplicarIvaRetenido==true)
 		{
 			aplicarIvaRetenido();
 		}
-
 	}
 	
-	public void quitarConceptoAplicado(DetalleFacturaAudiomed detalle)
+	public void quitarConceptoAplicado(DetalleFacturaDoctor detalle)
 	{
 		double monto =0f;
 		monto=detalle.getCantidad()*detalle.getPrecioUnitario();
 		
 		if(detalle.getVentasNoSujetas()>0)
 		{
-			monto =Util.moneyDecimal(monto);
+			monto =moneyDecimal(monto);
 			detalle.setVentasNoSujetas(monto);
-			facturaAudiomed.setSumaNoSujetas(Util.moneyDecimal(facturaAudiomed.getSumaNoSujetas()-monto));
-			facturaAudiomed.setVentasNoSujetas(facturaAudiomed.getSumaNoSujetas());
+			facturaDoctor.setSumaNoSujetas(facturaDoctor.getSumaNoSujetas()-monto);
+			facturaDoctor.setVentasNoSujetas(facturaDoctor.getSumaNoSujetas());
 		}
 		else if(detalle.getVentasExentas()>0)
 		{
-			monto =Util.moneyDecimal(monto);
+			monto =moneyDecimal(monto);
 			
 			detalle.setVentasExentas(monto);
-			facturaAudiomed.setSumaVentasExentas(Util.moneyDecimal(facturaAudiomed.getSumaVentasExentas()-monto));
-			facturaAudiomed.setVentasExentas(facturaAudiomed.getSumaVentasExentas());
+			facturaDoctor.setSumaVentasExentas(facturaDoctor.getSumaVentasExentas()-monto);
+			facturaDoctor.setVentasExentas(facturaDoctor.getSumaVentasExentas());
 			
 		}
 		else
 		{
-			monto =Util.moneyDecimal(monto);
+			monto =moneyDecimal(monto);
 			detalle.setVentasGravadas(monto);
-			facturaAudiomed.setSumaVentasGravadas(facturaAudiomed.getSumaVentasGravadas()-monto);
+			facturaDoctor.setSumaVentasGravadas(facturaDoctor.getSumaVentasGravadas()-monto);
 			
 		}
 	}
 	
-	
-	
+	public Double moneyDecimal(Double num) {
+		return new Long(Math.round(num*100))/100.0;
+	}
 	
 	
 	public void cargarDetalle()
@@ -244,11 +236,12 @@ public class GenerarFacturaAudiomedBean {
 	}
 	
 	
-	public boolean validarFacturaAudiomed()
+	public boolean validarFacturaDoctor()
 	{
 		
-		
-		if(facturaAudiomed.getCodigoFactura()==null || facturaAudiomed.getCodigoFactura().equals(""))
+		System.out.println("entro a validar");
+		System.out.println(facturaDoctor.getCodigoFactura());
+		if(facturaDoctor.getCodigoFactura()==null || facturaDoctor.getCodigoFactura().equals(""))
 		{
 			System.out.println("Entro a factura valida");
 			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_WARN,"Ingrese el numero de factura" ,null);
@@ -256,21 +249,21 @@ public class GenerarFacturaAudiomedBean {
 			return false;
 		}
 		
-		if(facturaAudiomed.getNombreCliente()==null || facturaAudiomed.getNombreCliente().equals(""))
+		if(facturaDoctor.getNombreCliente()==null || facturaDoctor.getNombreCliente().equals(""))
 		{ 
 			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_WARN,"Ingrese el nombre del cliente" ,null);
 			FacesContext.getCurrentInstance().addMessage(null, message);
 			return false;
 		}
 		
-		if(facturaAudiomed.getDireccionCliente()==null || facturaAudiomed.getDireccionCliente().equals(""))
+		if(facturaDoctor.getDireccionCliente()==null || facturaDoctor.getDireccionCliente().equals(""))
 		{
 			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_WARN,"Ingrese la direccion" ,null);
 			FacesContext.getCurrentInstance().addMessage(null, message);
 			return false;
 		}
 		
-		if(facturaAudiomed.getFecha()==null)
+		if(facturaDoctor.getFecha()==null)
 		{
 			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_WARN,"Ingrese la fecha" ,null);
 			FacesContext.getCurrentInstance().addMessage(null, message);
@@ -314,7 +307,7 @@ public class GenerarFacturaAudiomedBean {
 		return true;
 	}
 	
-	public void quitarDetalle(DetalleFacturaAudiomed detalle)
+	public void quitarDetalle(DetalleFacturaDoctor detalle)
 	{
 		quitarConceptoAplicado(detalle);
 		actualizarTotales();
@@ -326,32 +319,33 @@ public class GenerarFacturaAudiomedBean {
 	public void convertirNumerosALetras()
 	{
 		LetrasConverter convertidor = new LetrasConverter();
-		String numeroLetras = convertidor.convertir(facturaAudiomed.getVentaTotal());
-		facturaAudiomed.setLetrasMonto(numeroLetras);
+		String numeroLetras = convertidor.convertir(facturaDoctor.getVentaTotal());
+		facturaDoctor.setLetrasMonto(numeroLetras);
 	}
+	
 	
 	public void aplicarIvaRetenido()
 	{
-		double ivaRetenido=facturaAudiomed.getSumaVentasGravadas()/1.13*0.01;
-		double total=facturaAudiomed.getVentaTotal();
+		double ivaRetenido=facturaDoctor.getSumaVentasGravadas()/1.13*0.01;
+		double total=facturaDoctor.getVentaTotal();
 		
 		ivaRetenido = Util.moneyDecimal(ivaRetenido);
 		total= Util.moneyDecimal(total-ivaRetenido);
 		
-		facturaAudiomed.setIvaRetenido(ivaRetenido);
-		facturaAudiomed.setVentaTotal(total);
+		facturaDoctor.setIvaRetenido(ivaRetenido);
+		facturaDoctor.setVentaTotal(total);
 	}
 	
 	public void quitarIvaRetenido()
 	{
-		double ivaRetenido=facturaAudiomed.getSumaVentasGravadas()/1.13*0.01;
-		double total=facturaAudiomed.getVentaTotal();
+		double ivaRetenido=facturaDoctor.getSumaVentasGravadas()/1.13*0.01;
+		double total=facturaDoctor.getVentaTotal();
 		
 		ivaRetenido = Util.moneyDecimal(ivaRetenido);
 		total= Util.moneyDecimal(total+ivaRetenido);
 		
-		facturaAudiomed.setIvaRetenido(0d);
-		facturaAudiomed.setVentaTotal(total);
+		facturaDoctor.setIvaRetenido(0d);
+		facturaDoctor.setVentaTotal(total);
 	}
 	
 	public void verificarAplicacionIvaRetenido()
@@ -374,31 +368,30 @@ public class GenerarFacturaAudiomedBean {
 	
 	
 	
-	
 	//Getters and Setters
 	
 	
-	public FacturaAudiomed getFacturaAudiomed() {
-		return facturaAudiomed;
+	public FacturaDoctor getFacturaDoctor() {
+		return facturaDoctor;
 	}
 
-	public void setFacturaAudiomed(FacturaAudiomed facturaAudiomed) {
-		this.facturaAudiomed = facturaAudiomed;
+	public void setFacturaDoctor(FacturaDoctor FacturaDoctor) {
+		this.facturaDoctor = FacturaDoctor;
 	}
 
-	public List<DetalleFacturaAudiomed> getDetalles() {
+	public List<DetalleFacturaDoctor> getDetalles() {
 		return detalles;
 	}
 
-	public void setDetalles(List<DetalleFacturaAudiomed> detalles) {
+	public void setDetalles(List<DetalleFacturaDoctor> detalles) {
 		this.detalles = detalles;
 	}
 
-	public DetalleFacturaAudiomed getDetalle() {
+	public DetalleFacturaDoctor getDetalle() {
 		return detalle;
 	}
 
-	public void setDetalle(DetalleFacturaAudiomed detalle) {
+	public void setDetalle(DetalleFacturaDoctor detalle) {
 		this.detalle = detalle;
 	}
 
@@ -418,12 +411,12 @@ public class GenerarFacturaAudiomedBean {
 		this.tipoConcepto = tipoConcepto;
 	}
 
-	public BuscarFacturaAudiomedBean getBuscarFacturaAudiomedBean() {
-		return buscarFacturaAudiomedBean;
+	public BuscarFacturaDoctorBean getBuscarFacturaDoctorBean() {
+		return buscarFacturaDoctorBean;
 	}
 
-	public void setBuscarFacturaAudiomedBean(BuscarFacturaAudiomedBean buscarFacturaAudiomedBean) {
-		this.buscarFacturaAudiomedBean = buscarFacturaAudiomedBean;
+	public void setBuscarFacturaDoctorBean(BuscarFacturaDoctorBean buscarFacturaDoctorBean) {
+		this.buscarFacturaDoctorBean = buscarFacturaDoctorBean;
 	}
 
 	public boolean isAplicarIvaRetenido() {
@@ -433,12 +426,6 @@ public class GenerarFacturaAudiomedBean {
 	public void setAplicarIvaRetenido(boolean aplicarIvaRetenido) {
 		this.aplicarIvaRetenido = aplicarIvaRetenido;
 	}
-
-	
-	
-	
-	
-	
 	
 	
 	

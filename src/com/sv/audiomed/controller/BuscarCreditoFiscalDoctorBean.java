@@ -54,6 +54,13 @@ public class BuscarCreditoFiscalDoctorBean implements Serializable{
 		}
 	}
 	
+	public String generarNueva(int idFactura)
+	{
+		this.idFacturaSelected=idFactura;
+		
+		return "generarCreditoFiscalDoctor?faces-redirect=true";
+	}
+	
 	public String seleccionarFactura(int idFactura)
 	{
 		

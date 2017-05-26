@@ -99,7 +99,7 @@
 				<p:commandButton value="+" action="#{creditoFiscalSvTradeBean.cargarDetalle()}"  update="form1"   ></p:commandButton>
 			</h:panelGrid>
 			
-			<p:dataTable id="tbDetalles" value="#{creditoFiscalSvTradeBean.detalles}" var="det" >
+			<p:dataTable id="tbDetalles" value="#{creditoFiscalSvTradeBean.detalles}" var="det" emptyMessage="....." >
 				<p:column  headerText="Cantidad" style="width:75px" >
 					<p:outputLabel value="#{det.cantidad}" />
 				</p:column>
@@ -142,21 +142,31 @@
 					</h:panelGrid>
 					
 					<h:panelGrid columns="3" >
-						<p:outputLabel value="Ventas Extentas: " style="width:220px" />
+					
+						<p:outputLabel value="13% de IVA: " style="width:220px" />
 						<p:spacer width="70" height="0" ></p:spacer>
-						<p:inputText value="#{creditoFiscalSvTradeBean.factura.ventasExentas}" />
+						<p:inputText value="#{creditoFiscalSvTradeBean.factura.porcentIva}" />
 						
-						<p:outputLabel value="Ventas No Sujetas: " style="width:220px" />
+						<h:panelGrid columns="2" >
+							<p:outputLabel value="IVA Retenido(-)" style="width:220px" />
+							<p:selectBooleanCheckbox value="#{creditoFiscalSvTradeBean.aplicarIvaRetenido}" >
+								<p:ajax update="form1"  listener="#{creditoFiscalSvTradeBean.verificarAplicacionIveRetenido()}" />
+							</p:selectBooleanCheckbox>
+						</h:panelGrid>	
 						<p:spacer width="70" height="0" ></p:spacer>
-						<p:inputText value="#{creditoFiscalSvTradeBean.factura.ventasNoSujetas}" />
+						<p:inputText value="#{creditoFiscalSvTradeBean.factura.ivaRetenido}" />
 						
 						<p:outputLabel value="Ventas Sub-total: " style="width:220px" />
 						<p:spacer width="70" height="0" ></p:spacer>
 						<p:inputText value="#{creditoFiscalSvTradeBean.factura.subtotal}" />
 						
-						<p:outputLabel value="IVA Retenido" style="width:220px" />
+						<p:outputLabel value="Ventas No Sujetas: " style="width:220px" />
 						<p:spacer width="70" height="0" ></p:spacer>
-						<p:inputText value="#{creditoFiscalSvTradeBean.factura.ivaRetenido}" />
+						<p:inputText value="#{creditoFiscalSvTradeBean.factura.ventasNoSujetas}" />
+						
+						<p:outputLabel value="Ventas Extentas: " style="width:220px" />
+						<p:spacer width="70" height="0" ></p:spacer>
+						<p:inputText value="#{creditoFiscalSvTradeBean.factura.ventasExentas}" />
 						
 						<p:outputLabel value="VENTA TOTAL " style="width:220px" />
 						<p:spacer width="70" height="0" ></p:spacer>
@@ -177,7 +187,7 @@
 					<f:param value="#{creditoFiscalSvTradeBean.idFactura}" ></f:param>
 				</p:commandButton>
 			</h:panelGroup>
-			
+			<p:spacer height="50" width="0" ></p:spacer>
 		</p:panelGrid>
 		
 	</h:form>

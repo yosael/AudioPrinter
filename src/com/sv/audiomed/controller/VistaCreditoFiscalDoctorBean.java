@@ -32,7 +32,6 @@ public class VistaCreditoFiscalDoctorBean implements Serializable {
 	{
 		factura = new CreditoFiscalDoctor();
 		detalles =  new ArrayList<DetalleCreditoFiscalDoctor>();
-		
 	}
 	
 	

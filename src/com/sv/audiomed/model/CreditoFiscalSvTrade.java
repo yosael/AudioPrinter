@@ -27,6 +27,7 @@ public class CreditoFiscalSvTrade {
 	private Double ivaRetenido;
 	private Double ventaTotal;
 	private String letrasMonto;
+	private Double porcentIva;
 	
 	
 	
@@ -169,6 +170,13 @@ public class CreditoFiscalSvTrade {
 	}
 	public void setLetrasMonto(String letrasMonto) {
 		this.letrasMonto = letrasMonto;
+	}
+	
+	public Double getPorcentIva() {
+		return porcentIva;
+	}
+	public void setPorcentIva(Double porcentIva) {
+		this.porcentIva = porcentIva;
 	}
 	
 	

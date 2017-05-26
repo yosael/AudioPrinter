@@ -15,6 +15,7 @@ import com.sv.audiomed.dao.FacturaSvTradeDAO;
 import com.sv.audiomed.model.DetalleFacturaSvTrade;
 import com.sv.audiomed.model.FacturaSvTrade;
 import com.sv.audiomed.util.LetrasConverter;
+import com.sv.audiomed.util.Util;
 
 @ManagedBean(name = "facturaSvTradeBean")
 @ViewScoped
@@ -22,15 +23,22 @@ public class FacturaSvTradeBean {
 	
 	private FacturaSvTrade factura;
 	private FacturaSvTradeDAO facturaDAO;
-	//private DetallefacturaDAO detallefacturaDAO;
-	private List<DetalleFacturaSvTrade> detalles = new ArrayList<DetalleFacturaSvTrade>();
+
+	private List<DetalleFacturaSvTrade> detalles;
 	private DetalleFacturaSvTrade detalle;
-	private int idFactura=0;
-	private String tipoConcepto="";
-	
+	private int idFactura;
+	private String tipoConcepto;
+	private boolean aplicarIvaRetenido;
 	
 	@ManagedProperty(value="#{buscarFacturaSvTradeBean}")
 	private BuscarFacturaSvTradeBean buscarFacturaSvTradeBean;
+	
+	public FacturaSvTradeBean() {
+		detalles = new ArrayList<DetalleFacturaSvTrade>();
+		idFactura=0;
+		tipoConcepto="";
+		aplicarIvaRetenido=false;
+	}
 	
 	@PostConstruct
 	public void init()
@@ -138,7 +146,7 @@ public class FacturaSvTradeBean {
 		{
 			monto =moneyDecimal(monto);
 			detalle.setVentasNoSujetas(monto);
-			factura.setSumaNoSujetas(factura.getSumaNoSujetas()+monto);
+			factura.setSumaNoSujetas(moneyDecimal(factura.getSumaNoSujetas()+monto));
 			factura.setVentasNoSujetas(factura.getSumaNoSujetas());
 		}
 		else if(tipoConcepto.equals("Exentas"))
@@ -146,7 +154,7 @@ public class FacturaSvTradeBean {
 			monto =moneyDecimal(monto);
 			
 			detalle.setVentasExentas(monto);
-			factura.setSumaVentasExentas(factura.getSumaVentasExentas()+monto);
+			factura.setSumaVentasExentas(moneyDecimal(factura.getSumaVentasExentas()+monto));
 			factura.setVentasExentas(factura.getSumaVentasExentas());
 			
 		}
@@ -154,7 +162,7 @@ public class FacturaSvTradeBean {
 		{
 			monto =moneyDecimal(monto);
 			detalle.setVentasGravadas(monto);
-			factura.setSumaVentasGravadas(factura.getSumaVentasGravadas()+monto);
+			factura.setSumaVentasGravadas(moneyDecimal(factura.getSumaVentasGravadas()+monto));
 			
 		}
 		
@@ -165,17 +173,19 @@ public class FacturaSvTradeBean {
 	{
 		
 		double subtotal=factura.getSumaVentasGravadas()+factura.getVentasExentas()+factura.getVentasNoSujetas();
-		subtotal = moneyDecimal(subtotal);
-		System.out.println("Subtotal"+subtotal);
+		double total=0d;
+		
+		subtotal = Util.moneyDecimal(subtotal);
 		factura.setSubtotal(subtotal);
 		
-		double ivaRetenido=factura.getSumaVentasGravadas()*(0.13f);
-		ivaRetenido = moneyDecimal(ivaRetenido);
-		System.out.println("IVA RETENIDO"+ivaRetenido);
-		factura.setIvaRetenido(ivaRetenido);
+		total=subtotal+factura.getVentasExentas()+factura.getVentasNoSujetas();//Revisar
 		
-		factura.setVentaTotal(0d);
-		factura.setVentaTotal(subtotal+ivaRetenido);
+		factura.setVentaTotal(Util.moneyDecimal(total));
+		
+		if(aplicarIvaRetenido==true)
+		{
+			aplicarIvaRetenido();
+		}
 	}
 	
 	public void quitarConceptoAplicado(DetalleFacturaSvTrade detalle)
@@ -315,6 +325,50 @@ public class FacturaSvTradeBean {
 		factura.setLetrasMonto(numeroLetras);
 	}
 	
+	
+	
+	
+	public void aplicarIvaRetenido()
+	{
+		double ivaRetenido=factura.getSumaVentasGravadas()/1.13*0.01;
+		double total=factura.getVentaTotal();
+		
+		ivaRetenido = Util.moneyDecimal(ivaRetenido);
+		total= Util.moneyDecimal(total-ivaRetenido);
+		
+		factura.setIvaRetenido(ivaRetenido);
+		factura.setVentaTotal(total);
+	}
+	
+	public void quitarIvaRetenido()
+	{
+		double ivaRetenido=factura.getSumaVentasGravadas()/1.13*0.01;
+		double total=factura.getVentaTotal();
+		
+		ivaRetenido = Util.moneyDecimal(ivaRetenido);
+		total= Util.moneyDecimal(total+ivaRetenido);
+		
+		factura.setIvaRetenido(0d);
+		factura.setVentaTotal(total);
+	}
+	
+	public void verificarAplicacionIvaRetenido()
+	{
+		
+		if(aplicarIvaRetenido==true)
+		{
+			aplicarIvaRetenido();
+		}
+		else if(aplicarIvaRetenido==false)
+		{
+			quitarIvaRetenido();
+		}
+		
+		convertirNumerosALetras();
+	}
+	
+	
+	
 	//Getters and Setters
 	
 	
@@ -365,6 +419,16 @@ public class FacturaSvTradeBean {
 	public void setBuscarFacturaSvTradeBean(BuscarFacturaSvTradeBean buscarFacturaSvTradeBean) {
 		this.buscarFacturaSvTradeBean = buscarFacturaSvTradeBean;
 	}
+
+	public boolean isAplicarIvaRetenido() {
+		return aplicarIvaRetenido;
+	}
+
+	public void setAplicarIvaRetenido(boolean aplicarIvaRetenido) {
+		this.aplicarIvaRetenido = aplicarIvaRetenido;
+	}
+	
+	
 	
 	
 	

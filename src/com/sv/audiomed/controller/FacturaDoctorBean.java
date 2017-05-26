@@ -47,7 +47,7 @@ public class FacturaDoctorBean {
 		facturaDoctorDAO = new FacturaDoctorDAO();
 		inicializarFactura();
 		inicializarDetalle();
-		cargarFactura();
+		//cargarFactura();
 	}
 	
 	public void inicializarDetalle()

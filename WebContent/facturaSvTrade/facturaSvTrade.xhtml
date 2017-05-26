@@ -118,7 +118,12 @@
 						<p:spacer width="70" height="0" ></p:spacer>
 						<p:inputText value="#{facturaSvTradeBean.factura.subtotal}" />
 						
-						<p:outputLabel value="IVA Retenido" style="width:220px" />
+						<h:panelGrid columns="2" >
+							<p:outputLabel value="IVA Retenido(-)" style="width:220px" />
+							<p:selectBooleanCheckbox value="#{facturaSvTradeBean.aplicarIvaRetenido}" >
+								<p:ajax update="form1"  listener="#{facturaSvTradeBean.verificarAplicacionIvaRetenido()}" />
+							</p:selectBooleanCheckbox>
+						</h:panelGrid>	
 						<p:spacer width="70" height="0" ></p:spacer>
 						<p:inputText value="#{facturaSvTradeBean.factura.ivaRetenido}" />
 						
