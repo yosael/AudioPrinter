@@ -41,6 +41,7 @@ public class FacturaAudiomedBean {
 		aplicarIvaRetenido = false;
 		tipoConcepto="";
 		detalles = new ArrayList<DetalleFacturaAudiomed>();
+		
 	}
 	
 	@PostConstruct
@@ -243,6 +244,7 @@ public class FacturaAudiomedBean {
 	}
 	
 	
+	
 	public boolean validarFacturaAudiomed()
 	{
 		
@@ -432,6 +434,8 @@ public class FacturaAudiomedBean {
 	public void setAplicarIvaRetenido(boolean aplicarIvaRetenido) {
 		this.aplicarIvaRetenido = aplicarIvaRetenido;
 	}
+
+
 
 	
 	

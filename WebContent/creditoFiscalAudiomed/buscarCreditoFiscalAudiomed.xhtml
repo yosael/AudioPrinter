@@ -5,7 +5,9 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:p="http://primefaces.org/ui"> 
 
-<h:head></h:head> 
+<h:head>
+	<h:outputScript name="script.js" library="js" />
+</h:head> 
 <body onload="#{buscarCreditoFiscalAudiomed.iniciar()}" > 
 
 	
@@ -24,19 +26,21 @@
 				</p:link>
 				<p:commandButton value="Nueva" action="creditoFiscalAudiomed.xhtml" icon="fa fa-plus" ></p:commandButton>
 			</h:panelGrid>
-			<p:dataTable id="tbFacturas" value="#{buscarCreditoFiscalAudiomed.facturas}" var="fac" style="max-width:1200px;margin:0 auto"  rows="10" paginator="true" 
+			<p:dataTable id="tbFacturas" value="#{buscarCreditoFiscalAudiomed.facturas}" widgetVar="wvFacturaAudiomed" var="fac" style="max-width:1200px;margin:0 auto"  rows="10" paginator="true" 
                           >
 				<f:facet name="header">
-		            Listado de creditos fiscales
+		            <p:inputText id="globalFilter" onkeyup="filterAdvanced('wvFacturaAudiomed',this);" placeholder="Buscar..." />
 		        </f:facet>
 		        <p:column  headerText="..."   >
-					<p:commandButton action="#{buscarCreditoFiscalAudiomed.generarNueva(fac.idFactura)}"  icon="fa fa-plus" value="Generar" >
-					</p:commandButton>
+					<h:link outcome="generarCreditoFiscalAudiomed.xhtml">  
+					  <f:param name="idFactura" value="#{fac.idFactura}"/>
+					  <p:button icon="fa fa-plus"  value="Generar" ></p:button>
+					</h:link>
 				</p:column>
-				<p:column  headerText="# FACTURA"  filterBy="#{fac.codigoFactura}" >
+				<p:column  headerText="# FACTURA"  filterBy="#{fac.codigoFactura}" filterMatchMode="contains" filterStyle="display:none" >
 						<p:outputLabel value="#{fac.codigoFactura}" />
 				</p:column>
-				<p:column  headerText="PACIENTE" filterBy="#{fac.nombreCliente}" filterMatchMode="contains" >
+				<p:column  headerText="PACIENTE" filterBy="#{fac.nombreCliente}" filterMatchMode="contains" filterStyle="display:none" >
 						<p:outputLabel value="#{fac.nombreCliente}" />
 				</p:column>
 				<p:column  headerText="FECHA" sortBy="#{fac.fecha}" >
@@ -49,8 +53,10 @@
 						<p:outputLabel value="#{fac.ventaTotal}" />
 				</p:column>
 				<p:column  headerText="..."   >
-					<p:commandButton action="#{buscarCreditoFiscalAudiomed.seleccionarFactura(fac.idFactura)}" icon="fa fa-search"  value="Ver" >
-					</p:commandButton>
+					<h:link outcome="vistaCreditoFiscalAudiomed.xhtml">  
+					  <f:param name="idFactura" value="#{fac.idFactura}"/>
+					  <p:button icon="fa fa-search"  value="Ver"></p:button>
+					</h:link>
 				</p:column>
 			</p:dataTable>
 			

@@ -60,18 +60,21 @@ public class VistaFacturaAudiomedBean implements Serializable {
 	{
 		facturaDAO = new FacturaAudiomedDAO();
 		
-		idFactura = buscarFacturaAudiomedBean.getIdFacturaSelected();
+		//idFactura = buscarFacturaAudiomedBean.getIdFacturaSelected();
 		reporteFacturaAudiomedDAO = new ReporteFacturaAudiomedDAO();
 		
 		System.out.println("ID Factura capturado"+idFactura);
-		cargarFactura();
+		//cargarFactura();
 		
 	}
 	
-	public void verVista()
+	public void cargarPorId()
 	{
-		System.out.println("Vista variable "+idFactura);
+		System.out.println("CargoID");
+		cargarFactura();
 	}
+	
+	
 	
 	public void eventoPrueba()
 	{

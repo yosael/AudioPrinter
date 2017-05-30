@@ -75,13 +75,20 @@ public class GenerarFacturaDoctorBean {
 		facturaDoctor.setVentaTotal(0d);
 	}
 	
+	public void cargarPorId()
+	{
+		inicializarFactura();
+		inicializarDetalle();
+		cargarFactura();
+	}
+	
 	
 	public void cargarFactura()
 	{
 		
 		try {
 			
-			idFactura = buscarFacturaDoctorBean.getIdFacturaSelected();
+			//idFactura = buscarFacturaDoctorBean.getIdFacturaSelected();
 			
 			if(idFactura>0)
 			{

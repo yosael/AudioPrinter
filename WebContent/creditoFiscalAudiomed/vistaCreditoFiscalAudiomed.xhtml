@@ -16,7 +16,8 @@
 	 <f:metadata>
            <f:viewParam name="idFactura" value="#{vistaCreditoFiscalAudiomedBean.idFactura}"/>
        </f:metadata>
-<body> 
+       
+<body onload="#{vistaCreditoFiscalAudiomedBean.cargarPorId()}" > 
 
 	<h:form id="form1" >
 		<p:panelGrid columns="1" style="max-width:900px;margin:0 auto" styleClass="borderRd" >

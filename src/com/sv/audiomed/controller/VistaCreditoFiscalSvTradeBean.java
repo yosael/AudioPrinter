@@ -40,6 +40,11 @@ public class VistaCreditoFiscalSvTradeBean implements Serializable {
 	public void init()
 	{
 		facturaDAO = new CreditoFiscalSvTradeDAO();
+		//cargarFactura();
+	}
+	
+	public void cargarPorId()
+	{
 		cargarFactura();
 	}
 	
@@ -49,7 +54,7 @@ public class VistaCreditoFiscalSvTradeBean implements Serializable {
 		
 		try {
 			
-			idFactura = buscarCreditoFiscalSvTradeBean.getIdFacturaSelected();
+			//idFactura = buscarCreditoFiscalSvTradeBean.getIdFacturaSelected();
 			factura = facturaDAO.buscarFacturaPorId(idFactura);
 			detalles = facturaDAO.buscarDetallesFactura(idFactura);
 			

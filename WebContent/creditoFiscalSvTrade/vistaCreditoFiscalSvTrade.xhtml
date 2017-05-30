@@ -13,7 +13,7 @@
 	 <f:metadata>
            <f:viewParam name="idFactura" value="#{vistaCreditoFiscalSvTradeBean.idFactura}"/>
        </f:metadata>
-<body> 
+<body onload="#{vistaCreditoFiscalSvTradeBean.cargarPorId()}" >  
 
 	<h:form id="form1" >
 		<p:panelGrid columns="1" style="max-width:900px;margin:0 auto" styleClass="borderRd" >

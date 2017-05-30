@@ -17,7 +17,7 @@
            <!-- <f:viewParam name="idFactura" value="#{vistaFacturaAudiomedBean.idFactura}"/> -->
            <f:viewParam name="idFactura" value="#{vistaFacturaAudiomedBean.idFactura}"/>
        </f:metadata>
-<body> 
+<body onload="#{vistaFacturaAudiomedBean.cargarPorId()}" > 
 
 	<h:form id="form1" >
 		<p:panelGrid columns="1" style="max-width:900px;margin:0 auto" styleClass="borderRd" >
@@ -135,9 +135,10 @@
 				<p:link  href="../seleccionarFormato.xhtml"  >
 					<p:button value="Inicio" icon="fa fa-home" ></p:button>
 				</p:link>
-				<p:commandButton value="Buscar facturas" icon="fa fa-search" action="buscarFacturaAudiomed?faces-redirect=true" ></p:commandButton>
+				<p:commandButton value="Buscar facturas" immediate="true" icon="fa fa-search" action="buscarFacturaAudiomed?faces-redirect=true" ></p:commandButton>
 				<p:commandButton value="Editar" icon="fa fa-edit" ></p:commandButton>
 				<p:commandButton onclick="window.open('../facturaAudiomedServlet?idFactura=#{vistaFacturaAudiomedBean.idFactura}','','')" icon="fa fa-print" target="_black" value="Imprimir" ajax="false" ></p:commandButton>
+				
 			</h:panelGroup>
 			
 		</p:panelGrid>

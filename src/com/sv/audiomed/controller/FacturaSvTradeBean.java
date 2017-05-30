@@ -46,7 +46,7 @@ public class FacturaSvTradeBean {
 		facturaDAO = new FacturaSvTradeDAO();
 		inicializarFactura();
 		inicializarDetalle();
-		cargarFactura();
+
 	}
 	
 	public void inicializarDetalle()

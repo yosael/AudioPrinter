@@ -40,6 +40,11 @@ public class VistaCreditoFiscalDoctorBean implements Serializable {
 	{
 		facturaDAO = new CreditoFiscalDoctorDAO();
 		//idFactura = buscarCreditoFiscalDoctor.getIdFacturaSelected();
+		//cargarFactura();
+	}
+	
+	public void cargarPorId()
+	{
 		cargarFactura();
 	}
 	
@@ -49,7 +54,7 @@ public class VistaCreditoFiscalDoctorBean implements Serializable {
 		
 		try {
 			
-			idFactura = buscarCreditoFiscalDoctorBean.getIdFacturaSelected();
+			//idFactura = buscarCreditoFiscalDoctorBean.getIdFacturaSelected();
 			factura = facturaDAO.buscarFacturaPorId(idFactura);
 			detalles = facturaDAO.buscarDetallesFactura(idFactura);
 			

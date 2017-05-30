@@ -11,9 +11,11 @@
 	<title>Inicio</title>
 	
 </h:head>
- 
+ <f:metadata>
+     <f:viewParam name="idFactura" value="#{generarFacturaAudiomedBean.idFactura}"/>
+ </f:metadata>
 
-<h:body >
+<h:body onload="#{generarFacturaAudiomedBean.cargarPorId()}" >
 	<h:form id="form1" >
 		
 		<p:growl id="growl" life="2000" />
@@ -146,7 +148,7 @@
 				<p:link  href="../seleccionarFormato.xhtml"  >
 					<p:button value="Inicio" icon="fa fa-home" ></p:button>
 				</p:link>
-				<p:commandButton value="Buscar facturas" action="buscarFacturaAudiomed?faces-redirect=true" icon="fa fa-search" ></p:commandButton>
+				<p:commandButton immediate="true" value="Buscar facturas" action="buscarFacturaAudiomed?faces-redirect=true" icon="fa fa-search" ></p:commandButton>
 				<p:commandButton value="Guardar"  action="#{generarFacturaAudiomedBean.agregarFactura()}"  icon="fa fa-save"  update="form1" onclick="this.disabled=true" >
 					<f:param value="#{generarFacturaAudiomedBean.idFactura}" ></f:param>
 				</p:commandButton>

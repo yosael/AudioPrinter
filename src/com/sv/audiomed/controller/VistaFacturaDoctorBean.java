@@ -22,7 +22,7 @@ public class VistaFacturaDoctorBean implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	
-	private int idFactura=0;
+	private int idFactura;
 	private FacturaDoctor facturaDoctor;
 	private List<DetalleFacturaDoctor> detalles;
 	private FacturaDoctorDAO facturaDAO;
@@ -34,6 +34,7 @@ public class VistaFacturaDoctorBean implements Serializable {
 	
 	public VistaFacturaDoctorBean()
 	{
+		idFactura=0;
 		facturaDoctor = new FacturaDoctor();
 		detalles = new ArrayList<DetalleFacturaDoctor>();
 		
@@ -45,7 +46,7 @@ public class VistaFacturaDoctorBean implements Serializable {
 	{
 		facturaDAO = new FacturaDoctorDAO();
 		idFactura = buscarFacturaDoctorBean.getIdFacturaSelected();
-		cargarFactura();
+		//cargarFactura();
 		
 	}
 	
@@ -56,7 +57,7 @@ public class VistaFacturaDoctorBean implements Serializable {
 		
 		try {
 			
-			idFactura = buscarFacturaDoctorBean.getIdFacturaSelected();
+			//idFactura = buscarFacturaDoctorBean.getIdFacturaSelected();
 			/*FacesContext facesContext = FacesContext.getCurrentInstance();
 			Map<String,String> param = facesContext.getExternalContext().getRequestParameterMap();
 			System.out.println("CONTENIDO PARAMETRO"+param.get("idFactura"));
@@ -75,6 +76,11 @@ public class VistaFacturaDoctorBean implements Serializable {
 		
 	}
 	
+	
+	public void cargarPorId()
+	{
+		cargarFactura();
+	}
 	
 	public String irAlServlet()
 	{

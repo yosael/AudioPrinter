@@ -47,9 +47,9 @@ public class GenerarCreditoFiscalDoctorBean implements Serializable {
 	public void init()
 	{
 		facturaDAO = new CreditoFiscalDoctorDAO();
-		inicializarFactura();
+		/*inicializarFactura();
 		inicializarDetalle();
-		cargarFactura();
+		cargarFactura();*/
 	}
 	
 	public void inicializarDetalle()
@@ -79,12 +79,19 @@ public class GenerarCreditoFiscalDoctorBean implements Serializable {
 		factura.setVentaTotal(0d);
 	}
 	
+	public void cargarPorId()
+	{
+		inicializarFactura();
+		inicializarDetalle();
+		cargarFactura();
+	}
+	
 	public void cargarFactura()
 	{
 		
 		try {
 			
-			idFactura = buscarCreditoFiscalDoctorBean.getIdFacturaSelected();
+			//idFactura = buscarCreditoFiscalDoctorBean.getIdFacturaSelected();
 			factura = facturaDAO.buscarFacturaPorId(idFactura);
 			factura.setCodigoFactura("");
 			factura.setFecha(new Date());

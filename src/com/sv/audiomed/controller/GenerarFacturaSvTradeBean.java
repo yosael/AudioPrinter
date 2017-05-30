@@ -1,6 +1,5 @@
 package com.sv.audiomed.controller;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -12,49 +11,47 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
-import com.sv.audiomed.dao.CreditoFiscalAudiomedDAO;
-import com.sv.audiomed.model.CreditoFiscalAudiomed;
-import com.sv.audiomed.model.DetalleCreditoFiscalAudiomed;
+import com.sv.audiomed.dao.FacturaSvTradeDAO;
+import com.sv.audiomed.model.DetalleFacturaSvTrade;
+import com.sv.audiomed.model.FacturaSvTrade;
 import com.sv.audiomed.util.LetrasConverter;
 import com.sv.audiomed.util.Util;
 
-@ManagedBean
+@ManagedBean(name = "generarFacturaSvTradeBean")
 @ViewScoped
-public class GenerarCreditoFiscalAudiomedBean implements Serializable {
+public class GenerarFacturaSvTradeBean {
 	
-	
-	private static final long serialVersionUID = 1L;
-	
-	private CreditoFiscalAudiomedDAO facturaDAO;
-	private CreditoFiscalAudiomed factura;
-	private DetalleCreditoFiscalAudiomed detalle;
-	private List<DetalleCreditoFiscalAudiomed> detalles;
+	private FacturaSvTrade factura;
+	private FacturaSvTradeDAO facturaDAO;
+
+	private List<DetalleFacturaSvTrade> detalles;
+	private DetalleFacturaSvTrade detalle;
 	private int idFactura;
 	private String tipoConcepto;
 	private boolean aplicarIvaRetenido;
 	
-	@ManagedProperty(value="#{buscarCreditoFiscalAudiomed}")
-	private BuscarCreditoFiscalAudiomed buscarCreditoFiscalAudiomed;
+	@ManagedProperty(value="#{buscarFacturaSvTradeBean}")
+	private BuscarFacturaSvTradeBean buscarFacturaSvTradeBean;
 	
-	public GenerarCreditoFiscalAudiomedBean()
-	{
-		detalles = new ArrayList<DetalleCreditoFiscalAudiomed>();
+	public GenerarFacturaSvTradeBean() {
+		detalles = new ArrayList<DetalleFacturaSvTrade>();
+		idFactura=0;
+		tipoConcepto="";
 		aplicarIvaRetenido=false;
 	}
 	
 	@PostConstruct
 	public void init()
 	{
-		facturaDAO = new CreditoFiscalAudiomedDAO();
+		facturaDAO = new FacturaSvTradeDAO();
 		/*inicializarFactura();
 		inicializarDetalle();
 		cargarFactura();*/
-		
 	}
 	
 	public void inicializarDetalle()
 	{
-		detalle = new DetalleCreditoFiscalAudiomed();
+		detalle = new DetalleFacturaSvTrade();
 		detalle.setCantidad(1);
 		detalle.setVentasNoSujetas(0d);
 		detalle.setVentasExentas(0d);
@@ -65,14 +62,13 @@ public class GenerarCreditoFiscalAudiomedBean implements Serializable {
 	public void inicializarFactura()
 	{
 		
-		factura = new CreditoFiscalAudiomed();
+		factura = new FacturaSvTrade();
 		factura.setFecha(new Date());
 		factura.setSumaNoSujetas(0d);
 		factura.setSumaVentasExentas(0d);
 		factura.setSumaVentasGravadas(0d);
 		factura.setVentasExentas(0d);
 		factura.setVentasNoSujetas(0d);
-		factura.setPorcentIva(0d);
 		factura.setSubtotal(0d);
 		factura.setIvaRetenido(0d);
 		factura.setVentaTotal(0d);
@@ -85,17 +81,20 @@ public class GenerarCreditoFiscalAudiomedBean implements Serializable {
 		cargarFactura();
 	}
 	
-	
 	public void cargarFactura()
 	{
 		
 		try {
 			
-			//idFactura = buscarCreditoFiscalAudiomed.getIdFacturaSelected();
-			factura = facturaDAO.buscarFacturaPorId(idFactura);
-			factura.setCodigoFactura("");
-			factura.setFecha(new Date());
-			detalles = facturaDAO.buscarDetallesFactura(idFactura);
+			//idFactura = buscarFacturaSvTradeBean.getIdFacturaSelected();
+			System.out.println("Entro a cargar factura id "+idFactura);
+			if(idFactura>0)
+			{
+				factura = facturaDAO.buscarFacturaPorId(idFactura);
+				factura.setCodigoFactura("");
+				factura.setFecha(new Date());
+				detalles = facturaDAO.buscarDetallesFactura(idFactura);
+			}
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -119,7 +118,11 @@ public class GenerarCreditoFiscalAudiomedBean implements Serializable {
 			if(idFactura==0)
 				return "";
 			else
-				return "buscarCreditoFiscalAudiomed.xhtml?faces-redirect=true";//return "vistafactura.xhtml?faces-redirect=true&idFactura="+idFactura+"";
+			{
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Info", "Factura Ingresada"));
+				
+				return "buscarFacturaSvTrade.xhtml?faces-redirect=true";//return "vistafactura.xhtml?faces-redirect=true&idFactura="+idFactura+"";
+			}
 			
 		} catch (Exception e) {
 				
@@ -128,6 +131,17 @@ public class GenerarCreditoFiscalAudiomedBean implements Serializable {
 		
 		return "";
 		
+	}
+	
+	public String agregarDetalleFactura()
+	{
+		for(DetalleFacturaSvTrade detalle: detalles)
+		{
+			
+			detalle.setIdFactura(factura.getIdFactura());
+		}
+		
+		return "vistafactura";
 	}
 	
 	public void aplicarConcepto()
@@ -154,10 +168,6 @@ public class GenerarCreditoFiscalAudiomedBean implements Serializable {
 		else
 		{
 			monto =moneyDecimal(monto);
-			monto = recudirIvaAdetalle(monto);// Se aplican precios sin iva
-			
-			detalle.setPrecioUnitario(recudirIvaAdetalle(detalle.getPrecioUnitario()));
-			
 			detalle.setVentasGravadas(monto);
 			factura.setSumaVentasGravadas(moneyDecimal(factura.getSumaVentasGravadas()+monto));
 			
@@ -165,6 +175,60 @@ public class GenerarCreditoFiscalAudiomedBean implements Serializable {
 		
 		
 	}
+	
+	public void actualizarTotales()
+	{
+		
+		double subtotal=factura.getSumaVentasGravadas()+factura.getVentasExentas()+factura.getVentasNoSujetas();
+		double total=0d;
+		
+		subtotal = Util.moneyDecimal(subtotal);
+		factura.setSubtotal(subtotal);
+		
+		total=subtotal+factura.getVentasExentas()+factura.getVentasNoSujetas();//Revisar
+		
+		factura.setVentaTotal(Util.moneyDecimal(total));
+		
+		if(aplicarIvaRetenido==true)
+		{
+			aplicarIvaRetenido();
+		}
+	}
+	
+	public void quitarConceptoAplicado(DetalleFacturaSvTrade detalle)
+	{
+		double monto =0f;
+		monto=detalle.getCantidad()*detalle.getPrecioUnitario();
+		
+		if(detalle.getVentasNoSujetas()>0)
+		{
+			monto =moneyDecimal(monto);
+			detalle.setVentasNoSujetas(monto);
+			factura.setSumaNoSujetas(factura.getSumaNoSujetas()-monto);
+			factura.setVentasNoSujetas(factura.getSumaNoSujetas());
+		}
+		else if(detalle.getVentasExentas()>0)
+		{
+			monto =moneyDecimal(monto);
+			
+			detalle.setVentasExentas(monto);
+			factura.setSumaVentasExentas(factura.getSumaVentasExentas()-monto);
+			factura.setVentasExentas(factura.getSumaVentasExentas());
+			
+		}
+		else
+		{
+			monto =moneyDecimal(monto);
+			detalle.setVentasGravadas(monto);
+			factura.setSumaVentasGravadas(factura.getSumaVentasGravadas()-monto);
+			
+		}
+	}
+	
+	public Double moneyDecimal(Double num) {
+		return new Long(Math.round(num*100))/100.0;
+	}
+	
 	
 	public void cargarDetalle()
 	{
@@ -253,70 +317,7 @@ public class GenerarCreditoFiscalAudiomedBean implements Serializable {
 		return true;
 	}
 	
-	public void quitarConceptoAplicado(DetalleCreditoFiscalAudiomed detalle)
-	{
-		double monto =0d;
-		
-		monto=detalle.getCantidad()*detalle.getPrecioUnitario();
-		
-		
-		if(detalle.getVentasNoSujetas()>0)
-		{
-			monto =moneyDecimal(monto);		
-			detalle.setVentasNoSujetas(monto);
-			factura.setSumaNoSujetas(moneyDecimal(factura.getSumaNoSujetas()-monto));
-			factura.setVentasNoSujetas(factura.getSumaNoSujetas());
-		}
-		else if(detalle.getVentasExentas()>0)
-		{
-			monto =moneyDecimal(monto);
-			
-			detalle.setVentasExentas(monto);
-			factura.setSumaVentasExentas(moneyDecimal(factura.getSumaVentasExentas()-monto));
-			factura.setVentasExentas(factura.getSumaVentasExentas());
-			
-		}
-		else
-		{
-			monto = moneyDecimal(monto);
-			
-			detalle.setVentasGravadas(monto);
-			factura.setSumaVentasGravadas(moneyDecimal(factura.getSumaVentasGravadas()-monto));
-			
-		}
-	}
-	
-	public void actualizarTotales()
-	{
-		
-		double subtotal=factura.getSumaVentasGravadas()+factura.getVentasExentas()+factura.getVentasNoSujetas();
-		double total=0d;
-		double iva=0d;
-		
-		subtotal = moneyDecimal(subtotal);
-		factura.setSubtotal(subtotal);
-		
-		iva=moneyDecimal(factura.getSumaVentasGravadas()*Util.porcentIvaActual());
-		
-		factura.setPorcentIva(iva);
-		
-		total=moneyDecimal(subtotal+factura.getVentasExentas()+factura.getVentasNoSujetas()+iva);
-		factura.setVentaTotal(total);
-		
-		if(aplicarIvaRetenido==true)
-		{
-			aplicarIvaRetenido();
-		}
-		
-	}
-	
-	public Double recudirIvaAdetalle(Double monto)
-	{
-		Double sinIva=moneyDecimal(monto/1.13);
-		return sinIva;
-	}
-	
-	public void quitarDetalle(DetalleCreditoFiscalAudiomed detalle)
+	public void quitarDetalle(DetalleFacturaSvTrade detalle)
 	{
 		quitarConceptoAplicado(detalle);
 		actualizarTotales();
@@ -331,9 +332,8 @@ public class GenerarCreditoFiscalAudiomedBean implements Serializable {
 		factura.setLetrasMonto(numeroLetras);
 	}
 	
-	public Double moneyDecimal(Double num) {
-		return new Long(Math.round(num*100))/100.0;
-	}
+	
+	
 	
 	public void aplicarIvaRetenido()
 	{
@@ -347,7 +347,7 @@ public class GenerarCreditoFiscalAudiomedBean implements Serializable {
 		factura.setVentaTotal(total);
 	}
 	
-	public void quitarIveRetenido()
+	public void quitarIvaRetenido()
 	{
 		double ivaRetenido=factura.getSumaVentasGravadas()/1.13*0.01;
 		double total=factura.getVentaTotal();
@@ -359,19 +359,16 @@ public class GenerarCreditoFiscalAudiomedBean implements Serializable {
 		factura.setVentaTotal(total);
 	}
 	
-	public void verificarAplicacionIveRetenido()
+	public void verificarAplicacionIvaRetenido()
 	{
-		
-		System.out.println("Estado de booleano "+aplicarIvaRetenido);
 		
 		if(aplicarIvaRetenido==true)
 		{
 			aplicarIvaRetenido();
-			
 		}
 		else if(aplicarIvaRetenido==false)
 		{
-			quitarIveRetenido();
+			quitarIvaRetenido();
 		}
 		
 		convertirNumerosALetras();
@@ -379,30 +376,31 @@ public class GenerarCreditoFiscalAudiomedBean implements Serializable {
 	
 	
 	
-	//getters and setters
-
-	public CreditoFiscalAudiomed getFactura() {
+	//Getters and Setters
+	
+	
+	public FacturaSvTrade getfactura() {
 		return factura;
 	}
 
-	public void setFactura(CreditoFiscalAudiomed factura) {
+	public void setfactura(FacturaSvTrade factura) {
 		this.factura = factura;
 	}
 
-	public DetalleCreditoFiscalAudiomed getDetalle() {
-		return detalle;
-	}
-
-	public void setDetalle(DetalleCreditoFiscalAudiomed detalle) {
-		this.detalle = detalle;
-	}
-
-	public List<DetalleCreditoFiscalAudiomed> getDetalles() {
+	public List<DetalleFacturaSvTrade> getDetalles() {
 		return detalles;
 	}
 
-	public void setDetalles(List<DetalleCreditoFiscalAudiomed> detalles) {
+	public void setDetalles(List<DetalleFacturaSvTrade> detalles) {
 		this.detalles = detalles;
+	}
+
+	public DetalleFacturaSvTrade getDetalle() {
+		return detalle;
+	}
+
+	public void setDetalle(DetalleFacturaSvTrade detalle) {
+		this.detalle = detalle;
 	}
 
 	public int getIdFactura() {
@@ -421,6 +419,14 @@ public class GenerarCreditoFiscalAudiomedBean implements Serializable {
 		this.tipoConcepto = tipoConcepto;
 	}
 
+	public BuscarFacturaSvTradeBean getBuscarFacturaSvTradeBean() {
+		return buscarFacturaSvTradeBean;
+	}
+
+	public void setBuscarFacturaSvTradeBean(BuscarFacturaSvTradeBean buscarFacturaSvTradeBean) {
+		this.buscarFacturaSvTradeBean = buscarFacturaSvTradeBean;
+	}
+
 	public boolean isAplicarIvaRetenido() {
 		return aplicarIvaRetenido;
 	}
@@ -428,23 +434,11 @@ public class GenerarCreditoFiscalAudiomedBean implements Serializable {
 	public void setAplicarIvaRetenido(boolean aplicarIvaRetenido) {
 		this.aplicarIvaRetenido = aplicarIvaRetenido;
 	}
-
-	public BuscarCreditoFiscalAudiomed getBuscarCreditoFiscalAudiomed() {
-		return buscarCreditoFiscalAudiomed;
-	}
-
-	public void setBuscarCreditoFiscalAudiomed(BuscarCreditoFiscalAudiomed buscarCreditoFiscalAudiomed) {
-		this.buscarCreditoFiscalAudiomed = buscarCreditoFiscalAudiomed;
-	}
-
-
 	
-
+	
+	
 	
 	
 	
 
-	
-	
-	
 }

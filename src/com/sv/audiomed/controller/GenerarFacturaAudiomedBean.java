@@ -47,9 +47,9 @@ public class GenerarFacturaAudiomedBean {
 	public void init()
 	{
 		facturaAudiomedDAO = new FacturaAudiomedDAO();
-		inicializarFactura();
-		inicializarDetalle();
-		cargarFactura();
+		//inicializarFactura();
+		//inicializarDetalle();
+		//cargarFactura();
 	}
 	
 	public void inicializarDetalle()
@@ -77,12 +77,19 @@ public class GenerarFacturaAudiomedBean {
 		facturaAudiomed.setVentaTotal(0d);
 	}
 	
+	public void cargarPorId()
+	{
+		inicializarFactura();
+		inicializarDetalle();
+		cargarFactura();
+	}
+	
 	public void cargarFactura()
 	{
 		
 		try {
 			
-			idFactura= buscarFacturaAudiomedBean.getIdFacturaSelected();
+			//idFactura= buscarFacturaAudiomedBean.getIdFacturaSelected();
 			System.out.println("ID FACTURA "+idFactura);
 			
 			if(idFactura>0)

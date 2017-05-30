@@ -41,6 +41,11 @@ public class VistaCreditoFiscalAudiomedBean implements Serializable {
 	{
 		facturaDAO = new CreditoFiscalAudiomedDAO();
 		//idFactura = buscarCreditoFiscalAudiomed.getIdFacturaSelected();
+		//cargarFactura();
+	}
+	
+	public void cargarPorId()
+	{
 		cargarFactura();
 	}
 	
@@ -50,7 +55,7 @@ public class VistaCreditoFiscalAudiomedBean implements Serializable {
 		
 		try {
 			
-			idFactura = buscarCreditoFiscalAudiomed.getIdFacturaSelected();
+			//idFactura = buscarCreditoFiscalAudiomed.getIdFacturaSelected();
 			factura = facturaDAO.buscarFacturaPorId(idFactura);
 			detalles = facturaDAO.buscarDetallesFactura(idFactura);
 			
