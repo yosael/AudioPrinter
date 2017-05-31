@@ -9,9 +9,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.sv.audiomed.model.DetalleFacturaAudiomed;
 import com.sv.audiomed.model.DetalleFacturaSvTrade;
-import com.sv.audiomed.model.FacturaAudiomed;
 import com.sv.audiomed.model.FacturaSvTrade;
 
 public class FacturaSvTradeDAO {
@@ -237,5 +235,60 @@ public class FacturaSvTradeDAO {
 		return detalles;
 		
 	}
+	
+	
+	
+	public List<FacturaSvTrade> buscarPorFechas(java.util.Date fechaInicio,java.util.Date fechaFin)
+	{
+		
+		String query="select * from factura_svtrade where fecha>=? and fecha<=? order by id_factura desc";
+		List<FacturaSvTrade> facturas = new ArrayList<FacturaSvTrade>();
+		
+		try {
+			
+			PreparedStatement preparedStatement = cx.prepareStatement(query);
+			
+			Date sqlDate1 = new Date(fechaInicio.getTime());
+			Date sqlDate2 = new Date(fechaFin.getTime());
+			
+			preparedStatement.setDate(1, sqlDate1);
+			preparedStatement.setDate(2, sqlDate2);
+			
+			ResultSet rs = preparedStatement.executeQuery();
+			
+			while(rs.next())
+			{
+				
+				FacturaSvTrade factura = new FacturaSvTrade();
+				
+				factura.setIdFactura(rs.getInt("id_factura"));
+				factura.setCodigoFactura(rs.getString("codigo_factura"));
+				factura.setNombreCliente(rs.getString("nombre_cliente"));
+				factura.setDireccionCliente(rs.getString("direccion_cliente"));
+				factura.setFecha(rs.getDate("fecha"));
+				factura.setDocCliente(rs.getString("doc_cliente"));
+				factura.setSumaNoSujetas(rs.getDouble("suma_nosujetas"));
+				factura.setSumaVentasExentas(rs.getDouble("suma_ventas_exentas"));
+				factura.setSumaVentasGravadas(rs.getDouble("suma_ventas_gravadas"));
+				factura.setVentasExentas(rs.getDouble("ventas_exentas"));
+				factura.setVentasNoSujetas(rs.getDouble("ventas_nosujetas"));
+				factura.setSubtotal(rs.getDouble("subtotal"));
+				factura.setIvaRetenido(rs.getDouble("iva_retenido"));
+				factura.setVentaTotal(rs.getDouble("venta_total"));
+				factura.setLetrasMonto(rs.getString("monto_letras"));
+				
+				
+				facturas.add(factura);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		
+		return facturas;
+		
+	}
 
+	
 }

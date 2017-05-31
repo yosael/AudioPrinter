@@ -25,6 +25,7 @@ public class CreditoFiscalDoctor {
 	private Double ventaTotal;
 	private String letrasMonto;
 	private Double porcentIva;
+	private String direccionP2;
 	
 	
 	public int getIdFactura() {
@@ -152,6 +153,12 @@ public class CreditoFiscalDoctor {
 	}
 	public void setPorcentIva(Double porcentIva) {
 		this.porcentIva = porcentIva;
+	}
+	public String getDireccionP2() {
+		return direccionP2;
+	}
+	public void setDireccionP2(String direccionP2) {
+		this.direccionP2 = direccionP2;
 	}
 	
 	

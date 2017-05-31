@@ -28,6 +28,7 @@ public class CreditoFiscalSvTrade {
 	private Double ventaTotal;
 	private String letrasMonto;
 	private Double porcentIva;
+	private String direccionp2;
 	
 	
 	
@@ -177,6 +178,12 @@ public class CreditoFiscalSvTrade {
 	}
 	public void setPorcentIva(Double porcentIva) {
 		this.porcentIva = porcentIva;
+	}
+	public String getDireccionp2() {
+		return direccionp2;
+	}
+	public void setDireccionp2(String direccionp2) {
+		this.direccionp2 = direccionp2;
 	}
 	
 	

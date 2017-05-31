@@ -64,6 +64,7 @@ public class VistaCreditoFiscalDoctorBean implements Serializable {
 		
 	}
 
+	
 
 	public int getIdFactura() {
 		return idFactura;

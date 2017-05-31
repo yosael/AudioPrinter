@@ -95,6 +95,10 @@ public class GenerarFacturaDoctorBean {
 				facturaDoctor = facturaDoctorDAO.buscarFacturaPorId(idFactura);
 				facturaDoctor.setCodigoFactura("");
 				facturaDoctor.setFecha(new Date());
+				
+				if(facturaDoctor.getIvaRetenido()>0)
+					aplicarIvaRetenido=true;
+					
 				detalles = facturaDoctorDAO.buscarDetallesFactura(idFactura);
 			}
 			

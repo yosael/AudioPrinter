@@ -28,40 +28,40 @@
 				<p:outputLabel value="" />
 				<p:spacer width="100" height="5" ></p:spacer>
 				<p:outputLabel value="No Factura: " />
-				<p:inputText value="#{creditoFiscalSvTradeBean.factura.codigoFactura}" />
+				<p:inputText value="#{creditoFiscalSvTradeBean.factura.codigoFactura}" maxlength="8" />
 			
 				<p:outputLabel value="Señor: " />
-				<p:inputText value="#{creditoFiscalSvTradeBean.factura.nombreCliente}" />
+				<p:inputText value="#{creditoFiscalSvTradeBean.factura.nombreCliente}" maxlength="70" />
 				<p:spacer width="100" height="5" ></p:spacer>
 				<p:outputLabel value="Fecha: " />
-				<p:calendar value="#{creditoFiscalSvTradeBean.factura.fecha}" >
+				<p:calendar value="#{creditoFiscalSvTradeBean.factura.fecha}" readonly="true"  >
 				</p:calendar>
 				
 				<p:outputLabel value="Direccion: " />
-				<p:inputText value="#{creditoFiscalSvTradeBean.factura.direccionCliente}" />
+				<p:inputText value="#{creditoFiscalSvTradeBean.factura.direccionCliente}" maxlength="100" />
 				<p:spacer width="100" height="0" ></p:spacer>
 				<p:outputLabel value="Registro: " />
-				<p:inputText value="#{creditoFiscalSvTradeBean.factura.registro}" />
+				<p:inputText value="#{creditoFiscalSvTradeBean.factura.registro}" maxlength="30" />
 				
 				<p:outputLabel value="" />
 				<p:outputLabel value="" />
 				<p:spacer width="100" height="0" ></p:spacer>
 				<p:outputLabel value="NIT: " />
-				<p:inputText value="#{creditoFiscalSvTradeBean.factura.docCliente}" />
+				<p:inputText value="#{creditoFiscalSvTradeBean.factura.docCliente}" maxlength="25" />
 				
 				
 				<h:panelGrid columns="2" >
 					<p:outputLabel value="Municipio" />
-					<p:inputText value="#{creditoFiscalSvTradeBean.factura.municipio}" style="width:114px;" />
+					<p:inputText value="#{creditoFiscalSvTradeBean.factura.municipio}" maxlength="30" style="width:114px;" />
 				</h:panelGrid>
 				<h:panelGrid columns="2" >
 					<p:outputLabel value="Departamento" />
-					<p:inputText value="#{creditoFiscalSvTradeBean.factura.departamento}" style="width:114px;" />
+					<p:inputText value="#{creditoFiscalSvTradeBean.factura.departamento}" maxlength="30" style="width:114px;" />
 				</h:panelGrid>
 				
 				<p:spacer width="50" height="0" ></p:spacer>
 				 <p:outputLabel value="Giro: " /> 
-				 <p:inputText value="#{creditoFiscalSvTradeBean.factura.registro}" /> 	
+				 <p:inputText value="#{creditoFiscalSvTradeBean.factura.giro}" maxlength="50" /> 	
 				
 				
 				
@@ -74,22 +74,22 @@
 
 					
 				<p:outputLabel value="Nota de Remision No" />
-				<p:inputText value="#{creditoFiscalSvTradeBean.factura.notaNumRemisionAnterior}"   />
+				<p:inputText value="#{creditoFiscalSvTradeBean.factura.notaNumRemisionAnterior}" maxlength="30"  />
 				<p:spacer width="100" height="0" ></p:spacer>
 				<p:outputLabel value="Vta a Cta de: " />
-				<p:inputText value="#{creditoFiscalSvTradeBean.factura.vtaActaDe}" />
+				<p:inputText value="#{creditoFiscalSvTradeBean.factura.vtaActaDe}" maxlength="70" />
 				
 				<p:outputLabel value="Fecha Nota de Remision: " />
-				<p:calendar value="#{creditoFiscalSvTradeBean.factura.fechaNotaRemisionAnterior}" />
+				<p:calendar value="#{creditoFiscalSvTradeBean.factura.fechaNotaRemisionAnterior}" readonly="true"  />
 				<p:spacer width="100" height="0" ></p:spacer>
 				<p:outputLabel value="Condic de Pago " />
-				<p:inputText value="#{creditoFiscalSvTradeBean.factura.condicionPago}" />
+				<p:inputText value="#{creditoFiscalSvTradeBean.factura.condicionPago}" maxlength="30" />
 				
 			</h:panelGrid>
 			<!--  -->
 			<h:panelGrid columns="6" id="itmCampos" >
 				<p:inputText value="#{creditoFiscalSvTradeBean.detalle.cantidad}" placeholder="CANTIDAD" style="width:75px" />
-				<p:inputText value="#{creditoFiscalSvTradeBean.detalle.descripciones}" placeholder="DESCRIPCIONES" style="width:328px" />
+				<p:inputText value="#{creditoFiscalSvTradeBean.detalle.descripciones}" placeholder="DESCRIPCIONES" style="width:328px" maxlength="100" />
 				<p:inputText value="#{creditoFiscalSvTradeBean.detalle.precioUnitario}" placeholder="PRECIO" style="width:70px" />
 				<p:selectOneRadio id="console" value="#{creditoFiscalSvTradeBean.tipoConcepto}">
 		            <f:selectItem itemLabel="NO SUJETAS" itemValue="NoSujetas" />
@@ -126,7 +126,7 @@
 			<p:panelGrid columns="2" >
 				
 				<h:panelGrid columns="2">
-					<p:inputTextarea value="#{creditoFiscalSvTradeBean.factura.letrasMonto}" ></p:inputTextarea>
+					<p:inputTextarea value="#{creditoFiscalSvTradeBean.factura.letrasMonto}" readonly="true" autoResize="false" ></p:inputTextarea>
 					<p:spacer width="218" height="2" ></p:spacer>
 				</h:panelGrid>
 					

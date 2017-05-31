@@ -93,6 +93,10 @@ public class GenerarFacturaSvTradeBean {
 				factura = facturaDAO.buscarFacturaPorId(idFactura);
 				factura.setCodigoFactura("");
 				factura.setFecha(new Date());
+				
+				if(factura.getIvaRetenido()>0)
+					aplicarIvaRetenido=true;
+				
 				detalles = facturaDAO.buscarDetallesFactura(idFactura);
 			}
 			

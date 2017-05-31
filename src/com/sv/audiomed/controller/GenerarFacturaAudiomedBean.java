@@ -90,13 +90,17 @@ public class GenerarFacturaAudiomedBean {
 		try {
 			
 			//idFactura= buscarFacturaAudiomedBean.getIdFacturaSelected();
-			System.out.println("ID FACTURA "+idFactura);
+			//System.out.println("ID FACTURA "+idFactura);
 			
 			if(idFactura>0)
 			{
 				this.facturaAudiomed = facturaAudiomedDAO.buscarFacturaPorId(idFactura);
 				facturaAudiomed.setCodigoFactura("");
 				facturaAudiomed.setFecha(new Date());
+				
+				if(facturaAudiomed.getIvaRetenido()>0)
+					aplicarIvaRetenido=true;
+				
 				this.detalles = facturaAudiomedDAO.buscarDetallesFactura(idFactura);
 			}
 			

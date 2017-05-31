@@ -1,6 +1,5 @@
 package com.sv.audiomed.util;
 
-import org.jboss.resteasy.plugins.interceptors.encoding.GZIPDecodingInterceptor.FinishableGZIPInputStream;
 
 public class LetrasConverter {
 	

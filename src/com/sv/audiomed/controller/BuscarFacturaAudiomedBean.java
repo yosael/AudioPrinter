@@ -7,7 +7,6 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
-import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
@@ -21,7 +20,6 @@ public class BuscarFacturaAudiomedBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
-	String busqueda="";
 	FacturaAudiomedDAO facturaAudiomedDAO;
 	List<FacturaAudiomed> facturas;
 	private int idFacturaSelected;
@@ -51,8 +49,9 @@ public class BuscarFacturaAudiomedBean implements Serializable {
 		
 		facturaAudiomedDAO = new FacturaAudiomedDAO();
 		facturas = new ArrayList<FacturaAudiomed>();
-		buscarFactura();
+		//buscarFactura();
 		setRangoMes();
+		buscarPorFechas();
 	}
 	
 	public void buscarFactura()
@@ -83,7 +82,7 @@ public class BuscarFacturaAudiomedBean implements Serializable {
 	
 	public void buscarPorFechas()
 	{
-		System.out.println("Entro a buscar por fechas");
+		//System.out.println("Entro a buscar por fechas");
 		try {
 			
 			facturas = facturaAudiomedDAO.buscarPorFechas(fechaInicio, fechaFin);
@@ -92,7 +91,6 @@ public class BuscarFacturaAudiomedBean implements Serializable {
 			e.printStackTrace();
 		}
 		 
-		
 	}
 	
 	public void setRangoMes() {

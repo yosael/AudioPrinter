@@ -87,6 +87,9 @@ public class CreditoFiscalDoctorBean implements Serializable {
 		
 		try {
 			
+			if(factura.getDireccionCliente().length()>39)
+				cortarDireccion();
+			
 			idFactura= facturaDAO.agregarFacturaDetalle(factura, detalles);
 			System.out.println("ID FACTURA2 "+idFactura);
 			
@@ -102,6 +105,13 @@ public class CreditoFiscalDoctorBean implements Serializable {
 		
 		return "";
 		
+	}
+	
+	public void cortarDireccion()
+	{
+		String direccionP2 = factura.getDireccionCliente().substring(40, factura.getDireccionCliente().length());
+		//System.out.println("Direccion parte 2: "+direccionP2);
+		factura.setDireccionP2(direccionP2);
 	}
 	
 	public void aplicarConcepto()
@@ -269,14 +279,15 @@ public class CreditoFiscalDoctorBean implements Serializable {
 		double total=0d;
 		double iva=0d;
 		
-		subtotal = moneyDecimal(subtotal);
+		iva=moneyDecimal(factura.getSumaVentasGravadas()*Util.porcentIvaActual());
+		
+		subtotal = moneyDecimal(subtotal+iva);
 		factura.setSubtotal(subtotal);
 		
-		iva=moneyDecimal(factura.getSumaVentasGravadas()*Util.porcentIvaActual());
 		
 		factura.setPorcentIva(iva);
 		
-		total=moneyDecimal(subtotal+factura.getVentasExentas()+factura.getVentasNoSujetas()+iva);
+		total=moneyDecimal(subtotal);
 		factura.setVentaTotal(total);
 		
 		if(aplicarIvaRetenido==true)

@@ -15,19 +15,31 @@
 	
 		<h:panelGrid columns="1" style="margin:0 auto;margin-top:40px;">
 			
-			<p:outputLabel value="BUSCAR COMPROBANTE CREDITO FISCAL SV TRADE" ></p:outputLabel>	
+			<p:outputLabel value="COMPROBANTES CREDITO FISCAL SV TRADE" ></p:outputLabel>	
 			
 			<p:separator></p:separator>
 			
 			<p:spacer height="20" ></p:spacer>
-			<h:panelGrid columns="2" >
+			<h:panelGrid columns="6" >
 				<p:link  href="../seleccionarFormato.xhtml"  >
 					<p:button value="Inicio" icon="fa fa-home" ></p:button>
 				</p:link>
 				<p:commandButton value="Nueva" action="creditoFiscalSvTrade.xhtml" icon="fa fa-plus" ></p:commandButton>
+				
+				<h:column />
+				<p:spacer width="120" height="0" />
+				
+				<p:calendar value="#{buscarCreditoFiscalSvTradeBean.fechaInicio}"  pattern="yyyy-MM-dd"   >
+					<p:ajax event="dateSelect"  listener="#{buscarCreditoFiscalSvTradeBean.buscarPorFechas()}" update="tbFacturas"  ></p:ajax>
+				</p:calendar>
+				<p:calendar value="#{buscarCreditoFiscalSvTradeBean.fechaFin}" pattern="yyyy-MM-dd" >
+					<p:ajax event="dateSelect"   listener="#{buscarCreditoFiscalSvTradeBean.buscarPorFechas()}" update="tbFacturas"  ></p:ajax>
+				</p:calendar>
+				
+				<p:spacer width="0" height="0" ></p:spacer>
+				
 			</h:panelGrid>
-			<p:dataTable id="tbFacturas" value="#{buscarCreditoFiscalSvTradeBean.facturas}" widgetVar="wvFacturaAudiomed" var="fac" style="max-width:1200px;margin:0 auto"  rows="10" paginator="true" 
-                          >
+			<p:dataTable id="tbFacturas" value="#{buscarCreditoFiscalSvTradeBean.facturas}" widgetVar="wvFacturaAudiomed" var="fac" style="max-width:1200px;margin:0 auto"  rows="10" paginator="true" >
 				<f:facet name="header">
 		            <p:inputText id="globalFilter" onkeyup="filterAdvanced('wvFacturaAudiomed',this);" placeholder="Buscar..." />
 		        </f:facet>

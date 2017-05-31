@@ -96,6 +96,7 @@ public class FacturaSvTradeBean {
 	}
 	
 	
+	
 	public String agregarFactura()
 	{
 
@@ -427,6 +428,7 @@ public class FacturaSvTradeBean {
 	public void setAplicarIvaRetenido(boolean aplicarIvaRetenido) {
 		this.aplicarIvaRetenido = aplicarIvaRetenido;
 	}
+
 	
 	
 	

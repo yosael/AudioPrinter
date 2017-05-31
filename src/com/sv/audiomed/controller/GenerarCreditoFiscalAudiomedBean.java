@@ -95,6 +95,10 @@ public class GenerarCreditoFiscalAudiomedBean implements Serializable {
 			factura = facturaDAO.buscarFacturaPorId(idFactura);
 			factura.setCodigoFactura("");
 			factura.setFecha(new Date());
+			
+			if(factura.getIvaRetenido()>0)
+				aplicarIvaRetenido=true;	
+			
 			detalles = facturaDAO.buscarDetallesFactura(idFactura);
 			
 		} catch (Exception e) {

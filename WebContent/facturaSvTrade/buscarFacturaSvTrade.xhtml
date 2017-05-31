@@ -14,16 +14,29 @@
 	<h:form id="form1" >
 		<h:panelGrid columns="1" style="margin:0 auto;margin-top:40px;">
 			
-			<p:outputLabel value="BUSCAR FACTURAS" ></p:outputLabel>	
+			<p:outputLabel value="FACTURAS CONSUMIDOR FINAL SV TRADE" ></p:outputLabel>	
 			
 			<p:separator></p:separator>
 			
 			<p:spacer height="20" ></p:spacer>
-			<h:panelGrid columns="2" >
+			<h:panelGrid columns="6" >
 				<p:link  href="../seleccionarFormato.xhtml"  >
 					<p:button value="Inicio" icon="fa fa-home" ></p:button>
 				</p:link>
 				<p:commandButton value="Nueva" action="facturaSvTrade" icon="fa fa-plus" ></p:commandButton>
+				
+				<h:column />
+				<p:spacer width="120" height="0" />
+				
+				<p:calendar value="#{buscarFacturaSvTradeBean.fechaInicio}"  pattern="yyyy-MM-dd"  >
+					<p:ajax event="dateSelect"  listener="#{buscarFacturaSvTradeBean.buscarPorFechas()}" update="tbFacturas"  ></p:ajax>
+				</p:calendar>
+				<p:calendar value="#{buscarFacturaSvTradeBean.fechaFin}" pattern="yyyy-MM-dd"  >
+					<p:ajax event="dateSelect"   listener="#{buscarFacturaSvTradeBean.buscarPorFechas()}" update="tbFacturas"  ></p:ajax>
+				</p:calendar>
+				
+				<p:spacer width="0" height="0" ></p:spacer>
+				
 			</h:panelGrid>
 			<p:dataTable id="tbFacturas" value="#{buscarFacturaSvTradeBean.facturas}" widgetVar="wvFacturaAudiomed" var="fac" style="max-width:1200px;margin:0 auto"  rows="10" paginator="true" 
                           >

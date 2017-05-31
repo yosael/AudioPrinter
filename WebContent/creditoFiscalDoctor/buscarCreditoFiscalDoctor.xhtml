@@ -15,16 +15,29 @@
 	
 		<h:panelGrid columns="1" style="margin:0 auto;margin-top:40px;">
 			
-			<p:outputLabel value="BUSCAR COMPROBANTE CREDITO FISCAL DOCTOR" ></p:outputLabel>	
+			<p:outputLabel value="COMPROBANTES CREDITO FISCAL DOCTOR" ></p:outputLabel>	
 			
 			<p:separator></p:separator>
 			
 			<p:spacer height="20" ></p:spacer>
-			<h:panelGrid columns="2" >
+			<h:panelGrid columns="6" >
 				<p:link  href="../seleccionarFormato.xhtml"  >
 					<p:button value="Inicio" icon="fa fa-home" ></p:button>
 				</p:link>
 				<p:commandButton value="Nueva" action="creditoFiscalDoctor.xhtml"  icon="fa fa-plus"  ></p:commandButton>
+				
+				<h:column />
+				<p:spacer width="120" height="0" />
+				
+				<p:calendar value="#{buscarCreditoFiscalDoctorBean.fechaInicio}"  pattern="yyyy-MM-dd"  >
+					<p:ajax event="dateSelect"  listener="#{buscarCreditoFiscalDoctorBean.buscarPorFechas()}" update="tbFacturas"  ></p:ajax>
+				</p:calendar>
+				<p:calendar value="#{buscarCreditoFiscalDoctorBean.fechaFin}" pattern="yyyy-MM-dd"  >
+					<p:ajax event="dateSelect"   listener="#{buscarCreditoFiscalDoctorBean.buscarPorFechas()}" update="tbFacturas"  ></p:ajax>
+				</p:calendar>
+				
+				<p:spacer width="0" height="0" ></p:spacer>
+				
 			</h:panelGrid>
 			<p:dataTable id="tbFacturas" value="#{buscarCreditoFiscalDoctorBean.facturas}" var="fac" widgetVar="wvFacturaAudiomed" style="max-width:1200px;margin:0 auto"  rows="10" paginator="true" 
                           >

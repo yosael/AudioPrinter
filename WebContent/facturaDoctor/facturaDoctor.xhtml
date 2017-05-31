@@ -28,32 +28,32 @@
 				<p:outputLabel value="" />
 				<p:spacer width="100" height="0" ></p:spacer>
 				<p:outputLabel value="NO FACTURA: " />
-				<p:inputText value="#{facturaDoctorBean.facturaDoctor.codigoFactura}" />
+				<p:inputText value="#{facturaDoctorBean.facturaDoctor.codigoFactura}" maxlength="8" />
 			
 				<p:outputLabel value="CLIENTE: " />
-				<p:inputText value="#{facturaDoctorBean.facturaDoctor.nombreCliente}" />
+				<p:inputText value="#{facturaDoctorBean.facturaDoctor.nombreCliente}" maxlength="70" />
 				<p:spacer width="100" height="0" ></p:spacer>
 				<p:outputLabel value="FECHA: " />
-				<p:calendar value="#{facturaDoctorBean.facturaDoctor.fecha}" >
+				<p:calendar value="#{facturaDoctorBean.facturaDoctor.fecha}" readonly="true" >
 				</p:calendar>
 				
 				<p:outputLabel value="DIRECCION: " />
-				<p:inputText value="#{facturaDoctorBean.facturaDoctor.direccionCliente}" />
+				<p:inputText value="#{facturaDoctorBean.facturaDoctor.direccionCliente}" maxlength="100" />
 				<p:spacer width="100" height="0" ></p:spacer>
 				<p:outputLabel value="DUI/NIT: " />
-				<p:inputText value="#{facturaDoctorBean.facturaDoctor.docCliente}" />
+				<p:inputText value="#{facturaDoctorBean.facturaDoctor.docCliente}" maxlength="25" />
 				
 				<p:outputLabel value="" />
 				<p:outputLabel value="" />
 				<p:spacer width="100" height="0" ></p:spacer>
 				<p:outputLabel value="VTA A ACTA DE: " />
-				<p:inputText value="#{facturaDoctorBean.facturaDoctor.vtaActa}" />
+				<p:inputText value="#{facturaDoctorBean.facturaDoctor.vtaActa}"  maxlength="70" />
 				
 			</h:panelGrid>
 			<!--  -->
 			<h:panelGrid columns="6" id="itmCampos" >
 				<p:inputText value="#{facturaDoctorBean.detalle.cantidad}" placeholder="CANTIDAD" style="width:75px" />
-				<p:inputText value="#{facturaDoctorBean.detalle.descripciones}" placeholder="DESCRIPCIONES" style="width:328px" />
+				<p:inputText value="#{facturaDoctorBean.detalle.descripciones}" placeholder="DESCRIPCIONES" style="width:328px" maxlength="100" />
 				<p:inputText value="#{facturaDoctorBean.detalle.precioUnitario}" placeholder="PRECIO" style="width:70px" />
 				<p:selectOneRadio id="console" value="#{facturaDoctorBean.tipoConcepto}">
 		            <f:selectItem itemLabel="NO SUJETAS" itemValue="NoSujetas" />

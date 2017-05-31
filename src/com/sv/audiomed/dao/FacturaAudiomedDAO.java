@@ -271,7 +271,7 @@ public class FacturaAudiomedDAO {
 	public List<FacturaAudiomed> buscarPorFechas(java.util.Date fecha1,java.util.Date fecha2)
 	{
 		
-		String query="select * from factura_audiomed where fecha>=? and fecha<=?";
+		String query="select * from factura_audiomed where fecha>=? and fecha<=?  order by id_factura desc";
 		List<FacturaAudiomed> facturas = new ArrayList<FacturaAudiomed>();
 		
 		try {

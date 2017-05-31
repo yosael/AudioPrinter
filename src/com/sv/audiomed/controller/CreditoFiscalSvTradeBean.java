@@ -71,6 +71,7 @@ public class CreditoFiscalSvTradeBean implements Serializable {
 		factura.setIvaRetenido(0d);
 		factura.setVentaTotal(0d);
 		factura.setPorcentIva(0d);
+		
 	}
 	
 	
@@ -83,6 +84,10 @@ public class CreditoFiscalSvTradeBean implements Serializable {
 		
 		
 		try {
+			
+			if(factura.getDireccionCliente().length()>43)
+				cortarDireccion();
+				
 			
 			idFactura= facturaDAO.agregarFacturaDetalle(factura, detalles);
 			System.out.println("ID FACTURA2 "+idFactura);
@@ -99,6 +104,12 @@ public class CreditoFiscalSvTradeBean implements Serializable {
 		
 		return "";
 		
+	}
+	
+	public void cortarDireccion()
+	{
+		String direccionp2 = factura.getDireccionCliente().substring(44,factura.getDireccionCliente().length());
+		factura.setDireccionp2(direccionp2);
 	}
 	
 	public void aplicarConcepto()
@@ -267,14 +278,14 @@ public class CreditoFiscalSvTradeBean implements Serializable {
 		double total=0d;
 		double iva=0d;
 		
-		subtotal = moneyDecimal(subtotal);
-		factura.setSubtotal(subtotal);
-		
 		iva=moneyDecimal(factura.getSumaVentasGravadas()*Util.porcentIvaActual());
+		
+		subtotal = moneyDecimal(subtotal+iva);
+		factura.setSubtotal(subtotal);
 		
 		factura.setPorcentIva(iva);
 		
-		total=moneyDecimal(subtotal+factura.getVentasExentas()+factura.getVentasNoSujetas()+iva);
+		total=moneyDecimal(subtotal);
 		factura.setVentaTotal(total);
 		
 		if(aplicarIvaRetenido==true)

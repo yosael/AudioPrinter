@@ -84,6 +84,9 @@ public class CreditoFiscalAudiomedBean implements Serializable {
 		
 		try {
 			
+			if(factura.getDireccionCliente().length()>39)
+				cortarDireccion();
+			
 			idFactura= facturaDAO.agregarFacturaDetalle(factura, detalles);
 			System.out.println("ID FACTURA2 "+idFactura);
 			
@@ -101,21 +104,28 @@ public class CreditoFiscalAudiomedBean implements Serializable {
 		
 	}
 	
+	public void cortarDireccion()
+	{
+		String direccionP2 = factura.getDireccionCliente().substring(40, factura.getDireccionCliente().length());
+		//System.out.println("Direccion parte 2: "+direccionP2);
+		factura.setDireccionp2(direccionP2);
+	}
+	
 	public void aplicarConcepto()
 	{
-		double monto =0f;
+		double monto = 0f;
 		monto=detalle.getCantidad()*detalle.getPrecioUnitario();
 		
 		if(tipoConcepto.equals("NoSujetas"))
 		{
-			monto =moneyDecimal(monto);
+			monto = moneyDecimal(monto);
 			detalle.setVentasNoSujetas(monto);
 			factura.setSumaNoSujetas(moneyDecimal(factura.getSumaNoSujetas()+monto));
 			factura.setVentasNoSujetas(factura.getSumaNoSujetas());
 		}
 		else if(tipoConcepto.equals("Exentas"))
 		{
-			monto =moneyDecimal(monto);
+			monto = moneyDecimal(monto);
 			
 			detalle.setVentasExentas(monto);
 			factura.setSumaVentasExentas(moneyDecimal(factura.getSumaVentasExentas()+monto));
@@ -124,7 +134,7 @@ public class CreditoFiscalAudiomedBean implements Serializable {
 		}
 		else
 		{
-			monto =moneyDecimal(monto);
+			monto = moneyDecimal(monto);
 			monto = recudirIvaAdetalle(monto);// Se aplican precios sin iva
 			
 			detalle.setPrecioUnitario(recudirIvaAdetalle(detalle.getPrecioUnitario()));
@@ -264,14 +274,15 @@ public class CreditoFiscalAudiomedBean implements Serializable {
 		double total=0d;
 		double iva=0d;
 		
-		subtotal = moneyDecimal(subtotal);
+		iva=moneyDecimal(factura.getSumaVentasGravadas()*Util.porcentIvaActual());
+		
+		subtotal = moneyDecimal(subtotal+iva);
 		factura.setSubtotal(subtotal);
 		
-		iva=moneyDecimal(factura.getSumaVentasGravadas()*Util.porcentIvaActual());
 		
 		factura.setPorcentIva(iva);
 		
-		total=moneyDecimal(subtotal+factura.getVentasExentas()+factura.getVentasNoSujetas()+iva);
+		total=moneyDecimal(subtotal);
 		factura.setVentaTotal(total);
 		
 		if(aplicarIvaRetenido==true)

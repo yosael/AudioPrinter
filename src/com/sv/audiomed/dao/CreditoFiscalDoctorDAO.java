@@ -14,7 +14,7 @@ import com.sv.audiomed.model.DetalleCreditoFiscalDoctor;
 
 public class CreditoFiscalDoctorDAO {
 	
-private Connection cx;
+	private Connection cx;
 	
 	public CreditoFiscalDoctorDAO()
 	{
@@ -31,7 +31,7 @@ private Connection cx;
 			ResultSet rsIdFactura;
 			
 			
-			String sql ="insert into creditofiscal_doctor (codigo_factura,nombre_cliente,direccion_cliente,fecha,doc_cliente,registro,nota_num_emision,giro,fecha_nota_emision,condicion_pago,suma_nosujetas,suma_ventas_exentas,suma_ventas_gravadas,ventas_exentas,ventas_nosujetas,subtotal,iva_retenido,venta_total,monto_letras,porcent_iva) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+			String sql ="insert into creditofiscal_doctor (codigo_factura,nombre_cliente,direccion_cliente,fecha,doc_cliente,registro,nota_num_emision,giro,fecha_nota_emision,condicion_pago,suma_nosujetas,suma_ventas_exentas,suma_ventas_gravadas,ventas_exentas,ventas_nosujetas,subtotal,iva_retenido,venta_total,monto_letras,porcent_iva,direccionp2) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 			PreparedStatement preparedStatement = cx.prepareStatement(sql,PreparedStatement.RETURN_GENERATED_KEYS);
 			preparedStatement.setString(1, factura.getCodigoFactura());
 			preparedStatement.setString(2, factura.getNombreCliente());
@@ -67,6 +67,7 @@ private Connection cx;
 			preparedStatement.setDouble(18, factura.getVentaTotal()!=null?factura.getVentaTotal():0d);
 			preparedStatement.setString(19, factura.getLetrasMonto()!=null?factura.getLetrasMonto():null);
 			preparedStatement.setDouble(20, factura.getPorcentIva()!=null?factura.getPorcentIva():0d);
+			preparedStatement.setString(21, factura.getDireccionP2()!=null?factura.getDireccionP2():" ");
 			
 			preparedStatement.executeUpdate();
 			
@@ -159,6 +160,7 @@ private Connection cx;
 				factura.setVentaTotal(result.getDouble("venta_total"));
 				factura.setLetrasMonto(result.getString("monto_letras"));
 				factura.setPorcentIva(result.getDouble("porcent_iva"));
+				factura.setDireccionP2(result.getString("direccionp2"));
 			
 				
 				lista.add(factura);
@@ -209,6 +211,7 @@ private Connection cx;
 				factura.setVentaTotal(rs.getDouble("venta_total"));
 				factura.setLetrasMonto(rs.getString("monto_letras"));
 				factura.setPorcentIva(rs.getDouble("porcent_iva"));
+				factura.setDireccionP2(rs.getString("direccionp2"));
 				
 				
 			}
@@ -264,6 +267,66 @@ private Connection cx;
 		
 		return detalles;
 		
+	}
+	
+	public List<CreditoFiscalDoctor> buscarPorFechas(java.util.Date fechaInicio,java.util.Date fechaFin)
+	{
+		
+		List<CreditoFiscalDoctor> facturas = new ArrayList<CreditoFiscalDoctor>();
+		String query = "Select * from creditofiscal_doctor where fecha>=? and fecha<=? order by id_factura desc ";
+		
+		try {
+			
+				
+			PreparedStatement preparedStatement = cx.prepareStatement(query);
+			
+			Date sqlDate1 = new Date(fechaInicio.getTime());
+			Date sqlDate2 = new Date(fechaFin.getTime());
+			
+			preparedStatement.setDate(1, sqlDate1);
+			preparedStatement.setDate(2, sqlDate2);
+			
+			ResultSet rs = preparedStatement.executeQuery();
+			
+			while(rs.next())
+			{
+				
+				CreditoFiscalDoctor factura = new CreditoFiscalDoctor();
+				
+				factura.setIdFactura(rs.getInt("id_factura"));
+				factura.setCodigoFactura(rs.getString("codigo_factura"));
+				factura.setNombreCliente(rs.getString("nombre_cliente"));
+				factura.setDireccionCliente(rs.getString("direccion_cliente"));
+				factura.setFecha(rs.getDate("fecha"));
+				factura.setDocCliente(rs.getString("doc_cliente"));
+				
+				factura.setRegistro(rs.getString("registro"));
+				factura.setNotaNumEmision(rs.getString("nota_num_emision"));
+				factura.setGiro(rs.getString("giro"));
+				factura.setFechaNotaEmision(rs.getDate("fecha_nota_emision"));
+				factura.setCondicionPago(rs.getString("condicion_pago"));
+				
+				factura.setSumaNoSujetas(rs.getDouble("suma_nosujetas"));
+				factura.setSumaVentasExentas(rs.getDouble("suma_ventas_exentas"));
+				factura.setSumaVentasGravadas(rs.getDouble("suma_ventas_gravadas"));
+				factura.setVentasExentas(rs.getDouble("ventas_exentas"));
+				factura.setVentasNoSujetas(rs.getDouble("ventas_nosujetas"));
+				factura.setSubtotal(rs.getDouble("subtotal"));
+				factura.setIvaRetenido(rs.getDouble("iva_retenido"));
+				factura.setVentaTotal(rs.getDouble("venta_total"));
+				factura.setLetrasMonto(rs.getString("monto_letras"));
+				factura.setPorcentIva(rs.getDouble("porcent_iva"));
+				factura.setDireccionP2(rs.getString("direccionp2"));
+				
+				facturas.add(factura);
+			}
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return facturas;
 	}
 
 }
