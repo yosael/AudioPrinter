@@ -1,17 +1,30 @@
 package com.sv.audiomed.controller;
 
 import java.io.Serializable;
+import java.sql.Connection;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
 
+import com.sv.audiomed.dao.Conexion;
 import com.sv.audiomed.dao.CreditoFiscalSvTradeDAO;
 import com.sv.audiomed.model.CreditoFiscalSvTrade;
 import com.sv.audiomed.model.DetalleCreditoFiscalSvTrade;
+
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.util.JRLoader;
 
 @ManagedBean
 @ViewScoped
@@ -61,6 +74,49 @@ public class VistaCreditoFiscalSvTradeBean implements Serializable {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+	}
+	
+	
+	public void imprimir()
+	{
+		
+		System.out.println("Entro a imprimit");
+		Connection cn = Conexion.conectar();
+		
+		JasperReport jasperReport;
+		JasperPrint jasperPrint;
+		byte[] pdfBytes;
+		
+		
+		try {
+			
+			String archivo = FacesContext.getCurrentInstance().getExternalContext().getRealPath("/reportes/CreditoFiscalSvTrade/CreditoFiscalSvTradeFormat.jasper");
+			System.out.println("Archivo "+archivo);
+			
+			jasperReport = (JasperReport)JRLoader.loadObjectFromFile(archivo);
+			Map<String, Object> parameters = new HashMap<String, Object>();
+			parameters.put("id_factura", idFactura);
+			
+			jasperPrint = JasperFillManager.fillReport(jasperReport,parameters,cn);
+			pdfBytes = JasperExportManager.exportReportToPdf(jasperPrint);
+			
+			HttpServletResponse response = (HttpServletResponse)FacesContext.getCurrentInstance().getExternalContext().getResponse();
+			response.setContentType("application/pdf");
+			response.setContentLength(pdfBytes.length);
+			
+			ServletOutputStream out = response.getOutputStream();
+			out.write(pdfBytes,0,pdfBytes.length);
+			out.flush();
+			out.close();
+			
+			FacesContext.getCurrentInstance().responseComplete();
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 		
 	}
 

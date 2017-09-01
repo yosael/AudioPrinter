@@ -8,17 +8,32 @@
       xmlns:p="http://primefaces.org/ui"> 
 
 <h:head>
-	<title>Inicio</title>
+	<title>Audio Printer</title>
 </h:head>
 
 <h:body>
 	<h:form>
-		<h:panelGrid columns="1" style="margin:0 auto;margin-top:200px;" >
+		<h:panelGrid columns="1" style="margin:0 auto;margin-top:150px;" >
 			
 			<p:outputLabel>Seleccionar formato factura</p:outputLabel>
 		
 			<p:separator></p:separator>
 			
+			<h:panelGrid columns="3" style="margin:0 auto;" cellpadding="4px" cellspacing="6px" >
+			
+				<p:commandButton action="facturaAudiomed/facturaAudiomed.xhtml?faces-redirect=true" value="FACTURA AUDIOMED" style="width:305px;height:100px" icon="fa fa-newspaper-o" />
+				<p:commandButton action="facturaDoctor/facturaDoctor.xhtml?faces-redirect=true"  value="FACTURA DOCTOR"  style="width:305px;height:100px" icon="fa fa-newspaper-o" />
+				<p:commandButton action="facturaSvTrade/facturaSvTrade.xhtml?faces-redirect=true"  value="FACTURA SV TRADE"  style="width:305px;height:100px" icon="fa fa-newspaper-o" />
+				
+				
+				<p:commandButton action="creditoFiscalAudiomed/creditoFiscalAudiomed.xhtml?faces-redirect=true" value="CREDITO FISCAL AUDIOMED"  style="width:305px;height:100px" icon="fa fa-newspaper-o" />
+				<p:commandButton action="creditoFiscalDoctor/creditoFiscalDoctor.xhtml?faces-redirect=true" value="CREDITO FISCAL DOCTOR"  style="width:305px;height:100px" icon="fa fa-newspaper-o" />
+				<p:commandButton action="creditoFiscalSvTrade/creditoFiscalSvTrade.xhtml?faces-redirect=true"  value="CREDITO FISCAL SV TRADE"  style="width:305px;height:100px" icon="fa fa-newspaper-o" />
+				
+				
+			</h:panelGrid>
+			
+			<!-- 
 			<p:selectOneMenu value="#{facturacionBean.formatoSelected}" >
 				<f:selectItem itemLabel="Factura Audiomed"  itemValue="facturaAudiomed/facturaAudiomed.xhtml?faces-redirect=true"  ></f:selectItem>
 				<f:selectItem itemLabel="Credito Fiscal Audiomed" itemValue="creditoFiscalAudiomed/creditoFiscalAudiomed.xhtml?faces-redirect=true" ></f:selectItem>
@@ -29,6 +44,7 @@
 			</p:selectOneMenu>
 			
 			<p:commandButton ajax="false" action="#{facturacionBean.seleccionarFormato()}" icon="fa fa-angle-double-right" value="Aceptar" />
+			 -->
 		</h:panelGrid>
 	</h:form>
 	

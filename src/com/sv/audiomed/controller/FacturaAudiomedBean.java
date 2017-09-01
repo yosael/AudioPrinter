@@ -1,5 +1,6 @@
 package com.sv.audiomed.controller;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -21,7 +22,11 @@ import com.sv.audiomed.util.Util;
 
 @ManagedBean(name = "facturaAudiomedBean")
 @ViewScoped
-public class FacturaAudiomedBean {
+public class FacturaAudiomedBean implements Serializable {
+	
+	
+	
+	private static final long serialVersionUID = 1L;
 	
 	private FacturaAudiomed facturaAudiomed;
 	private FacturaAudiomedDAO facturaAudiomedDAO;
@@ -111,6 +116,7 @@ public class FacturaAudiomedBean {
 			
 			idFactura= facturaAudiomedDAO.agregarFacturaDetalle(facturaAudiomed, detalles);
 			System.out.println("ID FACTURA2 "+idFactura);
+			
 			
 			if(idFactura==0)
 				return "";

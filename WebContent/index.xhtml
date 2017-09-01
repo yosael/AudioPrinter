@@ -8,7 +8,7 @@
       xmlns:p="http://primefaces.org/ui">
 
 <h:head>
-	<title>Inicio</title>
+	<title>Audio Printer</title>
 </h:head>
 
 <h:body>
@@ -17,7 +17,12 @@
 		<h:panelGrid columns="1"  style="margin:0 auto;margin-top:200px;" >
 			<p:outputLabel value="SISTEMA DE IMPRESION" ></p:outputLabel>
 			<p:separator></p:separator>
-			 <p:commandButton style="margin:0 auto" action="seleccionarFormato?faces-redirect=true" value="Ingresar" ajax="false" />	
+			
+			<p:inputText value="#{loginBean.username}" placeholder="Username" ></p:inputText>
+			<p:inputText value="#{loginBean.pass}" placeholder="Password" type="password"  ></p:inputText>
+			
+			 <!-- <p:commandButton style="margin:0 auto" action="seleccionarFormato?faces-redirect=true" value="Ingresar" ajax="false" /> -->
+			 <p:commandButton style="margin:0 auto" action="#{loginBean.validarUsuario()}" value="Ingresar" ajax="false" />	
 		</h:panelGrid>
 
 	</h:form>

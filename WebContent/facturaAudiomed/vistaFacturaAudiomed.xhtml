@@ -6,7 +6,7 @@
       xmlns:p="http://primefaces.org/ui"> 
 
 <h:head>
-	<title>Factura Audiomed</title>
+	<title>Audio Printer</title>
 	<link rel="stylesheet" type="text/css" href="css/estilos.css" media="screean" />
 </h:head>
 	<!-- <f:metadata>
@@ -136,8 +136,9 @@
 					<p:button value="Inicio" icon="fa fa-home" ></p:button>
 				</p:link>
 				<p:commandButton value="Buscar facturas" immediate="true" icon="fa fa-search" action="buscarFacturaAudiomed?faces-redirect=true" ></p:commandButton>
-				<p:commandButton value="Editar" icon="fa fa-edit" ></p:commandButton>
-				<p:commandButton onclick="window.open('../facturaAudiomedServlet?idFactura=#{vistaFacturaAudiomedBean.idFactura}','','')" icon="fa fa-print" target="_black" value="Imprimir" ajax="false" ></p:commandButton>
+				<!-- <p:commandButton value="Editar" icon="fa fa-edit" ></p:commandButton> -->
+				<!-- <p:commandButton onclick="window.open('../facturaAudiomedServlet?idFactura=#{vistaFacturaAudiomedBean.idFactura}','','')" icon="fa fa-print" target="_black" value="Imprimir" ajax="false" ></p:commandButton> -->
+				<p:commandButton value="Imprimir" icon="fa fa-print" actionListener="#{vistaFacturaAudiomedBean.imprimir()}" ajax="false" ></p:commandButton>
 				
 			</h:panelGroup>
 			

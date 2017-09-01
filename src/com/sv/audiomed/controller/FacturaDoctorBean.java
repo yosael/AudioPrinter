@@ -1,5 +1,6 @@
 package com.sv.audiomed.controller;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -19,7 +20,11 @@ import com.sv.audiomed.util.Util;
 
 @ManagedBean(name = "facturaDoctorBean")
 @ViewScoped
-public class FacturaDoctorBean {
+public class FacturaDoctorBean implements Serializable {
+	
+	
+	
+	private static final long serialVersionUID = 1L;
 	
 	private FacturaDoctor facturaDoctor;
 	private FacturaDoctorDAO facturaDoctorDAO;

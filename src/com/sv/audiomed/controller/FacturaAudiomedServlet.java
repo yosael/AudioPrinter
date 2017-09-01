@@ -1,33 +1,25 @@
 package com.sv.audiomed.controller;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
+
+
 import java.sql.Connection;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.sv.audiomed.dao.Conexion;
-import com.sv.audiomed.dao.ReporteCreditoFiscalAudiomedDAO;
-import com.sv.audiomed.dao.ReporteFacturaAudiomedDAO;
-import com.sv.audiomed.dao.ReporteJasperUtilDAO;
 
-import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
-import net.sf.jasperreports.engine.design.JasperDesign;
+
 import net.sf.jasperreports.engine.util.JRLoader;
-import net.sf.jasperreports.engine.xml.JRXmlLoader;
-import net.sf.jasperreports.view.JasperViewer;
+
 
 @WebServlet("/facturaAudiomedServlet")
 public class FacturaAudiomedServlet extends HttpServlet {
@@ -39,10 +31,10 @@ public class FacturaAudiomedServlet extends HttpServlet {
 	//Nuevo 
 	private JasperReport jasperReport;
 	private JasperPrint jasperPrint;
-	private JasperViewer jasperViewer;
+	//private JasperViewer jasperViewer;
 
 	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp){
 			
 		
 		cn = Conexion.conectar();
@@ -61,13 +53,7 @@ public class FacturaAudiomedServlet extends HttpServlet {
 			
 			jasperPrint = JasperFillManager.fillReport(jasperReport,parameters,cn);
 			
-			/*jasperViewer = new JasperViewer(jasperPrint);
-			jasperViewer.setVisible(true);*/
-
-			//Aqui se llena el reporte (se ejecuta la consulta)
-			//JasperPrint print = new JasperPrint();
-			//print = JasperFillManager.fillReport(jasperReport, parameters, cn);
-			 pdfBytes = JasperExportManager.exportReportToPdf(jasperPrint);
+			pdfBytes = JasperExportManager.exportReportToPdf(jasperPrint);
 		
 			resp.setContentType("application/pdf");
 			resp.setHeader("Content-Disposition", "inline;filename=" + "FacturaAudiomed" + ".pdf");
@@ -76,7 +62,7 @@ public class FacturaAudiomedServlet extends HttpServlet {
 		}
 		catch(Exception e)
 		{
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 		
 	}

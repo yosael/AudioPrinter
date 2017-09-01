@@ -16,6 +16,8 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
 
 import com.sv.audiomed.dao.Conexion;
 import com.sv.audiomed.dao.FacturaAudiomedDAO;
@@ -24,6 +26,7 @@ import com.sv.audiomed.dao.ReporteJasperUtilDAO;
 import com.sv.audiomed.model.DetalleFacturaAudiomed;
 import com.sv.audiomed.model.FacturaAudiomed;
 
+import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
@@ -158,6 +161,49 @@ public class VistaFacturaAudiomedBean implements Serializable {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+	}
+	
+	
+	public void imprimir()
+	{
+		
+		System.out.println("Entro a imprimit");
+		Connection cn = Conexion.conectar();
+		
+		JasperReport jasperReport;
+		JasperPrint jasperPrint;
+		byte[] pdfBytes;
+		
+		
+		try {
+			
+			String archivo = FacesContext.getCurrentInstance().getExternalContext().getRealPath("/reportes/FacturaAudiomed/FacturaAudiomedFormat.jasper");
+			System.out.println("Archivo "+archivo);
+			
+			jasperReport = (JasperReport)JRLoader.loadObjectFromFile(archivo);
+			Map<String, Object> parameters = new HashMap<String, Object>();
+			parameters.put("id_factura", idFactura);
+			
+			jasperPrint = JasperFillManager.fillReport(jasperReport,parameters,cn);
+			pdfBytes = JasperExportManager.exportReportToPdf(jasperPrint);
+			
+			HttpServletResponse response = (HttpServletResponse)FacesContext.getCurrentInstance().getExternalContext().getResponse();
+			response.setContentType("application/pdf");
+			response.setContentLength(pdfBytes.length);
+			
+			ServletOutputStream out = response.getOutputStream();
+			out.write(pdfBytes,0,pdfBytes.length);
+			out.flush();
+			out.close();
+			
+			FacesContext.getCurrentInstance().responseComplete();
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 		
 	}
 	
